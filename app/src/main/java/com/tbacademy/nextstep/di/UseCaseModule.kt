@@ -14,6 +14,8 @@ import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
@@ -136,4 +138,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetCommentsUseCase(impl: GetCommentsUseCaseImpl): GetCommentsUseCase
+
+    @Singleton
+    @Binds
+    fun bindGetUserInfoUseCase(impl: GetUserInfoUseCaseImpl): GetUserInfoUseCase
 }
