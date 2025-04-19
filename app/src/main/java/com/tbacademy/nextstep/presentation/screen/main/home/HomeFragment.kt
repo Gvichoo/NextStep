@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.tbacademy.nextstep.R
@@ -53,7 +52,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 )
             },
             followClicked = { postId ->
-                homeViewModel.onEvent(HomeEvent.ToggleFollowPost(postId = postId))
+                homeViewModel.onEvent(HomeEvent.ToggleFollowGoal(postId = postId))
             },
             userClicked = { userId ->
                 homeViewModel.onEvent(

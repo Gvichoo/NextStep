@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
+import android.provider.ContactsContract.Profile
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -21,6 +22,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun listeners() {
         setOnBackBtnListener()
+        setFollowBtnListener()
     }
 
     override fun observers() {
@@ -36,6 +38,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 if (state.user != null) {
                     tvUsername.text = state.user.username
                     btnFollow.isVisible = !state.isOwnProfile
+                    btnFollow.text = requireContext().getString(state.isUserFollowed.textRes)
                     btnBack.isVisible = !state.isOwnProfile
                 }
             }
@@ -46,6 +49,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private fun setOnBackBtnListener() {
         binding.btnBack.setOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun setFollowBtnListener() {
+        binding.btnFollow.setOnClickListener {
+            profileViewModel.onEvent(ProfileEvent.ToggleFollowUser)
         }
     }
 

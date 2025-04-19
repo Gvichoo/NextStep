@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onError
-import com.tbacademy.nextstep.domain.model.Follow
 import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
@@ -56,7 +55,7 @@ class HomeViewModel @Inject constructor(
                 visible = event.visible
             )
 
-            is HomeEvent.ToggleFollowPost -> toggleFollowPost(postId = event.postId)
+            is HomeEvent.ToggleFollowGoal -> toggleFollowPost(postId = event.postId)
 
             is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(
                 postId = event.postId,
@@ -161,10 +160,10 @@ class HomeViewModel @Inject constructor(
         val updatedPosts = currentPosts.map { post ->
             if (post.id == postId) {
                 val newFollowState = if (post.isUserFollowing == FollowStatus.TO_FOLLOW) {
-                    createFollow(followedId = post.authorId)
+                    createFollow(followedId = post.goalId)
                     FollowStatus.FOLLOWED
                 } else {
-                    deleteFollow(followedId = post.authorId)
+                    deleteFollow(followedId = post.goalId)
                     FollowStatus.TO_FOLLOW
                 }
                 post.copy(isUserFollowing = newFollowState)

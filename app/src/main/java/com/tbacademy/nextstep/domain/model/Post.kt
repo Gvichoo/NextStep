@@ -6,6 +6,7 @@ data class Post(
     val id: String,
     val authorId: String,
     val authorUsername: String,
+    val goalId: String = "",
     val title: String,
     val description: String,
     val reactionCount: Int,

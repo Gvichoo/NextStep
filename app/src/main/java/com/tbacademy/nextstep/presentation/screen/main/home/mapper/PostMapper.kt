@@ -12,6 +12,7 @@ fun Post.toPresentation(): PostPresentation {
         authorUsername,
         title,
         description,
+        goalId,
         reactionCount,
         reactionFireCount,
         reactionHeartCount,

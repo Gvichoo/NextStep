@@ -109,6 +109,7 @@ class PostsAdapter(
                 tvCommentsCount.text = post.commentCount.toString()
 
                 setReactions(post = post)
+                binding.btnFollow.text = itemView.context.getString(post.isUserFollowing.textRes)
 
                 // Reactions Pop Up
                 btnReaction.setOnLongClickListener {
