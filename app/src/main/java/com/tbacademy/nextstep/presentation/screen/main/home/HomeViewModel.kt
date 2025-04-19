@@ -49,12 +49,19 @@ class HomeViewModel @Inject constructor(
             )
 
             is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(postId = event.postId, typeActive = event.typeActive)
+            is HomeEvent.UserSelected -> onUserSelected(userId = event.userId)
         }
     }
 
     private fun sendOpenPostCommentsEffect(postId: String, typeActive: Boolean) {
         viewModelScope.launch {
             emitEffect(HomeEffect.OpenComments(postId = postId, typeActive = typeActive))
+        }
+    }
+
+    private fun onUserSelected(userId: String) {
+        viewModelScope.launch {
+            emitEffect(HomeEffect.NavigateToUserProfile(userId = userId))
         }
     }
 

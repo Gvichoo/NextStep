@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface GetUserInfoUseCase {
-    suspend operator fun invoke(userId: String? = null): Flow<Resource<User>>
+    suspend operator fun invoke(userId: String): Flow<Resource<User>>
 }
 
 class GetUserInfoUseCaseImpl @Inject constructor(
     private val userRepository: UserRepository
 ): GetUserInfoUseCase {
-    override suspend fun invoke(userId: String?): Flow<Resource<User>> {
+    override suspend fun invoke(userId: String): Flow<Resource<User>> {
         return userRepository.getUserInfo(userId = userId)
     }
 }

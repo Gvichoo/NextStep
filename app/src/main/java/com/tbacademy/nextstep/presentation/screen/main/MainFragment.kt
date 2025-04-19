@@ -22,7 +22,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
 
-        // Add this to prevent error when reselecting the same item
+        // Add this to prevent error when reelecting the same item
         bottomNavigationView.setOnItemSelectedListener { item ->
             if (item.itemId != bottomNavigationView.selectedItemId) {
                 NavigationUI.onNavDestinationSelected(item, navController)

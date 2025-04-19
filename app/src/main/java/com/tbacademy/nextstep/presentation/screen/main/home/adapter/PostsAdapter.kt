@@ -59,7 +59,8 @@ class PostsAdapter(
     private val updateUserReaction: (postId: String, reactionType: PostReactionType?) -> Unit,
     private val reactionBtnHold: (postId: String, visible: Boolean) -> Unit,
     private val commentsClicked: (postId: String) -> Unit,
-    private val commentsIconClicked: (postId: String) -> Unit
+    private val commentsIconClicked: (postId: String) -> Unit,
+    private val userClicked: (userId: String) -> Unit,
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     companion object {
@@ -128,6 +129,16 @@ class PostsAdapter(
 
                 btnComment.setOnClickListener {
                     commentsIconClicked(post.id)
+                }
+
+                // User
+
+                ivProfile.setOnClickListener {
+                    userClicked(post.authorId)
+                }
+
+                tvAuthor.setOnClickListener {
+                    userClicked(post.authorId)
                 }
             }
         }

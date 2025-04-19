@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".presentation.screen.main.profile.ProfileFragment">
 
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:background="@null"
+        app:layout_constraintTop_toTopOf="@id/ivProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/btn_vertical_padding" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfile"
         android:layout_width="150dp"
@@ -29,6 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/ivProfile" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_md"
@@ -36,5 +47,22 @@
         app:layout_constraintEnd_toEndOf="@id/ivProfile"
         app:layout_constraintStart_toStartOf="@id/ivProfile"
         app:layout_constraintTop_toBottomOf="@id/tvUsername" />
+
+    <ProgressBar
+        android:id="@+id/pbProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupProfileContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btnBack,ivProfile,tvUsername,btnFollow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

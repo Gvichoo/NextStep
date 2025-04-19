@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentHomeBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
+import com.tbacademy.nextstep.presentation.screen.main.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.CommentsSheetFragment
 import com.tbacademy.nextstep.presentation.screen.main.home.effect.HomeEffect
@@ -45,6 +49,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     event = HomeEvent.OpenPostComments(
                         postId = postId,
                         typeActive = true
+                    )
+                )
+            },
+            userClicked = { userId ->
+                homeViewModel.onEvent(
+                    event = HomeEvent.UserSelected(
+                        userId = userId
                     )
                 )
             }
@@ -86,6 +97,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     postId = effect.postId,
                     typeActive = effect.typeActive
                 )
+                is HomeEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
             }
         }
     }
@@ -97,6 +109,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             putBoolean("typeActive", typeActive)
         }
         commentsSheet.show(childFragmentManager, "CommentsSheet")
+    }
+
+    private fun navigateToProfile(userId: String) {
+        val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
+            userId = userId
+        )
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
 
     private fun setPostsAdapter() {

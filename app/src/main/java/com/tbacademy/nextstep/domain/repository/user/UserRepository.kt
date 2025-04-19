@@ -5,5 +5,5 @@ import com.tbacademy.nextstep.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    fun getUserInfo(userId: String? = null): Flow<Resource<User>>
+    fun getUserInfo(userId: String): Flow<Resource<User>>
 }

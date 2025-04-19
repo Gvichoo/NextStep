@@ -16,20 +16,14 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseAuth: FirebaseAuth
 ) : UserRepository {
-    override fun getUserInfo(userId: String?): Flow<Resource<User>> {
+    override fun getUserInfo(userId: String): Flow<Resource<User>> {
         return flow {
-
-            val uid = userId ?: firebaseAuth.uid
-            if (uid == null) {
-                emit(Resource.Error(error = ApiError.NotFound))
-                return@flow
-            }
+            emit(Resource.Loading(loading = true))
 
             try {
                 val userSnapshot = firestore.collection(USER_COLLECTION_KEY)
-                    .document(uid)
+                    .document(userId)
                     .get()
                     .await()
                 val userDto = userSnapshot.toObject(UserDto::class.java)
@@ -41,10 +35,13 @@ class UserRepositoryImpl @Inject constructor(
                 }
             } catch (e: Exception) {
                 emit(Resource.Error(e.toApiError()))
+            } finally {
+                emit(Resource.Loading(loading = false))
             }
         }
     }
 
     private companion object {
         const val USER_COLLECTION_KEY = "users"
-    }}
+    }
+}

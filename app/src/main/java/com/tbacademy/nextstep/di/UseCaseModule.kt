@@ -1,5 +1,7 @@
 package com.tbacademy.nextstep.di
 
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
@@ -142,4 +144,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetUserInfoUseCase(impl: GetUserInfoUseCaseImpl): GetUserInfoUseCase
+
+    @Singleton
+    @Binds
+    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
 }
