@@ -6,6 +6,8 @@ import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -121,14 +123,12 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-
     fun bindValidateMilestoneUseCase(impl: ValidateMilestoneUseCaseImpl): ValidateMilestoneUseCase
 
     @Singleton
     @Binds
     fun bindDeleteReactionUseCase(impl: DeleteReactionUseCaseImpl): DeleteReactionUseCase
 
-  
     @Singleton
     @Binds
     fun bindUpdateReactionUseCase(impl: UpdateReactionUseCaseImpl): UpdateReactionUseCase
@@ -148,4 +148,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
+
+    @Singleton
+    @Binds
+    fun bindCreateFollowUseCase(impl: CreateFollowUseCaseImpl): CreateFollowUseCase
 }
