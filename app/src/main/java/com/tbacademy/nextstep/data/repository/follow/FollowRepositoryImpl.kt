@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.repository.follow
 
+import android.content.res.Resources.NotFoundException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toDomain
@@ -38,8 +39,26 @@ class FollowRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteFollow(followedId: String, followType: FollowType): Flow<Resource<Unit>> {
+        return firebaseHelper.withUserIdFlow { userId ->
+            val query = firestore.collection(FOLLOW_COLLECTION_KEY)
+                .whereEqualTo(FIELD_FOLLOWER_ID, userId)
+                .whereEqualTo(FIELD_FOLLOWED_ID, followedId)
+                .whereEqualTo(FIELD_FOLLOW_TYPE, followType.toDto().name)
+                .get()
+                .await()
+
+            val followDoc = query.documents.firstOrNull()?.reference ?: throw NotFoundException()
+            followDoc.delete().await()
+            Unit
+        }
+    }
+
 
     private companion object {
         const val FOLLOW_COLLECTION_KEY = "follows"
+        const val FIELD_FOLLOWER_ID = "followerId"
+        const val FIELD_FOLLOWED_ID = "followedId"
+        const val FIELD_FOLLOW_TYPE = "followType"
     }
 }

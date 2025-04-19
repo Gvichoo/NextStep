@@ -10,5 +10,7 @@ interface FollowRepository {
         followType: FollowType,
         followingId: String
     ): Flow<Resource<Follow>>
+
+    suspend fun deleteFollow(followedId: String, followType: FollowType): Flow<Resource<Unit>>
 }
 

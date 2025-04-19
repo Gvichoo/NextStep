@@ -52,6 +52,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
                 )
             },
+            followClicked = { postId ->
+                homeViewModel.onEvent(HomeEvent.ToggleFollowPost(postId = postId))
+            },
             userClicked = { userId ->
                 homeViewModel.onEvent(
                     event = HomeEvent.UserSelected(

@@ -1,8 +1,13 @@
 package com.tbacademy.nextstep.presentation.screen.main.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onError
+import com.tbacademy.nextstep.domain.model.Follow
+import com.tbacademy.nextstep.domain.model.FollowType
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
@@ -14,6 +19,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.effect.HomeEffect
 import com.tbacademy.nextstep.presentation.screen.main.home.event.HomeEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toDomain
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
+import com.tbacademy.nextstep.presentation.screen.main.home.model.FollowStatus
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
 import com.tbacademy.nextstep.presentation.screen.main.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +34,9 @@ class HomeViewModel @Inject constructor(
     private val getPostsUseCase: GetPostsUseCase,
     private val createReactionUseCase: CreateReactionUseCase,
     private val updateReactionUseCase: UpdateReactionUseCase,
-    private val deleteReactionUseCase: DeleteReactionUseCase
+    private val deleteReactionUseCase: DeleteReactionUseCase,
+    private val createFollowUseCase: CreateFollowUseCase,
+    private val deleteFollowUseCase: DeleteFollowUseCase
 ) : BaseViewModel<HomeState, HomeEvent, HomeEffect, Unit>(
     initialState = HomeState(),
     initialUiState = Unit
@@ -48,7 +56,13 @@ class HomeViewModel @Inject constructor(
                 visible = event.visible
             )
 
-            is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(postId = event.postId, typeActive = event.typeActive)
+            is HomeEvent.ToggleFollowPost -> toggleFollowPost(postId = event.postId)
+
+            is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(
+                postId = event.postId,
+                typeActive = event.typeActive
+            )
+
             is HomeEvent.UserSelected -> onUserSelected(userId = event.userId)
         }
     }
@@ -139,6 +153,48 @@ class HomeViewModel @Inject constructor(
                 } else post
             }
             updateState { copy(posts = updatedPosts) }
+        }
+    }
+
+    private fun toggleFollowPost(postId: String) {
+        val currentPosts = state.value.posts ?: return
+        val updatedPosts = currentPosts.map { post ->
+            if (post.id == postId) {
+                val newFollowState = if (post.isUserFollowing == FollowStatus.TO_FOLLOW) {
+                    createFollow(followedId = post.authorId)
+                    FollowStatus.FOLLOWED
+                } else {
+                    deleteFollow(followedId = post.authorId)
+                    FollowStatus.TO_FOLLOW
+                }
+                post.copy(isUserFollowing = newFollowState)
+            } else {
+                post
+            }
+        }
+
+        updateState { copy(posts = updatedPosts) }
+    }
+
+    private fun createFollow(followedId: String) {
+        viewModelScope.launch {
+            createFollowUseCase(
+                followingId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_CREATE", "$resource")
+            }
+        }
+    }
+
+    private fun deleteFollow(followedId: String) {
+        viewModelScope.launch {
+            deleteFollowUseCase(
+                followedId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_DELETE", "$resource")
+            }
         }
     }
 

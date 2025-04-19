@@ -18,6 +18,7 @@ import com.tbacademy.nextstep.presentation.common.extension.animatePopupIn
 import com.tbacademy.nextstep.presentation.common.extension.animateSelected
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.COMMENT_COUNT_CHANGED_KEY
+import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.FOLLOW_STATUS_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.POPUP_VISIBILITY_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_COUNT_CHANGED_KEY
@@ -50,6 +51,9 @@ class PostsDiffUtil : DiffUtil.ItemCallback<PostPresentation>() {
         if (oldItem.commentCount != newItem.commentCount) {
             diffBundle.putBoolean(COMMENT_COUNT_CHANGED_KEY, true)
         }
+        if (oldItem.isUserFollowing != newItem.isUserFollowing) {
+            diffBundle.putBoolean(FOLLOW_STATUS_CHANGED_KEY, true)
+        }
 
         return if (diffBundle.isEmpty) null else diffBundle
     }
@@ -60,6 +64,7 @@ class PostsAdapter(
     private val reactionBtnHold: (postId: String, visible: Boolean) -> Unit,
     private val commentsClicked: (postId: String) -> Unit,
     private val commentsIconClicked: (postId: String) -> Unit,
+    private val followClicked: (postId: String) -> Unit,
     private val userClicked: (userId: String) -> Unit,
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
@@ -68,6 +73,7 @@ class PostsAdapter(
         const val REACTION_COUNT_CHANGED_KEY = "reaction_count_changed"
         const val POPUP_VISIBILITY_CHANGED_KEY = "popup_visibility_changed"
         const val COMMENT_COUNT_CHANGED_KEY = "comment_count_changed"
+        const val FOLLOW_STATUS_CHANGED_KEY = "follow_status_changed"
 
         val REACTION_OPTIONS = PostReactionType.entries.map {
             ReactionOption(type = it)
@@ -120,6 +126,11 @@ class PostsAdapter(
                     else
                         null
                     updateUserReaction(post.id, selectedReaction)
+                }
+
+                // Follow
+                btnFollow.setOnClickListener {
+                    followClicked(post.id)
                 }
 
                 // Comments
@@ -183,6 +194,10 @@ class PostsAdapter(
                     binding.apply {
                         tvCommentsCount.text = post.commentCount.toString()
                     }
+                }
+
+                if (getBoolean(FOLLOW_STATUS_CHANGED_KEY)) {
+                    binding.btnFollow.text = itemView.context.getString(post.isUserFollowing.textRes)
                 }
             }
         }

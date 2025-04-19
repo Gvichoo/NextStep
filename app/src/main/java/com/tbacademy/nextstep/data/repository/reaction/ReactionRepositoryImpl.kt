@@ -33,6 +33,7 @@ class ReactionRepositoryImpl @Inject constructor(
             reactionRef.set(reactionDto).await()
 
             true
+
         }
     }
 

@@ -8,6 +8,8 @@ import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -152,4 +154,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindCreateFollowUseCase(impl: CreateFollowUseCaseImpl): CreateFollowUseCase
+
+    @Singleton
+    @Binds
+    fun bindDeleteFollowUseCase(impl: DeleteFollowUseCaseImpl): DeleteFollowUseCase
 }
