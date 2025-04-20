@@ -46,7 +46,7 @@ class HomeViewModel @Inject constructor(
 
     override fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.FetchGlobalPosts -> getGlobalPosts()
+            is HomeEvent.FetchPosts -> fetchPosts(feedState = state.value.feedState)
             is HomeEvent.HandleReactToPost -> reactToPost(
                 id = event.postId,
                 newReaction = event.reactionType
@@ -78,11 +78,14 @@ class HomeViewModel @Inject constructor(
     private fun handleFeedStateChanged(feedState: FeedState) {
         if (state.value.feedState != feedState) {
             updateState { this.copy(feedState = feedState) }
+            fetchPosts(feedState = feedState)
+        }
+    }
 
-            when (feedState) {
-                FeedState.GLOBAL -> getGlobalPosts()
-                FeedState.FOLLOWED -> getFollowedPosts()
-            }
+    private fun fetchPosts(feedState: FeedState) {
+        when (feedState) {
+            FeedState.GLOBAL -> getGlobalPosts()
+            FeedState.FOLLOWED -> getFollowedPosts()
         }
     }
 
@@ -189,28 +192,6 @@ class HomeViewModel @Inject constructor(
         updateState { copy(posts = updatedPosts) }
     }
 
-    private fun createFollow(followedId: String) {
-        viewModelScope.launch {
-            createFollowUseCase(
-                followingId = followedId,
-                followType = FollowType.GOAL
-            ).collectLatest { resource ->
-                Log.d("FOLLOW_TEST_CREATE", "$resource")
-            }
-        }
-    }
-
-    private fun deleteFollow(followedId: String) {
-        viewModelScope.launch {
-            deleteFollowUseCase(
-                followedId = followedId,
-                followType = FollowType.GOAL
-            ).collectLatest { resource ->
-                Log.d("FOLLOW_TEST_DELETE", "$resource")
-            }
-        }
-    }
-
     private fun debounceCreateReaction(postId: String, reactionType: PostReactionType) {
         debounceJobs[postId]?.cancel()
         debounceJobs[postId] = viewModelScope.launch {
@@ -299,6 +280,28 @@ class HomeViewModel @Inject constructor(
                 resource.onError { error ->
                     emitEffect(effect = HomeEffect.ShowError(errorRes = error.toMessageRes()))
                 }
+            }
+        }
+    }
+
+    private fun createFollow(followedId: String) {
+        viewModelScope.launch {
+            createFollowUseCase(
+                followingId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_CREATE", "$resource")
+            }
+        }
+    }
+
+    private fun deleteFollow(followedId: String) {
+        viewModelScope.launch {
+            deleteFollowUseCase(
+                followedId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_DELETE", "$resource")
             }
         }
     }

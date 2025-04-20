@@ -118,7 +118,7 @@ class PostsAdapter(
                     btnFollow.text = itemView.context.getString(R.string.followed)
                 }
 
-                btnFollow.isVisible = post.isUserFollowing != FollowType.USER
+                btnFollow.isVisible = post.isUserFollowing != FollowType.USER && !post.isOwnPost
 
                 // Reactions Pop Up
                 btnReaction.setOnLongClickListener {
@@ -214,7 +214,7 @@ class PostsAdapter(
                         } else {
                             btnFollow.text = itemView.context.getString(R.string.followed)
                         }
-                        btnFollow.isVisible = post.isUserFollowing != FollowType.USER
+                        btnFollow.isVisible = post.isUserFollowing != FollowType.USER && !post.isOwnPost
                     }
 
                 }
