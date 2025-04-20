@@ -4,7 +4,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionTy
 import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
 
 sealed interface HomeEvent {
-    data object FetchGlobalPosts : HomeEvent
+    data object FetchPosts : HomeEvent
     data class HandleReactToPost(val postId: String, val reactionType: PostReactionType?) : HomeEvent
     data class ToggleReactionsSelector(val postId: String, val visible: Boolean) : HomeEvent
     data class ToggleFollowGoal(val postId: String): HomeEvent

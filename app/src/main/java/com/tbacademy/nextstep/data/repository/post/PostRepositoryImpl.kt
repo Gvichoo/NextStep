@@ -37,7 +37,7 @@ class PostRepositoryImpl @Inject constructor(
             val (followedGoals, followedUsers) = getUserFollows(userId)
             val reactions = getUserReactions(userId, postIds)
 
-            mapPostDtos(postDtos, reactions, followedGoals, followedUsers)
+            mapPostDtos(postDtos, reactions, followedGoals, followedUsers, userId)
         }
     }
 
@@ -69,7 +69,7 @@ class PostRepositoryImpl @Inject constructor(
             val postIds = filteredPosts.map { it.id }
             val reactions = getUserReactions(userId, postIds)
 
-            mapPostDtos(filteredPosts, reactions, followedGoals, followedUsers)
+            mapPostDtos(filteredPosts, reactions, followedGoals, followedUsers, userId)
         }
     }
 
@@ -119,7 +119,8 @@ class PostRepositoryImpl @Inject constructor(
         postDtos: List<PostDto>,
         reactions: Map<String, ReactionType>,
         followedGoals: Set<String>,
-        followedUsers: Set<String>
+        followedUsers: Set<String>,
+        userId: String
     ): List<Post> {
         return postDtos.map { postDto ->
             val userReaction = reactions[postDto.id]
@@ -128,8 +129,13 @@ class PostRepositoryImpl @Inject constructor(
                 followedUsers.contains(postDto.authorId) -> FollowType.USER
                 else -> null
             }
+            val isOwnPost = postDto.authorId == userId
 
-            postDto.toDomain().copy(userReaction = userReaction, isUserFollowing = isFollowed)
+            postDto.toDomain().copy(
+                userReaction = userReaction,
+                isUserFollowing = isFollowed,
+                isOwnPost = isOwnPost
+            )
         }
     }
 

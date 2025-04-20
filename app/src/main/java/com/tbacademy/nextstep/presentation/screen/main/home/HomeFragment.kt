@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun start() {
-        homeViewModel.onEvent(HomeEvent.FetchGlobalPosts)
+        homeViewModel.onEvent(HomeEvent.FetchPosts)
         setPostsAdapter()
     }
 

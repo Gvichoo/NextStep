@@ -17,6 +17,7 @@ data class Post(
     val reactionDisappointedCount: Int = 0,
     val userReaction: ReactionType? = null,
     val isUserFollowing: FollowType? = null,
+    val isOwnPost: Boolean = false,
     val commentCount: Int,
     val type: String,
     val imageUrl: String? = null,

@@ -24,6 +24,7 @@ fun Post.toPresentation(): PostPresentation {
         imageUrl = imageUrl,
         createdAt = createdAt.toTimeAgo(),
         isUserFollowing = isUserFollowing,
+        isOwnPost = isOwnPost,
         userReaction = userReaction?.toPresentation(),
     )
 }

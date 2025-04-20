@@ -21,5 +21,6 @@ data class PostPresentation(
     val createdAt: String,
     val userReaction: PostReactionType? = null,
     val isUserFollowing: FollowType? = null,
+    val isOwnPost: Boolean,
     val isReactionsPopUpVisible: Boolean = false,
 )
