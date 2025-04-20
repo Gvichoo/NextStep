@@ -6,6 +6,7 @@ import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
 import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
@@ -25,7 +26,8 @@ class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
     private val createFollowUseCase: CreateFollowUseCase,
-    private val deleteFollowUseCase: DeleteFollowUseCase
+    private val deleteFollowUseCase: DeleteFollowUseCase,
+    private val checkIsUserFollowedUseCase: CheckIsUserFollowedUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -42,11 +44,26 @@ class ProfileViewModel @Inject constructor(
             getAuthUserIdUseCase().collectLatest { resource ->
                 resource
                     .onSuccess { authId ->
+                        if (userId != null) {
+                            updateState { this.copy(withBottomNav = false) }
+                        }
+
                         val resolvedUserId = userId ?: authId
                         val isOwnProfile = resolvedUserId == authId
+
                         updateState { this.copy(isOwnProfile = isOwnProfile) }
 
                         getUserInfo(userId = resolvedUserId)
+
+                        if (!isOwnProfile) {
+                            checkIsUserFollowedUseCase(followedId = resolvedUserId).collectLatest { resource ->
+                                resource.onSuccess { isFollowed ->
+                                    if (isFollowed) {
+                                        updateState { this.copy(isUserFollowed = FollowStatus.FOLLOWED) }
+                                    }
+                                }
+                            }
+                        }
                     }
             }
         }
@@ -60,7 +77,6 @@ class ProfileViewModel @Inject constructor(
             deleteFollow()
             FollowStatus.TO_FOLLOW
         }
-        updateState { copy(isUserFollowed = newFollowState) }
     }
 
 
@@ -71,7 +87,9 @@ class ProfileViewModel @Inject constructor(
                     followingId = it.uid,
                     followType = FollowType.USER
                 ).collectLatest { resource ->
-                    Log.d("FOLLOW_TEST_CREATE", "$resource")
+                    resource.onSuccess {
+                        updateState { copy(isUserFollowed = FollowStatus.FOLLOWED) }
+                    }
                 }
             }
         }
@@ -84,7 +102,9 @@ class ProfileViewModel @Inject constructor(
                     followedId = it.uid,
                     followType = FollowType.USER
                 ).collectLatest { resource ->
-                    Log.d("FOLLOW_TEST_DELETE", "$resource")
+                    resource.onSuccess {
+                        updateState { copy(isUserFollowed = FollowStatus.TO_FOLLOW) }
+                    }
                 }
             }
         }

@@ -39,6 +39,20 @@ class FollowRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun checkIsUserFollowed(followedId: String): Flow<Resource<Boolean>> {
+        return firebaseHelper.withUserIdFlow { userId ->
+            val snapshot = firestore.collection(FOLLOW_COLLECTION_KEY)
+                .whereEqualTo(FIELD_FOLLOWER_ID, userId)
+                .whereEqualTo(FIELD_FOLLOWED_ID, followedId)
+                .whereEqualTo(FIELD_FOLLOW_TYPE, FollowType.USER.name)
+                .limit(1)
+                .get()
+                .await()
+
+            !snapshot.isEmpty
+        }
+    }
+
     override suspend fun deleteFollow(followedId: String, followType: FollowType): Flow<Resource<Unit>> {
         return firebaseHelper.withUserIdFlow { userId ->
             val query = firestore.collection(FOLLOW_COLLECTION_KEY)

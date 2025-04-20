@@ -6,12 +6,16 @@ import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUerFollowedUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -111,6 +115,11 @@ interface UseCaseModule {
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
 
+
+    @Singleton
+    @Binds
+    fun bindGetFollowedPostsUseCase(impl: GetFollowedPostsUseCaseImpl): GetFollowedPostsUseCase
+
     @Singleton
     @Binds
     fun bindValidateMetricTargetUseCase(impl: ValidateMetricTargetUseCaseImpl): ValidateMetricTargetUseCase
@@ -158,4 +167,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindDeleteFollowUseCase(impl: DeleteFollowUseCaseImpl): DeleteFollowUseCase
+
+    @Singleton
+    @Binds
+    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
 }

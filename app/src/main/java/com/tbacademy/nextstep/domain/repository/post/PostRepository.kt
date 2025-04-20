@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
     suspend fun getGlobalPosts(): Flow<Resource<List<Post>>>
+    suspend fun getFollowedPosts(): Flow<Resource<List<Post>>>
 }

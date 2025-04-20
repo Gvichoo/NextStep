@@ -1,41 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.screen.main.home.HomeFragment">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvHeader"
-        android:layout_width="wrap_content"
+    <!-- Top collapsing container -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"
-        android:textSize="@dimen/title_regular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/distance_md"
         android:paddingHorizontal="@dimen/pd_screen_horizontal"
+        android:backgroundTint="@color/md_theme_surface"
+        android:fitsSystemWindows="true"
+        app:elevation="0dp"
+        >
+
+        <!-- Post Type Switcher -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/postTypeToggleGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_gravity="start"
+            app:singleSelection="true"
+            app:checkedButton="@+id/btnGlobal"
+            app:selectionRequired="true"
+            app:layout_scrollFlags="scroll"
+
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGlobal"
+                style="@style/Widget.MyApp.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Global" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFollowed"
+                style="@style/Widget.MyApp.Button.Segmented"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Following" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- RecyclerView with scroll behavior -->
+
+    <!-- Progress Bar -->
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPosts"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:listitem="@layout/item_post"
-        app:layout_constraintTop_toBottomOf="@id/tvHeader"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/pd_screen_horizontal"
+        android:paddingBottom="@dimen/distance_md"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_post" />
 
     <ProgressBar
         android:id="@+id/pbPosts"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/rvPosts"
-        app:layout_constraintBottom_toBottomOf="@id/rvPosts"
-        app:layout_constraintStart_toStartOf="@id/rvPosts"
-        app:layout_constraintEnd_toEndOf="@id/rvPosts"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

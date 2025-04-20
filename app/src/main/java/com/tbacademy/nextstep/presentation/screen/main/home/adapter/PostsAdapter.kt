@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.ItemPostBinding
+import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.presentation.common.extension.animateFadeOut
 import com.tbacademy.nextstep.presentation.common.extension.animatePopIn
 import com.tbacademy.nextstep.presentation.common.extension.animatePopupIn
@@ -98,7 +99,8 @@ class PostsAdapter(
             currentPost = post
             binding.apply {
                 rvReaction.hasFixedSize()
-                rvReaction.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                rvReaction.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 rvReaction.adapter = reactionPickerAdapter
 
                 tvAuthor.text = post.authorUsername
@@ -109,7 +111,14 @@ class PostsAdapter(
                 tvCommentsCount.text = post.commentCount.toString()
 
                 setReactions(post = post)
-                binding.btnFollow.text = itemView.context.getString(post.isUserFollowing.textRes)
+
+                if (post.isUserFollowing == null) {
+                    btnFollow.text = itemView.context.getString(R.string.follow)
+                } else {
+                    btnFollow.text = itemView.context.getString(R.string.followed)
+                }
+
+                btnFollow.isVisible = post.isUserFollowing != FollowType.USER
 
                 // Reactions Pop Up
                 btnReaction.setOnLongClickListener {
@@ -198,7 +207,16 @@ class PostsAdapter(
                 }
 
                 if (getBoolean(FOLLOW_STATUS_CHANGED_KEY)) {
-                    binding.btnFollow.text = itemView.context.getString(post.isUserFollowing.textRes)
+
+                    binding.apply {
+                        if (post.isUserFollowing == null) {
+                            btnFollow.text = itemView.context.getString(R.string.follow)
+                        } else {
+                            btnFollow.text = itemView.context.getString(R.string.followed)
+                        }
+                        btnFollow.isVisible = post.isUserFollowing != FollowType.USER
+                    }
+
                 }
             }
         }

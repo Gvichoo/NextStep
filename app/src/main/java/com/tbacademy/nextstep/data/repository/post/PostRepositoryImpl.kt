@@ -41,6 +41,38 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getFollowedPosts(): Flow<Resource<List<Post>>> {
+        return firebaseHelper.withUserIdFlow { userId ->
+
+            // Get followed goals and users
+            val (followedGoals, followedUsers) = getUserFollows(userId)
+
+            if (followedGoals.isEmpty() && followedUsers.isEmpty()) {
+                return@withUserIdFlow emptyList<Post>()
+            }
+
+            // Query posts where authorId or goalId matches followed IDs
+            val postQuery = firestore.collection(POSTS_COLLECTION_PATH)
+                .orderBy(SORT_CREATED_AT, Query.Direction.DESCENDING)
+                .get()
+                .await()
+
+            val filteredPosts = postQuery.documents.mapNotNull { doc ->
+                val postDto = doc.toObject(PostDto::class.java)?.copy(id = doc.id)
+                if (postDto != null &&
+                    (followedUsers.contains(postDto.authorId) || followedGoals.contains(postDto.goalId))
+                ) {
+                    postDto
+                } else null
+            }
+
+            val postIds = filteredPosts.map { it.id }
+            val reactions = getUserReactions(userId, postIds)
+
+            mapPostDtos(filteredPosts, reactions, followedGoals, followedUsers)
+        }
+    }
+
 
     private suspend fun getUserFollows(userId: String): Pair<Set<String>, Set<String>> {
         val snapshot = firestore.collection("follows")
@@ -59,7 +91,6 @@ class PostRepositoryImpl @Inject constructor(
                 "USER" -> id?.let { users.add(it) }
             }
         }
-
         return goals to users
     }
 
@@ -101,7 +132,6 @@ class PostRepositoryImpl @Inject constructor(
             postDto.toDomain().copy(userReaction = userReaction, isUserFollowing = isFollowed)
         }
     }
-
 
     companion object {
         const val POSTS_COLLECTION_PATH = "posts"

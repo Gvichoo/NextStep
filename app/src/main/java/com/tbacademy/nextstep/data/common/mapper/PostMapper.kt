@@ -18,7 +18,7 @@ fun PostDto.toDomain(): Post {
         reactionHeartCount = reactionHeartCount,
         reactionCookieCount = reactionCookieCount,
         reactionCheerCount = reactionCheerCount,
-        reactionDissapointedCount = reactionDisappointmentCount,
+        reactionDisappointedCount = reactionDisappointmentCount,
         imageUrl = imageUrl,
         createdAt = createdAt.toDate()
     )

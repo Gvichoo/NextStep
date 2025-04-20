@@ -11,6 +11,8 @@ interface FollowRepository {
         followingId: String
     ): Flow<Resource<Follow>>
 
+    suspend fun checkIsUserFollowed(followedId: String): Flow<Resource<Boolean>>
+
     suspend fun deleteFollow(followedId: String, followType: FollowType): Flow<Resource<Unit>>
 }
 

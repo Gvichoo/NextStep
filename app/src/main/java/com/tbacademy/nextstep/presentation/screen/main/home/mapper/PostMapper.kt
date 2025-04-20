@@ -18,13 +18,12 @@ fun Post.toPresentation(): PostPresentation {
         reactionHeartCount = reactionHeartCount,
         reactionCookieCount = reactionCookieCount,
         reactionCheerCount = reactionCheerCount,
-        reactionDisappointmentCount = reactionDissapointedCount,
+        reactionDisappointmentCount = reactionDisappointedCount,
         commentCount = commentCount,
         type = type,
         imageUrl = imageUrl,
         createdAt = createdAt.toTimeAgo(),
-        isUserFollowing = if (isUserFollowing != null) FollowStatus.FOLLOWED else FollowStatus.TO_FOLLOW,
-        followType = isUserFollowing,
+        isUserFollowing = isUserFollowing,
         userReaction = userReaction?.toPresentation(),
     )
 }
