@@ -5,5 +5,6 @@ import com.tbacademy.nextstep.domain.model.Post
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
-    suspend fun getPosts(): Flow<Resource<List<Post>>>
+    suspend fun getGlobalPosts(): Flow<Resource<List<Post>>>
+    suspend fun getFollowedPosts(): Flow<Resource<List<Post>>>
 }

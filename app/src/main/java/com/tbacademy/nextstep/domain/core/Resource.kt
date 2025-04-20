@@ -38,3 +38,10 @@ inline fun <T> Resource<T>.onError(action: (ApiError) -> Unit): Resource<T> {
     }
     return this
 }
+
+inline fun <T> Resource<T>.onSuccess(action: (T) -> Unit): Resource<T> {
+    if (this is Resource.Success) {
+        action(data)
+    }
+    return this
+}

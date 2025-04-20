@@ -1,8 +1,13 @@
 package com.tbacademy.nextstep.presentation.screen.main.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onError
+import com.tbacademy.nextstep.domain.model.FollowType
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
@@ -15,6 +20,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.event.HomeEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toDomain
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
 import com.tbacademy.nextstep.presentation.screen.main.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,9 +32,12 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getPostsUseCase: GetPostsUseCase,
+    private val getFollowedPostsUseCase: GetFollowedPostsUseCase,
     private val createReactionUseCase: CreateReactionUseCase,
     private val updateReactionUseCase: UpdateReactionUseCase,
-    private val deleteReactionUseCase: DeleteReactionUseCase
+    private val deleteReactionUseCase: DeleteReactionUseCase,
+    private val createFollowUseCase: CreateFollowUseCase,
+    private val deleteFollowUseCase: DeleteFollowUseCase
 ) : BaseViewModel<HomeState, HomeEvent, HomeEffect, Unit>(
     initialState = HomeState(),
     initialUiState = Unit
@@ -48,13 +57,38 @@ class HomeViewModel @Inject constructor(
                 visible = event.visible
             )
 
-            is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(postId = event.postId, typeActive = event.typeActive)
+            is HomeEvent.ToggleFollowGoal -> toggleFollowPost(postId = event.postId)
+
+            is HomeEvent.OpenPostComments -> sendOpenPostCommentsEffect(
+                postId = event.postId,
+                typeActive = event.typeActive
+            )
+
+            is HomeEvent.UserSelected -> onUserSelected(userId = event.userId)
+            is HomeEvent.FeedStateSelected -> handleFeedStateChanged(event.feedState)
         }
     }
 
     private fun sendOpenPostCommentsEffect(postId: String, typeActive: Boolean) {
         viewModelScope.launch {
             emitEffect(HomeEffect.OpenComments(postId = postId, typeActive = typeActive))
+        }
+    }
+
+    private fun handleFeedStateChanged(feedState: FeedState) {
+        if (state.value.feedState != feedState) {
+            updateState { this.copy(feedState = feedState) }
+
+            when (feedState) {
+                FeedState.GLOBAL -> getGlobalPosts()
+                FeedState.FOLLOWED -> getFollowedPosts()
+            }
+        }
+    }
+
+    private fun onUserSelected(userId: String) {
+        viewModelScope.launch {
+            emitEffect(HomeEffect.NavigateToUserProfile(userId = userId))
         }
     }
 
@@ -135,6 +169,48 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private fun toggleFollowPost(postId: String) {
+        val currentPosts = state.value.posts ?: return
+        val updatedPosts = currentPosts.map { post ->
+            if (post.id == postId) {
+                val newFollowState = if (post.isUserFollowing == null) {
+                    createFollow(followedId = post.goalId)
+                    FollowType.GOAL
+                } else {
+                    deleteFollow(followedId = post.goalId)
+                    null
+                }
+                post.copy(isUserFollowing = newFollowState)
+            } else {
+                post
+            }
+        }
+
+        updateState { copy(posts = updatedPosts) }
+    }
+
+    private fun createFollow(followedId: String) {
+        viewModelScope.launch {
+            createFollowUseCase(
+                followingId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_CREATE", "$resource")
+            }
+        }
+    }
+
+    private fun deleteFollow(followedId: String) {
+        viewModelScope.launch {
+            deleteFollowUseCase(
+                followedId = followedId,
+                followType = FollowType.GOAL
+            ).collectLatest { resource ->
+                Log.d("FOLLOW_TEST_DELETE", "$resource")
+            }
+        }
+    }
+
     private fun debounceCreateReaction(postId: String, reactionType: PostReactionType) {
         debounceJobs[postId]?.cancel()
         debounceJobs[postId] = viewModelScope.launch {
@@ -169,7 +245,23 @@ class HomeViewModel @Inject constructor(
             getPostsUseCase().collectLatest { resource ->
                 when (resource) {
                     is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
-                    is Resource.Success -> updateState { this.copy(posts = resource.data.map { it.toPresentation() }) }
+                    is Resource.Success -> updateState {
+                        Log.d("FUNCTION_SJOA_SUCCESS", "${resource.data}")
+                        this.copy(posts = resource.data.map { it.toPresentation() }) }
+                    is Resource.Error -> updateState { this.copy(error = resource.error) }
+                }
+            }
+        }
+    }
+
+    private fun getFollowedPosts() {
+        viewModelScope.launch {
+            getFollowedPostsUseCase().collectLatest { resource ->
+                when (resource) {
+                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
+                    is Resource.Success -> updateState {
+                        this.copy(posts = resource.data.map { it.toPresentation() })
+                    }
                     is Resource.Error -> updateState { this.copy(error = resource.error) }
                 }
             }

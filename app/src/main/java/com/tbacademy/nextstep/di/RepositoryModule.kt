@@ -1,18 +1,24 @@
 package com.tbacademy.nextstep.di
 
+import com.tbacademy.nextstep.data.repository.auth.AuthRepositoryImpl
 import com.tbacademy.nextstep.data.repository.comment.CommentRepositoryImpl
+import com.tbacademy.nextstep.data.repository.follow.FollowRepositoryImpl
 import com.tbacademy.nextstep.data.repository.goal.GoalRepositoryImpl
 import com.tbacademy.nextstep.data.repository.login.LoginRepositoryImpl
 import com.tbacademy.nextstep.data.repository.post.PostRepositoryImpl
 import com.tbacademy.nextstep.data.repository.reaction.ReactionRepositoryImpl
 import com.tbacademy.nextstep.data.repository.register.RegisterRepositoryImpl
+import com.tbacademy.nextstep.data.repository.user.UserRepositoryImpl
 import com.tbacademy.nextstep.data.repository.userSession.UserSessionManagerRepositoryImpl
+import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
 import com.tbacademy.nextstep.domain.repository.comment.CommentRepository
+import com.tbacademy.nextstep.domain.repository.follow.FollowRepository
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
 import com.tbacademy.nextstep.domain.repository.reaction.ReactionRepository
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
+import com.tbacademy.nextstep.domain.repository.user.UserRepository
 import com.tbacademy.nextstep.domain.repository.userSession.UserSessionManagerRepository
 import dagger.Binds
 import dagger.Module
@@ -51,4 +57,16 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindCommentRepository(impl: CommentRepositoryImpl): CommentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFollowRepository(impl: FollowRepositoryImpl): FollowRepository
 }

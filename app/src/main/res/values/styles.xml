@@ -18,4 +18,11 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
+
+    <style name="Widget.MyApp.Button.Segmented" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="shapeAppearance">@style/RoundedImageShape</item>
+        <item name="strokeColor">@color/segmented_button_stroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="backgroundTint">@color/segmented_button_bg</item>
+    </style>
 </resources>

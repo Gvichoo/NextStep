@@ -114,8 +114,8 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
         collectLatest(flow = commentsViewModel.state) { state ->
             Log.d("COMMENTS_STATE", "$state")
             binding.apply {
-                ivNoComments.isVisible =
-                    state.comments.isNullOrEmpty() && !state.fetchLoading
+                ivNoComments.isVisible = state.comments != null && state.comments.isEmpty()
+                tvNoComments.isVisible = state.comments != null && state.comments.isEmpty()
                 pgComments.isVisible = state.fetchLoading
                 btnSend.isVisible = !state.uploadLoading
                 pbSend.isVisible = state.uploadLoading

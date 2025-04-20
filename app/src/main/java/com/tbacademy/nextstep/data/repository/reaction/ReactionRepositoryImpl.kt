@@ -33,6 +33,7 @@ class ReactionRepositoryImpl @Inject constructor(
             reactionRef.set(reactionDto).await()
 
             true
+
         }
     }
 
@@ -66,7 +67,7 @@ class ReactionRepositoryImpl @Inject constructor(
         return query.documents.firstOrNull()?.reference ?: throw NotFoundException()
     }
 
-    companion object {
+    private companion object {
         const val REACTION_COLLECTION_KEY = "reactions"
         const val REACTION_TYPE_FIELD = "type"
         const val POST_ID_FIELD = "postId"

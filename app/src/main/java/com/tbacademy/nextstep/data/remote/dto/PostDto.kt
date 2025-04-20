@@ -6,6 +6,7 @@ import java.util.Date
 data class PostDto(
     val id: String = "",
     val authorId: String = "",
+    val goalId: String = "",
     val authorUsername: String = "",
     val title: String = "",
     val description: String = "",

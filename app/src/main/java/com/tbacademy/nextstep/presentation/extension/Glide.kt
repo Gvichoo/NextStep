@@ -9,7 +9,7 @@ fun ImageView.loadImagesGlide(url: String, cornerRadius: Int = 0) {
     val request = Glide.with(this)
         .load(url)
         .error(R.drawable.ic_launcher_foreground)
-        .placeholder(R.drawable.ic_launcher_background)
+        .placeholder(R.drawable.img_placeholder)
     if (cornerRadius > 0) {
         request.transform(RoundedCorners(cornerRadius))
     }

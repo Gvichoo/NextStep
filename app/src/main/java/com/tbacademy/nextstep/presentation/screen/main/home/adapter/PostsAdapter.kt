@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.ItemPostBinding
+import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.presentation.common.extension.animateFadeOut
 import com.tbacademy.nextstep.presentation.common.extension.animatePopIn
 import com.tbacademy.nextstep.presentation.common.extension.animatePopupIn
 import com.tbacademy.nextstep.presentation.common.extension.animateSelected
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.COMMENT_COUNT_CHANGED_KEY
+import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.FOLLOW_STATUS_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.POPUP_VISIBILITY_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_COUNT_CHANGED_KEY
@@ -50,6 +52,9 @@ class PostsDiffUtil : DiffUtil.ItemCallback<PostPresentation>() {
         if (oldItem.commentCount != newItem.commentCount) {
             diffBundle.putBoolean(COMMENT_COUNT_CHANGED_KEY, true)
         }
+        if (oldItem.isUserFollowing != newItem.isUserFollowing) {
+            diffBundle.putBoolean(FOLLOW_STATUS_CHANGED_KEY, true)
+        }
 
         return if (diffBundle.isEmpty) null else diffBundle
     }
@@ -59,7 +64,9 @@ class PostsAdapter(
     private val updateUserReaction: (postId: String, reactionType: PostReactionType?) -> Unit,
     private val reactionBtnHold: (postId: String, visible: Boolean) -> Unit,
     private val commentsClicked: (postId: String) -> Unit,
-    private val commentsIconClicked: (postId: String) -> Unit
+    private val commentsIconClicked: (postId: String) -> Unit,
+    private val followClicked: (postId: String) -> Unit,
+    private val userClicked: (userId: String) -> Unit,
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     companion object {
@@ -67,6 +74,7 @@ class PostsAdapter(
         const val REACTION_COUNT_CHANGED_KEY = "reaction_count_changed"
         const val POPUP_VISIBILITY_CHANGED_KEY = "popup_visibility_changed"
         const val COMMENT_COUNT_CHANGED_KEY = "comment_count_changed"
+        const val FOLLOW_STATUS_CHANGED_KEY = "follow_status_changed"
 
         val REACTION_OPTIONS = PostReactionType.entries.map {
             ReactionOption(type = it)
@@ -91,7 +99,8 @@ class PostsAdapter(
             currentPost = post
             binding.apply {
                 rvReaction.hasFixedSize()
-                rvReaction.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                rvReaction.layoutManager =
+                    LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
                 rvReaction.adapter = reactionPickerAdapter
 
                 tvAuthor.text = post.authorUsername
@@ -102,6 +111,14 @@ class PostsAdapter(
                 tvCommentsCount.text = post.commentCount.toString()
 
                 setReactions(post = post)
+
+                if (post.isUserFollowing == null) {
+                    btnFollow.text = itemView.context.getString(R.string.follow)
+                } else {
+                    btnFollow.text = itemView.context.getString(R.string.followed)
+                }
+
+                btnFollow.isVisible = post.isUserFollowing != FollowType.USER
 
                 // Reactions Pop Up
                 btnReaction.setOnLongClickListener {
@@ -121,6 +138,11 @@ class PostsAdapter(
                     updateUserReaction(post.id, selectedReaction)
                 }
 
+                // Follow
+                btnFollow.setOnClickListener {
+                    followClicked(post.id)
+                }
+
                 // Comments
                 tvComments.setOnClickListener {
                     commentsClicked(post.id)
@@ -128,6 +150,16 @@ class PostsAdapter(
 
                 btnComment.setOnClickListener {
                     commentsIconClicked(post.id)
+                }
+
+                // User
+
+                ivProfile.setOnClickListener {
+                    userClicked(post.authorId)
+                }
+
+                tvAuthor.setOnClickListener {
+                    userClicked(post.authorId)
                 }
             }
         }
@@ -172,6 +204,19 @@ class PostsAdapter(
                     binding.apply {
                         tvCommentsCount.text = post.commentCount.toString()
                     }
+                }
+
+                if (getBoolean(FOLLOW_STATUS_CHANGED_KEY)) {
+
+                    binding.apply {
+                        if (post.isUserFollowing == null) {
+                            btnFollow.text = itemView.context.getString(R.string.follow)
+                        } else {
+                            btnFollow.text = itemView.context.getString(R.string.followed)
+                        }
+                        btnFollow.isVisible = post.isUserFollowing != FollowType.USER
+                    }
+
                 }
             }
         }

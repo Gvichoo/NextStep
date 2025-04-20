@@ -23,7 +23,7 @@
         android:id="@+id/btn_follow"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="+ Follow"
+        android:text="+ Follow Goal"
         app:layout_constraintBottom_toBottomOf="@id/ivProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivProfile" />

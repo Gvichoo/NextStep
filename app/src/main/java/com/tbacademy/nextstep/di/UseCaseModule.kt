@@ -1,11 +1,21 @@
 package com.tbacademy.nextstep.di
 
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUerFollowedUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -14,6 +24,8 @@ import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
@@ -103,6 +115,11 @@ interface UseCaseModule {
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
 
+
+    @Singleton
+    @Binds
+    fun bindGetFollowedPostsUseCase(impl: GetFollowedPostsUseCaseImpl): GetFollowedPostsUseCase
+
     @Singleton
     @Binds
     fun bindValidateMetricTargetUseCase(impl: ValidateMetricTargetUseCaseImpl): ValidateMetricTargetUseCase
@@ -117,14 +134,12 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-
     fun bindValidateMilestoneUseCase(impl: ValidateMilestoneUseCaseImpl): ValidateMilestoneUseCase
 
     @Singleton
     @Binds
     fun bindDeleteReactionUseCase(impl: DeleteReactionUseCaseImpl): DeleteReactionUseCase
 
-  
     @Singleton
     @Binds
     fun bindUpdateReactionUseCase(impl: UpdateReactionUseCaseImpl): UpdateReactionUseCase
@@ -136,4 +151,24 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetCommentsUseCase(impl: GetCommentsUseCaseImpl): GetCommentsUseCase
+
+    @Singleton
+    @Binds
+    fun bindGetUserInfoUseCase(impl: GetUserInfoUseCaseImpl): GetUserInfoUseCase
+
+    @Singleton
+    @Binds
+    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
+
+    @Singleton
+    @Binds
+    fun bindCreateFollowUseCase(impl: CreateFollowUseCaseImpl): CreateFollowUseCase
+
+    @Singleton
+    @Binds
+    fun bindDeleteFollowUseCase(impl: DeleteFollowUseCaseImpl): DeleteFollowUseCase
+
+    @Singleton
+    @Binds
+    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
 }
