@@ -3,6 +3,14 @@ package com.tbacademy.nextstep.presentation.screen.main.add
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
+import com.tbacademy.nextstep.data.worker.UploadGoalWorker
+import com.tbacademy.nextstep.data.worker.WorkManagerHelper
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
@@ -22,6 +30,7 @@ import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
@@ -34,7 +43,8 @@ class AddGoalViewModel @Inject constructor(
     private val validateDateUseCase: ValidateAddGoalDateUseCase,
     private val validateMetricTargetUseCase: ValidateMetricTargetUseCase,
     private val validateMetricUnitUseCase: ValidateMetricUnitUseCase,
-    private val validateMilestoneUseCase: ValidateMilestoneUseCase
+    private val validateMilestoneUseCase: ValidateMilestoneUseCase,
+    private val workManagerHelper: WorkManagerHelper
 
 ) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
     initialState = AddGoalState(),
@@ -44,23 +54,28 @@ class AddGoalViewModel @Inject constructor(
 
     override fun onEvent(event: AddGoalEvent) {
         when (event) {
-            is AddGoalEvent.CreateGoal -> createGoal(
-                title = event.title,
-                description = event.description,
-                targetDate = event.goalDate,
-                metricTarget = event.metricTarget,
-                metricUnit = event.metricUnit,
-                isMetricEnabled = event.isMetricEnabled,
-                imageUri = event.imageUrl,
-                isMilestoneEnable = event.isMilestoneEnabled,
-                milestone = event.milestone
-            )
+            is AddGoalEvent.CreateGoal -> {
+                createGoal(
+                    title = event.title,
+                    description = event.description,
+                    targetDate = event.goalDate,
+                    metricTarget = event.metricTarget,
+                    metricUnit = event.metricUnit,
+                    isMetricEnabled = event.isMetricEnabled,
+                    imageUri = event.imageUrl,
+                    isMilestoneEnable = event.isMilestoneEnabled,
+                    milestone = event.milestone
+                )
+            }
 
             is AddGoalEvent.GoalDescriptionChanged -> onDescriptionChanged(description = event.description)
             is AddGoalEvent.GoalTitleChanged -> onTitleChanged(title = event.title)
 
             AddGoalEvent.OnCreateGoalBtnClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.NavToHomeFragment) }
-            AddGoalEvent.Submit -> submitAddGoalForm()
+            AddGoalEvent.Submit -> {
+                submitAddGoalForm()
+                scheduleGoalUpload()
+            }
             is AddGoalEvent.GoalDateChanged -> onDateChanged(date = event.date)
             is AddGoalEvent.MetricToggle -> updateUiState { this.copy(isMetricEnabled = event.enabled) }
             is AddGoalEvent.GoalMetricTargetChanged -> onMetricTargetChanged(metricTarget = event.metricTarget)
@@ -76,44 +91,31 @@ class AddGoalViewModel @Inject constructor(
             AddGoalEvent.OnMinusMileStoneButtonClicked -> onRemoveMilestone()
 
             is AddGoalEvent.OnMilestoneTextChanged -> onMilestoneTextChanged(event.id, event.text)
+
         }
     }
 
-    private fun onMilestoneTextChanged(position: Int, text: String) {
-        val currentMilestones = uiState.value.milestones.toMutableList()
+     fun scheduleGoalUpload() {
+        val currentState = uiState.value
 
-        val updatedMilestone = currentMilestones[position].copy(text = text)
+        // Create a Goal object from the current UI state
+        val goal = Goal(
+            title = currentState.title,
+            description = currentState.description,
+            imageUri = currentState.imageUri,
+            isMetricBased = currentState.isMetricEnabled,
+            metricTarget = currentState.metricTarget,
+            metricUnit = currentState.metricUnit,
+            targetDate = currentState.goalDate ?: Date(), // or some other default Date
+            createdAt = Date()
+            // Add any other fields from your Goal model
+        )
 
-        val milestoneError = validateInputOnChange {
-            validateMilestoneUseCase(text)
-        }?.getErrorMessageResId()
-
-        val milestoneWithError = updatedMilestone.copy(errorMessage = milestoneError)
-
-        currentMilestones[position] = milestoneWithError
-
-        updateUiState { copy(milestones = currentMilestones) }
-    }
-
-
-    private fun onAddMilestone() {
-        updateUiState {
-            val updatedList = milestones + MilestoneItem(id = milestoneIdCounter, text = "")
-            copy(
-                milestones = updatedList,
-                milestoneIdCounter = milestoneIdCounter + 1
-            )
+        // Schedule the upload using WorkManager
+        viewModelScope.launch {
+            workManagerHelper.scheduleGoalUpload(goal)
         }
     }
-
-    private fun onRemoveMilestone() {
-        updateUiState {
-            if (milestones.size > 1) {
-                copy(milestones = milestones.dropLast(1))
-            } else this
-        }
-    }
-
 
     private fun createGoal(
         title: String,
@@ -159,6 +161,44 @@ class AddGoalViewModel @Inject constructor(
             Log.d("CREATE_GOAL", "GOAL: $newGoal")
         }
     }
+
+
+
+    private fun onMilestoneTextChanged(position: Int, text: String) {
+        val currentMilestones = uiState.value.milestones.toMutableList()
+
+        val updatedMilestone = currentMilestones[position].copy(text = text)
+
+        val milestoneError = validateInputOnChange {
+            validateMilestoneUseCase(text)
+        }?.getErrorMessageResId()
+
+        val milestoneWithError = updatedMilestone.copy(errorMessage = milestoneError)
+
+        currentMilestones[position] = milestoneWithError
+
+        updateUiState { copy(milestones = currentMilestones) }
+    }
+
+
+    private fun onAddMilestone() {
+        updateUiState {
+            val updatedList = milestones + MilestoneItem(id = milestoneIdCounter, text = "")
+            copy(
+                milestones = updatedList,
+                milestoneIdCounter = milestoneIdCounter + 1
+            )
+        }
+    }
+
+    private fun onRemoveMilestone() {
+        updateUiState {
+            if (milestones.size > 1) {
+                copy(milestones = milestones.dropLast(1))
+            } else this
+        }
+    }
+
 
     //On Metric Target Update
     private fun onMetricTargetChanged(metricTarget: String) {

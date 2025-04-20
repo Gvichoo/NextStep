@@ -25,6 +25,8 @@ sealed interface AddGoalEvent {
     data object ImageCleared : AddGoalEvent
 
 
+
+
     data object Submit : AddGoalEvent
 
     data object OnCreateGoalBtnClicked : AddGoalEvent

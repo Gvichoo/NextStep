@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.androidx.hilt.work)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,8 +91,11 @@ dependencies {
     // Google Identity Services
     implementation (libs.play.services.auth)
 
+    //WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 
-
+    implementation ("androidx.hilt:hilt-work:1.1.0")
+    kapt ("androidx.hilt:hilt-compiler:1.2.0")
 
 
 }

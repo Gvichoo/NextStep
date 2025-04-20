@@ -6,19 +6,23 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentAddGoalBinding
+import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
@@ -27,6 +31,7 @@ import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdapter
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
+import com.tbacademy.nextstep.presentation.screen.main.add.state.WorkerStatusState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -63,6 +68,26 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         initCameraLauncher()
         setUpRecycler()
     }
+
+    private fun createGoal() {
+        // Create your goal object
+        // with all required fields
+        val goalDate = addGoalViewModel.uiState.value.goalDate ?: Date()
+        val goal = Goal(
+            title = "My Goal",
+            description = "Goal description",
+            imageUri = null, // Your image URI if available
+            isMetricBased = false,
+            metricTarget = null,
+            metricUnit = null,
+            targetDate = goalDate,
+            createdAt = Date()
+        )
+        addGoalViewModel.scheduleGoalUpload(goal)
+
+    }
+
+
 
 
     override fun listeners() {
@@ -127,6 +152,8 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                 AddGoalEffect.NavToHomeFragment -> navToHomeFragment()
                 is AddGoalEffect.ShowError -> showMessage(effects.message)
                 AddGoalEffect.LaunchMediaPicker -> launchImagePicker()
+                AddGoalEffect.FailedUpload -> Toast.makeText(requireContext(),"rassaddada",Toast.LENGTH_SHORT).show()
+                AddGoalEffect.SuccessfulUpload -> Toast.makeText(requireContext(),"rasda",Toast.LENGTH_SHORT).show()
             }
         }
     }
