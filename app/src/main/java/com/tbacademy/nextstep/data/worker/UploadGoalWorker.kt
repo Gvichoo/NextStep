@@ -22,12 +22,22 @@ class UploadGoalWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
+        // Log to confirm worker has started
+        Log.d("UploadGoalWorker", "Worker started with input data: ${inputData}")
 
-        val imageUriString = inputData.getString("imageUri") // just one string
+        val imageUriString = inputData.getString("imageUri")
         val imageUri = imageUriString?.let { Uri.parse(it) }
 
-        val targetDateString = inputData.getString("targetDate") ?: return Result.failure()
-        val createdAtString = inputData.getString("createdAt") ?: return Result.failure()
+        val targetDateString = inputData.getString("targetDate")
+        val createdAtString = inputData.getString("createdAt")
+
+        Log.d("UploadGoalWorker", "Extracted values: targetDate=$targetDateString, createdAt=$createdAtString")
+
+        // If any critical value is missing, log the error
+        if (targetDateString == null || createdAtString == null) {
+            Log.e("UploadGoalWorker", "Missing required input data (targetDate or createdAt).")
+            return Result.failure()
+        }
 
         val goal = Goal(
             id = inputData.getString("id") ?: "",
@@ -40,28 +50,43 @@ class UploadGoalWorker @AssistedInject constructor(
             imageUri = imageUri
         )
 
+        Log.d("UploadGoalWorker", "Goal object created: $goal")
+
         return writeUserData(goal)
     }
 
     private suspend fun writeUserData(goal: Goal): Result {
+        Log.d("UploadGoalWorker", "Attempting to upload goal...")
+
         var workResult = Result.failure()
 
-        createGoalUseCase(goal)
-            .onStart {
-                Log.d("UploadGoalWorker", "Start goal upload...")
-            }
-            .collect { result ->
-                when (result) {
-                    is Resource.Error -> {
-                        val outputData = workDataOf("error_message" to result.error)
-                        workResult = Result.failure(outputData)
-                    }
-
-                    is Resource.Success -> workResult = Result.success()
-                    is Resource.Loading -> Log.d("UploadGoalWorker", "Uploading...")
+        try {
+            createGoalUseCase(goal)
+                .onStart {
+                    Log.d("UploadGoalWorker", "Start goal upload...")
                 }
-            }
+                .collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            Log.e("UploadGoalWorker", "Error uploading goal: ${result.error}")
+                            val outputData = workDataOf("error_message" to result.error)
+                            workResult = Result.failure(outputData)
+                        }
+                        is Resource.Success -> {
+                            Log.d("UploadGoalWorker", "Goal uploaded successfully!")
+                            workResult = Result.success()
+                        }
+                        is Resource.Loading -> {
+                            Log.d("UploadGoalWorker", "Uploading goal...")
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            Log.e("UploadGoalWorker", "Exception during goal upload: ${e.message}", e)
+            workResult = Result.failure()
+        }
 
         return workResult
     }
 }
+

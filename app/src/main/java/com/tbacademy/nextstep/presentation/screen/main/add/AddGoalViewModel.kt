@@ -112,15 +112,18 @@ class AddGoalViewModel @Inject constructor(
                 "description" to goal.description,
                 "metricTarget" to goal.metricTarget,
                 "metricUnit" to goal.metricUnit,
-                "targetDate" to goal.targetDate,
-                "createdAt" to goal.createdAt,
+                "targetDate" to goal.targetDate.toString(),
+                "createdAt" to goal.createdAt.toString(),
                 "imageUri" to goal.imageUri.toString(),
             )
+        Log.d("UploadGoalWorker", "Enqueueing with input data: $")
 
         val worker = OneTimeWorkRequestBuilder<UploadGoalWorker>()
             .setInputData(data)
             .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
             .build()
+
+
 
         WorkManager.getInstance(application)
             .enqueueUniqueWork("writeUser", ExistingWorkPolicy.KEEP, worker)

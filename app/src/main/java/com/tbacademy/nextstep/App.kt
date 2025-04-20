@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.work.Configuration
 import androidx.work.ListenableWorker
+import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.google.firebase.FirebaseApp
@@ -27,6 +28,7 @@ class App : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
+        WorkManager.initialize(this, workManagerConfiguration)
     }
 
 
@@ -50,6 +52,4 @@ class App : Application(), Configuration.Provider {
             }
         }
     }
-
-
 }

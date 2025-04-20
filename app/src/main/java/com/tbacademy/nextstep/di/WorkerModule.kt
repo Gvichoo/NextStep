@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.di
 
+import androidx.work.WorkerFactory
 import com.tbacademy.nextstep.App
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import dagger.Module
@@ -12,7 +13,9 @@ import dagger.hilt.components.SingletonComponent
 object WorkerModule {
 
     @Provides
-    fun provideWorkerFactory(createGoalUseCase: CreateGoalUseCase): App.CustomWorkerFactory {
+    fun provideCustomWorkerFactory(
+        createGoalUseCase: CreateGoalUseCase
+    ): WorkerFactory {
         return App.CustomWorkerFactory(createGoalUseCase)
     }
 }
