@@ -7,6 +7,7 @@ import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
 import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper.Companion.SORT_CREATED_AT
 import com.tbacademy.nextstep.data.remote.dto.PostDto
 import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.domain.model.ReactionType
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
@@ -18,42 +19,86 @@ class PostRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseHelper: FirebaseHelper
 ) : PostRepository {
-    override suspend fun getPosts(): Flow<Resource<List<Post>>> {
+
+    override suspend fun getGlobalPosts(): Flow<Resource<List<Post>>> {
         return firebaseHelper.withUserIdFlow { userId ->
 
-            val postsSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
+            val postSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
                 .orderBy(SORT_CREATED_AT, Query.Direction.DESCENDING)
                 .get()
                 .await()
 
-            val postDtoList = postsSnapshot.documents.mapNotNull {
+            val postDtos = postSnapshot.documents.mapNotNull {
                 it.toObject(PostDto::class.java)?.copy(id = it.id)
             }
 
-            val postIds = postDtoList.map { it.id }
+            val postIds = postDtos.map { it.id }
 
-            val reactionsSnapshot = firestore.collection(REACTIONS_COLLECTION_PATH)
-                .whereEqualTo(AUTHOR_ID_FIELD, userId)
-                .whereIn(POST_ID_FIELD, postIds)
-                .get()
-                .await()
+            val (followedGoals, followedUsers) = getUserFollows(userId)
+            val reactions = getUserReactions(userId, postIds)
 
-            val userReactionsMap = reactionsSnapshot.documents.mapNotNull { doc ->
-                val postId = doc.getString(POST_ID_FIELD) ?: return@mapNotNull null
-                val typeString = doc.getString(REACTION_TYPE_FIELD) ?: return@mapNotNull null
+            mapPostDtos(postDtos, reactions, followedGoals, followedUsers)
+        }
+    }
 
-                val reactionType = runCatching { ReactionType.valueOf(typeString) }.getOrNull()
-                    ?: return@mapNotNull null
 
-                postId to reactionType
-            }.toMap()
+    private suspend fun getUserFollows(userId: String): Pair<Set<String>, Set<String>> {
+        val snapshot = firestore.collection("follows")
+            .whereEqualTo("followerId", userId)
+            .get()
+            .await()
 
-            val postsWithReactionType = postDtoList.map { postDto ->
-                val userReaction = userReactionsMap[postDto.id]
-                postDto.toDomain().copy(userReaction = userReaction)
+        val goals = mutableSetOf<String>()
+        val users = mutableSetOf<String>()
+
+        snapshot.documents.forEach { doc ->
+            val type = doc.getString("followType")
+            val id = doc.getString("followedId")
+            when (type) {
+                "GOAL" -> id?.let { goals.add(it) }
+                "USER" -> id?.let { users.add(it) }
+            }
+        }
+
+        return goals to users
+    }
+
+    private suspend fun getUserReactions(
+        userId: String,
+        postIds: List<String>
+    ): Map<String, ReactionType> {
+        if (postIds.isEmpty()) return emptyMap()
+
+        val snapshot = firestore.collection(REACTIONS_COLLECTION_PATH)
+            .whereEqualTo(AUTHOR_ID_FIELD, userId)
+            .whereIn(POST_ID_FIELD, postIds)
+            .get()
+            .await()
+
+        return snapshot.documents.mapNotNull { doc ->
+            val postId = doc.getString(POST_ID_FIELD) ?: return@mapNotNull null
+            val type = doc.getString(REACTION_TYPE_FIELD) ?: return@mapNotNull null
+            runCatching { ReactionType.valueOf(type) }.getOrNull()?.let {
+                postId to it
+            }
+        }.toMap()
+    }
+
+    private fun mapPostDtos(
+        postDtos: List<PostDto>,
+        reactions: Map<String, ReactionType>,
+        followedGoals: Set<String>,
+        followedUsers: Set<String>
+    ): List<Post> {
+        return postDtos.map { postDto ->
+            val userReaction = reactions[postDto.id]
+            val isFollowed = when {
+                followedGoals.contains(postDto.goalId) -> FollowType.GOAL
+                followedUsers.contains(postDto.authorId) -> FollowType.USER
+                else -> null
             }
 
-            postsWithReactionType
+            postDto.toDomain().copy(userReaction = userReaction, isUserFollowing = isFollowed)
         }
     }
 

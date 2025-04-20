@@ -10,6 +10,7 @@ fun PostDto.toDomain(): Post {
         description = description,
         authorUsername = authorUsername,
         authorId = authorId,
+        goalId = goalId,
         type = referenceType,
         commentCount = commentCount,
         reactionCount = reactionCount,
@@ -17,7 +18,7 @@ fun PostDto.toDomain(): Post {
         reactionHeartCount = reactionHeartCount,
         reactionCookieCount = reactionCookieCount,
         reactionCheerCount = reactionCheerCount,
-        reactionTaskCount = reactionDisappointmentCount,
+        reactionDissapointedCount = reactionDisappointmentCount,
         imageUrl = imageUrl,
         createdAt = createdAt.toDate()
     )

@@ -14,6 +14,6 @@ class GetPostsUseCaseImpl @Inject constructor(
     private val postRepository: PostRepository
 ) : GetPostsUseCase {
     override suspend fun invoke(): Flow<Resource<List<Post>>> {
-        return postRepository.getPosts()
+        return postRepository.getGlobalPosts()
     }
 }

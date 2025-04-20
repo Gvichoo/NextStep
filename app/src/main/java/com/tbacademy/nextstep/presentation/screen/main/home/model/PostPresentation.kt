@@ -1,5 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.model
 
+import com.tbacademy.nextstep.domain.model.FollowType
+
 data class PostPresentation(
     val id: String,
     val authorId: String,
@@ -19,5 +21,6 @@ data class PostPresentation(
     val createdAt: String,
     val userReaction: PostReactionType? = null,
     val isUserFollowing: FollowStatus,
+    val followType: FollowType?,
     val isReactionsPopUpVisible: Boolean = false,
 )
