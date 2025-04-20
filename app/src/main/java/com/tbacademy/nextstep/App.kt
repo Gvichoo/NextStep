@@ -2,7 +2,6 @@ package com.tbacademy.nextstep
 
 import android.app.Application
 import android.content.Context
-import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
@@ -19,14 +18,18 @@ class App : Application(), Configuration.Provider {
 
     @Inject
     lateinit var workerFactory: CustomWorkerFactory
+
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
+
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
     }
+
+
 
     class CustomWorkerFactory @Inject constructor(
         private val createGoalUseCase: CreateGoalUseCase

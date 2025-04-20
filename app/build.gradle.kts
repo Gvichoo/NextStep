@@ -92,10 +92,12 @@ dependencies {
     implementation (libs.play.services.auth)
 
     //WorkManager
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation(libs.androidx.work.runtime.ktx)
 
-    implementation ("androidx.hilt:hilt-work:1.1.0")
-    kapt ("androidx.hilt:hilt-compiler:1.2.0")
+    implementation (libs.androidx.hilt.work.v110)
+    kapt (libs.androidx.hilt.compiler)
+
+
 
 
 }

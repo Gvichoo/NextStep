@@ -1,16 +1,19 @@
 package com.tbacademy.nextstep.di
 
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.WorkerFactory
-import dagger.Binds
+import com.tbacademy.nextstep.App
+import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class WorkerModule {
+object WorkerModule {
 
-    @Binds
-    abstract fun bindWorkerFactory(factory: HiltWorkerFactory): WorkerFactory
+    @Provides
+    fun provideWorkerFactory(createGoalUseCase: CreateGoalUseCase): App.CustomWorkerFactory {
+        return App.CustomWorkerFactory(createGoalUseCase)
+    }
 }
+

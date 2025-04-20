@@ -114,7 +114,7 @@ class AddGoalViewModel @Inject constructor(
                 "metricUnit" to goal.metricUnit,
                 "targetDate" to goal.targetDate,
                 "createdAt" to goal.createdAt,
-                "imageUri" to goal.imageUri,
+                "imageUri" to goal.imageUri.toString(),
             )
 
         val worker = OneTimeWorkRequestBuilder<UploadGoalWorker>()
@@ -175,7 +175,7 @@ class AddGoalViewModel @Inject constructor(
     private fun createGoal(
         title: String,
         description: String,
-        targetDate: Date,
+        targetDate: Long,
         metricUnit: String,
         metricTarget: String,
         isMetricEnabled: Boolean,
@@ -348,7 +348,7 @@ class AddGoalViewModel @Inject constructor(
                 createGoal(
                     title = uiState.value.title,
                     description = uiState.value.description,
-                    targetDate = it,
+                    targetDate = it.time,
                     metricUnit = uiState.value.metricUnit,
                     metricTarget = uiState.value.metricTarget,
                     isMetricEnabled = uiState.value.isMetricEnabled,

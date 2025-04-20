@@ -37,7 +37,7 @@ sealed interface AddGoalEvent {
     data class CreateGoal(
         val title: String,
         val description: String,
-        val goalDate: Date,
+        val goalDate: Long,
         val metricTarget: String,
         val metricUnit: String,
         val isMetricEnabled: Boolean,

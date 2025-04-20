@@ -2,11 +2,8 @@ package com.tbacademy.nextstep.presentation.screen.main.add
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,18 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentAddGoalBinding
-import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.onTextChanged
-import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdapter
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
@@ -203,16 +195,16 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
 
         // Camera launcher
-        cameraLauncher =
-            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-                if (success) {
-                    cameraImageUri?.let {
-                        binding.image.setImageURI(it)
-                        addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(it))
-                        binding.btnCancelImage.isEnabled = true
-                    }
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                cameraImageUri?.let { uri ->
+                    binding.image.setImageURI(uri)
+                    addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(uri)) // append uri to list
+                    binding.btnCancelImage.isEnabled = true
                 }
             }
+        }
+
     }
 
     private fun setSelectImageButtonListener() {
