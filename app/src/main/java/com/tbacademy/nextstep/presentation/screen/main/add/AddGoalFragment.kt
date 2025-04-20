@@ -18,6 +18,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.tbacademy.nextstep.R
@@ -60,6 +62,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
 
 
 
+
     @SuppressLint("DefaultLocale")
     override fun start() {
         initMediaPickerLauncher()
@@ -67,26 +70,42 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
 
         initCameraLauncher()
         setUpRecycler()
+        bindWorkerResultObserver()
     }
 
-    private fun createGoal() {
-        // Create your goal object
-        // with all required fields
-        val goalDate = addGoalViewModel.uiState.value.goalDate ?: Date()
-        val goal = Goal(
-            title = "My Goal",
-            description = "Goal description",
-            imageUri = null, // Your image URI if available
-            isMetricBased = false,
-            metricTarget = null,
-            metricUnit = null,
-            targetDate = goalDate,
-            createdAt = Date()
-        )
-        addGoalViewModel.scheduleGoalUpload(goal)
 
+    private fun bindWorkerResultObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addGoalViewModel.workStatus.collect {
+                    handleWorkerStatusState(it)
+                }
+            }
+        }
     }
 
+    private fun handleWorkerStatusState(state: WorkerStatusState) {
+
+
+        state.failedMessage?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetFailToNull)
+        }
+
+        state.blocked?.let {
+
+            addGoalViewModel.onEvent(AddGoalEvent.ResetBlockToNull)
+        }
+
+        state.wasCanceled?.let {
+
+            addGoalViewModel.onEvent(AddGoalEvent.ResetCancelToNull)
+        }
+
+        state.uploadedSuccessfully?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetSuccessToNull)
+        }
+
+    }
 
 
 
@@ -145,15 +164,12 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             }
         }
     }
-
     private fun observeEffects() {
         collectLatest(flow = addGoalViewModel.effects) { effects ->
             when (effects) {
                 AddGoalEffect.NavToHomeFragment -> navToHomeFragment()
                 is AddGoalEffect.ShowError -> showMessage(effects.message)
                 AddGoalEffect.LaunchMediaPicker -> launchImagePicker()
-                AddGoalEffect.FailedUpload -> Toast.makeText(requireContext(),"rassaddada",Toast.LENGTH_SHORT).show()
-                AddGoalEffect.SuccessfulUpload -> Toast.makeText(requireContext(),"rasda",Toast.LENGTH_SHORT).show()
             }
         }
     }

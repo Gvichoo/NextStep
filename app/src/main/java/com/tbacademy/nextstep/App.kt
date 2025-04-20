@@ -18,18 +18,34 @@ import javax.inject.Inject
 class App : Application(), Configuration.Provider {
 
     @Inject
-    lateinit var workerFactory: HiltWorkerFactory
-
-    // Use property syntax to implement the interface property
+    lateinit var workerFactory: CustomWorkerFactory
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
-
-
     override fun onCreate() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
+    }
+
+    class CustomWorkerFactory @Inject constructor(
+        private val createGoalUseCase: CreateGoalUseCase
+    ) : WorkerFactory() {
+        override fun createWorker(
+            appContext: Context,
+            workerClassName: String,
+            workerParameters: WorkerParameters
+        ): ListenableWorker {
+            return when (workerClassName) {
+                UploadGoalWorker::class.java.name -> UploadGoalWorker(
+                    appContext,
+                    workerParameters,
+                    createGoalUseCase
+                )
+
+                else -> throw IllegalArgumentException("Unknown worker class name: $workerClassName")
+            }
+        }
     }
 
 

@@ -1,16 +1,16 @@
 package com.tbacademy.nextstep.presentation.screen.main.add
 
+import android.app.Application
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import androidx.work.BackoffPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.tbacademy.nextstep.data.worker.UploadGoalWorker
-import com.tbacademy.nextstep.data.worker.WorkManagerHelper
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
@@ -29,10 +29,14 @@ import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
+import com.tbacademy.nextstep.presentation.screen.main.add.state.WorkerStatusState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,9 +48,9 @@ class AddGoalViewModel @Inject constructor(
     private val validateMetricTargetUseCase: ValidateMetricTargetUseCase,
     private val validateMetricUnitUseCase: ValidateMetricUnitUseCase,
     private val validateMilestoneUseCase: ValidateMilestoneUseCase,
-    private val workManagerHelper: WorkManagerHelper
+    private val application: Application
 
-) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
+    ) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
     initialState = AddGoalState(),
     initialUiState = AddGoalUiState()
 ) {
@@ -74,7 +78,6 @@ class AddGoalViewModel @Inject constructor(
             AddGoalEvent.OnCreateGoalBtnClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.NavToHomeFragment) }
             AddGoalEvent.Submit -> {
                 submitAddGoalForm()
-                scheduleGoalUpload()
             }
             is AddGoalEvent.GoalDateChanged -> onDateChanged(date = event.date)
             is AddGoalEvent.MetricToggle -> updateUiState { this.copy(isMetricEnabled = event.enabled) }
@@ -91,31 +94,83 @@ class AddGoalViewModel @Inject constructor(
             AddGoalEvent.OnMinusMileStoneButtonClicked -> onRemoveMilestone()
 
             is AddGoalEvent.OnMilestoneTextChanged -> onMilestoneTextChanged(event.id, event.text)
-
+            AddGoalEvent.ResetBlockToNull -> resetBlocked()
+            AddGoalEvent.ResetCancelToNull -> resetCancelled()
+            AddGoalEvent.ResetFailToNull -> resetFailed()
+            AddGoalEvent.ResetSuccessToNull -> resetUploadedSuccessfully()
         }
     }
 
-     fun scheduleGoalUpload() {
-        val currentState = uiState.value
+    private val _workStatus = MutableStateFlow(WorkerStatusState())
+    val workStatus = _workStatus.asStateFlow()
 
-        // Create a Goal object from the current UI state
-        val goal = Goal(
-            title = currentState.title,
-            description = currentState.description,
-            imageUri = currentState.imageUri,
-            isMetricBased = currentState.isMetricEnabled,
-            metricTarget = currentState.metricTarget,
-            metricUnit = currentState.metricUnit,
-            targetDate = currentState.goalDate ?: Date(), // or some other default Date
-            createdAt = Date()
-            // Add any other fields from your Goal model
-        )
 
-        // Schedule the upload using WorkManager
+    private fun writeUserData(goal: Goal) {
+        val data =
+            workDataOf(
+                "title" to goal.title,
+                "description" to goal.description,
+                "metricTarget" to goal.metricTarget,
+                "metricUnit" to goal.metricUnit,
+                "targetDate" to goal.targetDate,
+                "createdAt" to goal.createdAt,
+                "imageUri" to goal.imageUri,
+            )
+
+        val worker = OneTimeWorkRequestBuilder<UploadGoalWorker>()
+            .setInputData(data)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
+            .build()
+
+        WorkManager.getInstance(application)
+            .enqueueUniqueWork("writeUser", ExistingWorkPolicy.KEEP, worker)
+
+        bindReportUploadWorkObserver()
+
+    }
+
+    private fun bindReportUploadWorkObserver() {
         viewModelScope.launch {
-            workManagerHelper.scheduleGoalUpload(goal)
+            WorkManager.getInstance(application).getWorkInfosForUniqueWorkFlow("writeUser")
+                .collect { workInfoList ->
+                    workInfoList.forEach { workInfo ->
+                        when(workInfo.state){
+                            WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> {
+                                _workStatus.value = WorkerStatusState(isLoading = true)
+                            }
+                            WorkInfo.State.SUCCEEDED -> {
+                                _workStatus.value = WorkerStatusState(
+                                    isLoading = false,
+                                    uploadedSuccessfully = Unit
+                                )
+                            }
+                            WorkInfo.State.FAILED -> {
+                                val errorMessage = workInfo.outputData.getString("error_message") ?: "Unknown error"
+                                _workStatus.value = WorkerStatusState(
+                                    isLoading = false,
+                                    failedMessage = errorMessage
+                                )
+                            }
+                            WorkInfo.State.BLOCKED -> {
+                                _workStatus.value = WorkerStatusState(
+                                    isLoading = false,
+                                    blocked = Unit
+                                )
+                            }
+                            WorkInfo.State.CANCELLED -> {
+                                _workStatus.value = WorkerStatusState(
+                                    isLoading = false,
+                                    wasCanceled = Unit
+                                )
+                            }
+                        }
+                    }
+                }
         }
     }
+
+
+
 
     private fun createGoal(
         title: String,
@@ -154,6 +209,7 @@ class AddGoalViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         updateState { copy(isSuccess = true) }
+                        writeUserData(goal = newGoal)
                         emitEffect(AddGoalEffect.NavToHomeFragment)
                     }
                 }
@@ -162,6 +218,29 @@ class AddGoalViewModel @Inject constructor(
         }
     }
 
+    private fun resetUploadedSuccessfully() {
+        _workStatus.update { currentState ->
+            currentState.copy(uploadedSuccessfully = null)
+        }
+    }
+
+    private fun resetFailed() {
+        _workStatus.update { currentState ->
+            currentState.copy(failedMessage = null)
+        }
+    }
+
+    private fun resetCancelled() {
+        _workStatus.update { currentState ->
+            currentState.copy(wasCanceled = null)
+        }
+    }
+
+    private fun resetBlocked() {
+        _workStatus.update { currentState ->
+            currentState.copy(blocked = null)
+        }
+    }
 
 
     private fun onMilestoneTextChanged(position: Int, text: String) {

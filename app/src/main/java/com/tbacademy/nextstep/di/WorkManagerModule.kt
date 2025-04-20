@@ -2,7 +2,6 @@ package com.tbacademy.nextstep.di
 
 import android.content.Context
 import androidx.work.WorkManager
-import com.tbacademy.nextstep.data.worker.WorkManagerHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +15,7 @@ object WorkManagerModule {
 
     @Provides
     @Singleton
-    fun provideWorkManagerHelper(@ApplicationContext context: Context): WorkManagerHelper {
-        return WorkManagerHelper(context)
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
     }
 }
