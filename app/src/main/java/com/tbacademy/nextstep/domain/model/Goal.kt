@@ -13,7 +13,7 @@ data class Goal(
     val targetDate: Long,
     val createdAt: Long = System.currentTimeMillis(),
     val imageUri: Uri? = null,
-    val milestone: List<MilestoneItem>? = null
+    val milestone: List<MilestoneItem>? = emptyList()
 ){
     val imageUrl: String? = null
 }

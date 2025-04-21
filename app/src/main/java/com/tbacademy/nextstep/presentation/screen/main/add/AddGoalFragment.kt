@@ -26,7 +26,7 @@ import com.tbacademy.nextstep.presentation.extension.onTextChanged
 import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdapter
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
-import com.tbacademy.nextstep.presentation.screen.main.add.state.WorkerStatusState
+import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -46,7 +46,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var cameraImageUri: Uri? = null
 
-
     private val myAdapter: MilestoneAdapter by lazy {
         MilestoneAdapter { position, newText ->
             addGoalViewModel.onEvent(AddGoalEvent.OnMilestoneTextChanged(position, newText))
@@ -54,55 +53,13 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     }
 
 
-
-
     @SuppressLint("DefaultLocale")
     override fun start() {
         initMediaPickerLauncher()
         setDatePicker()
-
         initCameraLauncher()
         setUpRecycler()
-        bindWorkerResultObserver()
-
-
-
     }
-
-
-    private fun bindWorkerResultObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addGoalViewModel.workStatus.collect {
-                    handleWorkerStatusState(it)
-                }
-            }
-        }
-    }
-
-    private fun handleWorkerStatusState(state: WorkerStatusState) {
-
-
-        state.failedMessage?.let {
-            addGoalViewModel.onEvent(AddGoalEvent.ResetFailToNull)
-        }
-
-        state.blocked?.let {
-
-            addGoalViewModel.onEvent(AddGoalEvent.ResetBlockToNull)
-        }
-
-        state.wasCanceled?.let {
-
-            addGoalViewModel.onEvent(AddGoalEvent.ResetCancelToNull)
-        }
-
-        state.uploadedSuccessfully?.let {
-            addGoalViewModel.onEvent(AddGoalEvent.ResetSuccessToNull)
-        }
-
-    }
-
 
 
     override fun listeners() {
@@ -121,14 +78,11 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         observeState()
         observeEffects()
         observeUiState()
+//        observeWorkerState()
+        bindWorkerResultObserver()
 
-        collect(flow = addGoalViewModel.workStatus) {state ->
-            binding.apply {
-                loaderAddGoal.loaderContainer.isVisible = state.isLoading
-                setUIElementsEnabled(!state.isLoading)
-            }
-        }
     }
+
 
     private fun observeState() {
         collect(flow = addGoalViewModel.state) { state ->
@@ -148,22 +102,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             }
         }
     }
-    private fun setUIElementsEnabled(isEnabled: Boolean) {
-        binding.apply {
-            // Disable or enable input fields, buttons, etc.
-            etGoalTitle.isEnabled = isEnabled
-            etGoalDescription.isEnabled = isEnabled
-            etTargetDate.isEnabled = isEnabled
-            etMetricTarget.isEnabled = isEnabled
-            etMetricUnit.isEnabled = isEnabled
-            btnCreateGoal.isEnabled = isEnabled
-            switchMetricBased.isEnabled = isEnabled
-            switchMileStones.isEnabled = isEnabled
-            btnSelectImage.isEnabled = isEnabled
-            btnCancelImage.isEnabled = isEnabled
-            // Add any other views that need to be disabled during loading
-        }
-    }
 
     private fun observeUiState() {
         collect(flow = addGoalViewModel.uiState) { uiState ->
@@ -179,9 +117,12 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                         .load(uri)
                         .into(image)
                 }
+
+
             }
         }
     }
+
     private fun observeEffects() {
         collectLatest(flow = addGoalViewModel.effects) { effects ->
             when (effects) {
@@ -192,22 +133,48 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
-    private fun setUpRecycler() {
-        binding.recycler.layoutManager = LinearLayoutManager(context)
-        binding.recycler.adapter = myAdapter
-    }
+//    private fun observeWorkerState() {
+//        collect(flow = addGoalViewModel.workerState) { state -> // Assuming workerState is the correct flow from the ViewModel
+//            binding.apply {
+//                loaderAddGoal.loaderContainer.isVisible = state.isLoading
+//                setUIElementsEnabled(!state.isLoading)
+//            }
+//            handleWorkerStatusState(state) // Handle worker state changes here
+//        }
+//    }
 
-    private fun setAddMilestoneButtonClickListener() {
-        binding.addMileStoneEditText.setOnClickListener {
-            addGoalViewModel.onEvent(AddGoalEvent.OnAddMilestoneButtonClicked)
+    //WorkManager
+    private fun bindWorkerResultObserver() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                addGoalViewModel.uiState.collect {
+                    handleWorkerStatusState(it)
+                }
+            }
         }
     }
 
-    private fun setMinusMilestoneButtonClickListener() {
-        binding.minusMileStoneEditText.setOnClickListener {
-            addGoalViewModel.onEvent(AddGoalEvent.OnMinusMileStoneButtonClicked)
+    private fun handleWorkerStatusState(state: AddGoalUiState) {
+
+        state.failedMessage?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetFailToNull)
+        }
+
+        state.blocked?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetBlockToNull)
+        }
+
+        state.wasCanceled?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetCancelToNull)
+        }
+
+        state.uploadedSuccessfully?.let {
+            addGoalViewModel.onEvent(AddGoalEvent.ResetSuccessToNull)
         }
     }
+
+
+    //Gallery and Camera
 
 
     private fun initCameraLauncher() {
@@ -219,18 +186,17 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                 openCamera()
             }
         }
-
         // Camera launcher
-        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success) {
-                cameraImageUri?.let { uri ->
-                    binding.image.setImageURI(uri)
-                    addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(uri)) // append uri to list
-                    binding.btnCancelImage.isEnabled = true
+        cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+                if (success) {
+                    cameraImageUri?.let { uri ->
+                        binding.image.setImageURI(uri)
+                        addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(uri)) // append uri to list
+                        binding.btnCancelImage.isEnabled = true
+                    }
                 }
             }
-        }
-
     }
 
     private fun setSelectImageButtonListener() {
@@ -268,7 +234,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             "${requireContext().packageName}.provider",
             imageFile
         )
-
         cameraImageUri?.let { uri ->
             cameraLauncher.launch(uri)
         }
@@ -281,8 +246,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
-
-
     private fun initMediaPickerLauncher() {
         pickMediaLauncher =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -292,7 +255,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                         it,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
-
                     addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(it))
                     binding.image.setImageURI(it)
                     binding.btnCancelImage.isEnabled = true
@@ -315,31 +277,9 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     }
 
 
-    @SuppressLint("DefaultLocale")
-    private fun setDatePicker() {
-        binding.etTargetDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
-                requireContext(),
-                { _, year, month, dayOfMonth ->
-                    val formattedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                    binding.etTargetDate.setText(formattedDate)
-
-                    calendar.set(year, month, dayOfMonth, 0, 0, 0)
-                    calendar.set(Calendar.MILLISECOND, 0)
-                    val date = calendar.time
-
-                    addGoalViewModel.onEvent(AddGoalEvent.GoalDateChanged(date))
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            )
-
-            datePicker.datePicker.minDate = System.currentTimeMillis() + 24 * 60 * 60 * 1000
-
-            datePicker.show()
-        }
+    private fun setUpRecycler() {
+        binding.recycler.layoutManager = LinearLayoutManager(context)
+        binding.recycler.adapter = myAdapter
     }
 
 
@@ -405,6 +345,18 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
+    private fun setAddMilestoneButtonClickListener() {
+        binding.addMileStoneEditText.setOnClickListener {
+            addGoalViewModel.onEvent(AddGoalEvent.OnAddMilestoneButtonClicked)
+        }
+    }
+
+    private fun setMinusMilestoneButtonClickListener() {
+        binding.minusMileStoneEditText.setOnClickListener {
+            addGoalViewModel.onEvent(AddGoalEvent.OnMinusMileStoneButtonClicked)
+        }
+    }
+
     private fun setSubmitBtnListener() {
         binding.btnCreateGoal.setOnClickListener {
             addGoalViewModel.onEvent(AddGoalEvent.Submit)
@@ -422,6 +374,48 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         findNavController().navigate(
             AddGoalFragmentDirections.actionNavAddToNavHome()
         )
+    }
+
+
+    @SuppressLint("DefaultLocale")
+    private fun setDatePicker() {
+        binding.etTargetDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePicker = DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    val formattedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                    binding.etTargetDate.setText(formattedDate)
+
+                    calendar.set(year, month, dayOfMonth, 0, 0, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
+                    val date = calendar.time
+
+                    addGoalViewModel.onEvent(AddGoalEvent.GoalDateChanged(date))
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            )
+
+            datePicker.datePicker.minDate = System.currentTimeMillis() + 24 * 60 * 60 * 1000
+
+            datePicker.show()
+        }
+    }
+
+    private fun setUIElementsEnabled(isEnabled: Boolean) {
+        binding.apply {
+            etGoalTitle.isEnabled = isEnabled
+            etGoalDescription.isEnabled = isEnabled
+            etTargetDate.isEnabled = isEnabled
+            etMetricTarget.isEnabled = isEnabled
+            etMetricUnit.isEnabled = isEnabled
+            switchMetricBased.isEnabled = isEnabled
+            switchMileStones.isEnabled = isEnabled
+            btnSelectImage.isEnabled = isEnabled
+            btnCancelImage.isEnabled = isEnabled
+        }
     }
 
     private fun showMessage(message: Int) {

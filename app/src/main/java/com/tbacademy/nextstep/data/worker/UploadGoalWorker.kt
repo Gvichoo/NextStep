@@ -1,15 +1,23 @@
 package com.tbacademy.nextstep.data.worker
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
+import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.onStart
@@ -25,6 +33,7 @@ class UploadGoalWorker @AssistedInject constructor(
         // Log to confirm worker has started
         Log.d("UploadGoalWorker", "Worker started with input data: ${inputData}")
 
+
         val imageUriString = inputData.getString("imageUri")
         val imageUri = imageUriString?.let { Uri.parse(it) }
 
@@ -39,6 +48,18 @@ class UploadGoalWorker @AssistedInject constructor(
             return Result.failure()
         }
 
+        val milestoneJson = inputData.getString("milestone")
+        val milestone: List<MilestoneItem> = milestoneJson?.let {
+            try {
+                val type = object : TypeToken<List<MilestoneItem>>() {}.type
+                Gson().fromJson(it, type)
+            } catch (e: Exception) {
+                Log.e("UploadGoalWorker", "Error deserializing milestone: ${e.message}")
+                emptyList() // Return an empty list if deserialization fails
+            }
+        } ?: emptyList() // Default to an empty list if milestone is null
+
+
         val goal = Goal(
             id = inputData.getString("id") ?: "",
             title = inputData.getString("title") ?: return Result.failure(),
@@ -47,7 +68,8 @@ class UploadGoalWorker @AssistedInject constructor(
             metricUnit = inputData.getString("metricUnit"),
             targetDate = targetDateString.toLongOrNull() ?: return Result.failure(),
             createdAt = createdAtString.toLongOrNull() ?: System.currentTimeMillis(),
-            imageUri = imageUri
+            imageUri = imageUri,
+            milestone = milestone
         )
 
         Log.d("UploadGoalWorker", "Goal object created: $goal")

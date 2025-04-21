@@ -10,11 +10,10 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.google.gson.Gson
 import com.tbacademy.nextstep.data.worker.UploadGoalWorker
 import com.tbacademy.nextstep.domain.core.InputValidationResult
-import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
-import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
@@ -22,18 +21,13 @@ import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricTa
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricUnitUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
-import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
-import com.tbacademy.nextstep.presentation.screen.main.add.state.WorkerStatusState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -98,11 +92,14 @@ class AddGoalViewModel @Inject constructor(
         }
     }
 
-    private val _workStatus = MutableStateFlow(WorkerStatusState())
-    val workStatus = _workStatus.asStateFlow()
+//    private val _workStatus = MutableStateFlow(WorkerStatusState())
+//    val workStatus = _workStatus.asStateFlow()
 
 
     private fun writeUserData(goal: Goal) {
+
+        val milestonesJson = Gson().toJson(goal.milestone)
+
         val data =
             workDataOf(
                 "title" to goal.title,
@@ -112,6 +109,7 @@ class AddGoalViewModel @Inject constructor(
                 "targetDate" to goal.targetDate.toString(),
                 "createdAt" to goal.createdAt.toString(),
                 "imageUri" to goal.imageUri.toString(),
+                "milestone" to milestonesJson
             )
         Log.d("UploadGoalWorker", "Enqueueing with input data: $")
 
@@ -119,7 +117,6 @@ class AddGoalViewModel @Inject constructor(
             .setInputData(data)
             .setBackoffCriteria(BackoffPolicy.LINEAR, 10, TimeUnit.SECONDS)
             .build()
-
 
 
         WorkManager.getInstance(application)
@@ -137,38 +134,33 @@ class AddGoalViewModel @Inject constructor(
                     workInfoList.forEach { workInfo ->
                         when(workInfo.state){
                             WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> {
-                                _workStatus.value = WorkerStatusState(isLoading = true)
+                               updateState { copy(isLoading = true) }
+
                             }
                             WorkInfo.State.SUCCEEDED -> {
-                                _workStatus.value = WorkerStatusState(
-                                    isLoading = false,
-                                    uploadedSuccessfully = Unit
-                                )
+                                updateState { copy(isLoading = false) }
+                                updateUiState { copy(uploadedSuccessfully = Unit) }
                                 emitEffect(AddGoalEffect.NavToHomeFragment)
                             }
                             WorkInfo.State.FAILED -> {
                                 val errorMessage = workInfo.outputData.getString("error_message") ?: "Unknown error"
-                                _workStatus.value = WorkerStatusState(
-                                    isLoading = false,
-                                    failedMessage = errorMessage
-                                )
+                                updateState { copy(isLoading = false) }
+                                updateUiState { copy(failedMessage = errorMessage) }
                             }
                             WorkInfo.State.BLOCKED -> {
-                                _workStatus.value = WorkerStatusState(
-                                    isLoading = false,
-                                    blocked = Unit
-                                )
+                                updateState { copy(isLoading = false) }
+                                updateUiState { copy(blocked = Unit) }
                             }
                             WorkInfo.State.CANCELLED -> {
-                                _workStatus.value = WorkerStatusState(
-                                    isLoading = false,
-                                    wasCanceled = Unit
-                                )
+                                updateState { copy(isLoading = false) }
+                                updateUiState { copy(wasCanceled = Unit) }
                             }
+
                         }
                     }
                 }
         }
+
     }
 
 
@@ -223,27 +215,19 @@ class AddGoalViewModel @Inject constructor(
     }
 
     private fun resetUploadedSuccessfully() {
-        _workStatus.update { currentState ->
-            currentState.copy(uploadedSuccessfully = null)
-        }
+        updateUiState { copy(uploadedSuccessfully = null) }
     }
 
     private fun resetFailed() {
-        _workStatus.update { currentState ->
-            currentState.copy(failedMessage = null)
-        }
+        updateUiState { copy(failedMessage = null) }
     }
 
     private fun resetCancelled() {
-        _workStatus.update { currentState ->
-            currentState.copy(wasCanceled = null)
-        }
+        updateUiState { copy(wasCanceled = null) }
     }
 
     private fun resetBlocked() {
-        _workStatus.update { currentState ->
-            currentState.copy(blocked = null)
-        }
+        updateUiState { copy(blocked = null) }
     }
 
 

@@ -15,5 +15,5 @@ data class GoalDto(
     val targetDate: Timestamp,
     val createdAt: Long = System.currentTimeMillis(),
     val imageUrl: String? = null,
-    val milestone : List<MilestoneItem>? = null
+    val milestone : List<MilestoneItem>? = emptyList()
 )

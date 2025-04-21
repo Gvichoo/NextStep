@@ -97,6 +97,10 @@ dependencies {
     implementation (libs.androidx.hilt.work.v110)
     kapt (libs.androidx.hilt.compiler)
 
+    //Gson
+    implementation ("com.google.code.gson:gson:2.11.0")
+
+
 
 
 

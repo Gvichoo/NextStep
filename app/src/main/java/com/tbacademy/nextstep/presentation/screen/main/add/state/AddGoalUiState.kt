@@ -19,6 +19,11 @@ data class AddGoalUiState (
         MilestoneItem(id = 0, text = "")
     ),
     val milestoneIdCounter: Int = 1,
-    val workStatus : WorkerStatusState = WorkerStatusState()
+
+    val uploadedSuccessfully:Unit? = null,
+    val failedMessage:String? = null,
+    val blocked:Unit? = null,
+    val wasCanceled:Unit? = null
+
 )
 
