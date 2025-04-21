@@ -7,7 +7,7 @@ fun UserFollowDto.toDomain(): UserFollow {
     return UserFollow(
         id = id,
         followerId = followerId,
-        followedId = followedId,
+        followedUserId = followedUserId,
         createdAt = createdAt.toDate()
     )
 }

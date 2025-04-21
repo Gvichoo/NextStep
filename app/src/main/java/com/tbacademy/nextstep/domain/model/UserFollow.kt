@@ -5,6 +5,6 @@ import java.util.Date
 data class UserFollow(
     val id: String,
     val followerId: String,
-    val followedId: String,
+    val followedUserId: String,
     val createdAt: Date
 )

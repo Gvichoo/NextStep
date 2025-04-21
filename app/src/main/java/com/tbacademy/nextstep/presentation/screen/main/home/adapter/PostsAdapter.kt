@@ -117,6 +117,8 @@ class PostsAdapter(
                     btnFollow.text = itemView.context.getString(R.string.followed)
                 }
 
+                btnFollow.isVisible = !post.isOwnPost
+
                 // Reactions Pop Up
                 btnReaction.setOnLongClickListener {
                     reactionBtnHold(post.id, true)

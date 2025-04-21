@@ -5,12 +5,12 @@ import com.tbacademy.nextstep.domain.model.Comment
 
 fun CommentDto.toDomain(): Comment {
     return Comment(
-        id,
-        postId,
-        authorId,
-        authorUsername,
-        authorProfilePictureUrl,
-        text,
+        id = id,
+        postId = postId,
+        authorId = authorId,
+        authorUsername = authorUsername,
+        authorProfilePictureUrl = authorProfilePictureUrl,
+        text = text,
         createdAt = createdAt.toDate()
     )
 }

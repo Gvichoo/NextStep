@@ -23,7 +23,7 @@ class UserFollowRepositoryImpl @Inject constructor(
             val userFollowDto = UserFollowDto(
                 id = userFollowRef.id,
                 followerId = userId,
-                followedId = followedId,
+                followedUserId = followedId,
             )
             userFollowRef.set(userFollowDto)
 
@@ -36,7 +36,7 @@ class UserFollowRepositoryImpl @Inject constructor(
         return firebaseHelper.withUserIdFlow { userId ->
             val query = firestore.collection(USER_FOLLOW_COLLECTION_KEY)
                 .whereEqualTo(FIELD_FOLLOWER_ID, userId)
-                .whereEqualTo(FIELD_FOLLOWED_ID, followedId)
+                .whereEqualTo(FIELD_FOLLOWED_USER_ID, followedId)
                 .get()
                 .await()
 
@@ -48,6 +48,6 @@ class UserFollowRepositoryImpl @Inject constructor(
     private companion object {
         const val USER_FOLLOW_COLLECTION_KEY = "user_follows"
         const val FIELD_FOLLOWER_ID = "followerId"
-        const val FIELD_FOLLOWED_ID = "followedId"
+        const val FIELD_FOLLOWED_USER_ID = "followedUserId"
     }
 }

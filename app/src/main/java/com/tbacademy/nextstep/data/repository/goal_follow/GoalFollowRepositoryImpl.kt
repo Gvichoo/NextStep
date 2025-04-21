@@ -25,7 +25,7 @@ class GoalFollowRepositoryImpl @Inject constructor(
             val goalFollowDto = GoalFollowDto(
                 id = goalFollowRef.id,
                 followerId = userId,
-                followedId = followedId
+                followedGoalId = followedId,
             )
             goalFollowRef.set(goalFollowDto).await()
 
@@ -38,7 +38,7 @@ class GoalFollowRepositoryImpl @Inject constructor(
         return firebaseHelper.withUserIdFlow { userId ->
             val query = firestore.collection(GOAL_FOLLOW_COLLECTION_KEY)
                 .whereEqualTo(FIELD_FOLLOWER_ID, userId)
-                .whereEqualTo(FIELD_FOLLOWED_ID, followedId)
+                .whereEqualTo(FIELD_FOLLOWED_GOAL_ID, followedId)
                 .get()
                 .await()
 
@@ -50,6 +50,6 @@ class GoalFollowRepositoryImpl @Inject constructor(
     private companion object {
         const val GOAL_FOLLOW_COLLECTION_KEY = "goal_follows"
         const val FIELD_FOLLOWER_ID = "followerId"
-        const val FIELD_FOLLOWED_ID = "followedId"
+        const val FIELD_FOLLOWED_GOAL_ID = "followedGoalId"
     }
 }

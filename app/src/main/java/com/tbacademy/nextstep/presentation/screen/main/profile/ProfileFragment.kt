@@ -40,7 +40,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     btnFollow.isVisible = !state.isOwnProfile
                     btnBack.isVisible = !state.withBottomNav
 
-
                     if (!state.isUserFollowed) {
                         btnFollow.text = requireContext().getString(R.string.follow)
                     } else {

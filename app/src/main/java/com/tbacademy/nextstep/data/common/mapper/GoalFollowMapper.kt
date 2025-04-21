@@ -7,7 +7,7 @@ fun GoalFollowDto.toDomain(): GoalFollow {
     return GoalFollow(
         id = this.id,
         followerId = this.followerId,
-        followedId = this.followedId,
+        followedGoalId = this.followedGoalId,
         createdAt = this.createdAt.toDate()
     )
 }
