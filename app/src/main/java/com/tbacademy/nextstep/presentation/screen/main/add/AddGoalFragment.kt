@@ -63,6 +63,9 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         initCameraLauncher()
         setUpRecycler()
         bindWorkerResultObserver()
+
+
+
     }
 
 
@@ -118,13 +121,19 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         observeEffects()
         observeUiState()
 
+        collect(flow = addGoalViewModel.workStatus) {state ->
+            binding.apply {
+                loaderAddGoal.loaderContainer.isVisible = state.isLoading
+                setUIElementsEnabled(!state.isLoading)
+            }
+        }
     }
 
     private fun observeState() {
         collect(flow = addGoalViewModel.state) { state ->
             binding.apply {
                 loaderAddGoal.loaderContainer.isVisible = state.isLoading
-                overlayBlocker.isVisible = state.isLoading
+                setUIElementsEnabled(!state.isLoading)
 
                 tlGoalTitle.error = state.goalTitleErrorMessage?.let { getString(it) }
                 tlGoalDescription.error = state.goalDescriptionErrorMessage?.let { getString(it) }
@@ -136,6 +145,22 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                 btnCreateGoal.isEnabled = state.isCreateGoalEnabled
 
             }
+        }
+    }
+    private fun setUIElementsEnabled(isEnabled: Boolean) {
+        binding.apply {
+            // Disable or enable input fields, buttons, etc.
+            etGoalTitle.isEnabled = isEnabled
+            etGoalDescription.isEnabled = isEnabled
+            etTargetDate.isEnabled = isEnabled
+            etMetricTarget.isEnabled = isEnabled
+            etMetricUnit.isEnabled = isEnabled
+            btnCreateGoal.isEnabled = isEnabled
+            switchMetricBased.isEnabled = isEnabled
+            switchMileStones.isEnabled = isEnabled
+            btnSelectImage.isEnabled = isEnabled
+            btnCancelImage.isEnabled = isEnabled
+            // Add any other views that need to be disabled during loading
         }
     }
 
@@ -225,6 +250,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             }.show()
     }
 
+
     private fun checkCameraPermissionAndLaunch() {
         permissionLauncher.launch(android.Manifest.permission.CAMERA)
     }
@@ -243,6 +269,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             cameraLauncher.launch(uri)
         }
     }
+
 
 
     private fun initMediaPickerLauncher() {

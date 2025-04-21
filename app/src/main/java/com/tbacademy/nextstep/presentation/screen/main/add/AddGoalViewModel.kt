@@ -41,7 +41,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddGoalViewModel @Inject constructor(
-    private val createGoalUseCase: CreateGoalUseCase,
     private val validateTitleUseCase: ValidateAddGoalTitleUseCase,
     private val validateDescriptionUseCase: ValidateAddGoalDescriptionUseCase,
     private val validateDateUseCase: ValidateAddGoalDateUseCase,
@@ -76,9 +75,7 @@ class AddGoalViewModel @Inject constructor(
             is AddGoalEvent.GoalTitleChanged -> onTitleChanged(title = event.title)
 
             AddGoalEvent.OnCreateGoalBtnClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.NavToHomeFragment) }
-            AddGoalEvent.Submit -> {
-                submitAddGoalForm()
-            }
+            AddGoalEvent.Submit -> submitAddGoalForm()
             is AddGoalEvent.GoalDateChanged -> onDateChanged(date = event.date)
             is AddGoalEvent.MetricToggle -> updateUiState { this.copy(isMetricEnabled = event.enabled) }
             is AddGoalEvent.GoalMetricTargetChanged -> onMetricTargetChanged(metricTarget = event.metricTarget)
@@ -128,6 +125,7 @@ class AddGoalViewModel @Inject constructor(
         WorkManager.getInstance(application)
             .enqueueUniqueWork("writeUser", ExistingWorkPolicy.KEEP, worker)
 
+
         bindReportUploadWorkObserver()
 
     }
@@ -146,6 +144,7 @@ class AddGoalViewModel @Inject constructor(
                                     isLoading = false,
                                     uploadedSuccessfully = Unit
                                 )
+                                emitEffect(AddGoalEffect.NavToHomeFragment)
                             }
                             WorkInfo.State.FAILED -> {
                                 val errorMessage = workInfo.outputData.getString("error_message") ?: "Unknown error"
@@ -198,25 +197,27 @@ class AddGoalViewModel @Inject constructor(
                 imageUri = imageUri,
                 milestone = if (isMilestoneEnable) milestone else null
             )
-            createGoalUseCase(
 
-                goal = newGoal,
-            ).collect { result ->
-                when (result) {
-
-                    is Resource.Error ->
-                        emitEffect(AddGoalEffect.ShowError(result.error.toMessageRes()))
-
-                    is Resource.Loading ->
-                        updateState { copy(isLoading = result.loading) }
-
-                    is Resource.Success -> {
-                        updateState { copy(isSuccess = true) }
-                        writeUserData(goal = newGoal)
-                        emitEffect(AddGoalEffect.NavToHomeFragment)
-                    }
-                }
-            }
+            writeUserData(newGoal)
+//            createGoalUseCase(
+//
+//                goal = newGoal,
+//            ).collect { result ->
+//                when (result) {
+//
+//                    is Resource.Error ->
+//                        emitEffect(AddGoalEffect.ShowError(result.error.toMessageRes()))
+//
+//                    is Resource.Loading ->
+//                        updateState { copy(isLoading = result.loading) }
+//
+//                    is Resource.Success -> {
+//                        updateState { copy(isSuccess = true) }
+//                        writeUserData(goal = newGoal)
+//                        emitEffect(AddGoalEffect.NavToHomeFragment)
+//                    }
+//                }
+//            }
             Log.d("CREATE_GOAL", "GOAL: $newGoal")
         }
     }
