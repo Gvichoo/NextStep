@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onError
-import com.tbacademy.nextstep.domain.model.FollowType
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -36,8 +35,8 @@ class HomeViewModel @Inject constructor(
     private val createReactionUseCase: CreateReactionUseCase,
     private val updateReactionUseCase: UpdateReactionUseCase,
     private val deleteReactionUseCase: DeleteReactionUseCase,
-    private val createFollowUseCase: CreateFollowUseCase,
-    private val deleteFollowUseCase: DeleteFollowUseCase
+    private val createFollowUseCase: CreateGoalFollowUseCase,
+    private val deleteFollowUseCase: DeleteGoalFollowUseCase
 ) : BaseViewModel<HomeState, HomeEvent, HomeEffect, Unit>(
     initialState = HomeState(),
     initialUiState = Unit
@@ -176,12 +175,12 @@ class HomeViewModel @Inject constructor(
         val currentPosts = state.value.posts ?: return
         val updatedPosts = currentPosts.map { post ->
             if (post.id == postId) {
-                val newFollowState = if (post.isUserFollowing == null) {
+                val newFollowState = if (!post.isUserFollowing) {
                     createFollow(followedId = post.goalId)
-                    FollowType.GOAL
+                    true
                 } else {
                     deleteFollow(followedId = post.goalId)
-                    null
+                    false
                 }
                 post.copy(isUserFollowing = newFollowState)
             } else {
@@ -287,8 +286,7 @@ class HomeViewModel @Inject constructor(
     private fun createFollow(followedId: String) {
         viewModelScope.launch {
             createFollowUseCase(
-                followingId = followedId,
-                followType = FollowType.GOAL
+                followedId = followedId,
             ).collectLatest { resource ->
                 Log.d("FOLLOW_TEST_CREATE", "$resource")
             }
@@ -299,7 +297,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             deleteFollowUseCase(
                 followedId = followedId,
-                followType = FollowType.GOAL
             ).collectLatest { resource ->
                 Log.d("FOLLOW_TEST_DELETE", "$resource")
             }

@@ -4,12 +4,10 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
-import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.screen.main.home.model.FollowStatus
@@ -25,9 +23,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
-    private val createFollowUseCase: CreateFollowUseCase,
-    private val deleteFollowUseCase: DeleteFollowUseCase,
-    private val checkIsUserFollowedUseCase: CheckIsUserFollowedUseCase
+    private val createUserFollowUseCase: CreateUserFollowUseCase,
+    private val deleteUserFollowUseCase: DeleteUserFollowUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -54,41 +51,31 @@ class ProfileViewModel @Inject constructor(
                         updateState { this.copy(isOwnProfile = isOwnProfile) }
 
                         getUserInfo(userId = resolvedUserId)
-
-                        if (!isOwnProfile) {
-                            checkIsUserFollowedUseCase(followedId = resolvedUserId).collectLatest { resource ->
-                                resource.onSuccess { isFollowed ->
-                                    if (isFollowed) {
-                                        updateState { this.copy(isUserFollowed = FollowStatus.FOLLOWED) }
-                                    }
-                                }
-                            }
-                        }
                     }
             }
         }
     }
 
     private fun toggleFollowUser() {
-        val newFollowState = if (state.value.isUserFollowed == FollowStatus.TO_FOLLOW) {
+        val newFollowState = if (!state.value.isUserFollowed) {
             createFollow()
-            FollowStatus.FOLLOWED
+            true
         } else {
             deleteFollow()
-            FollowStatus.TO_FOLLOW
+            false
         }
+        updateState { this.copy(isUserFollowed = newFollowState) }
     }
 
 
     private fun createFollow() {
         viewModelScope.launch {
-            state.value.user?.let {
-                createFollowUseCase(
-                    followingId = it.uid,
-                    followType = FollowType.USER
+            state.value.user?.let { user ->
+                createUserFollowUseCase(
+                    followedId = user.uid,
                 ).collectLatest { resource ->
                     resource.onSuccess {
-                        updateState { copy(isUserFollowed = FollowStatus.FOLLOWED) }
+                        updateState { copy(isUserFollowed = true) }
                     }
                 }
             }
@@ -97,13 +84,12 @@ class ProfileViewModel @Inject constructor(
 
     private fun deleteFollow() {
         viewModelScope.launch {
-            state.value.user?.let {
-                deleteFollowUseCase(
-                    followedId = it.uid,
-                    followType = FollowType.USER
+            state.value.user?.let { user ->
+                deleteUserFollowUseCase(
+                    followedId = user.uid,
                 ).collectLatest { resource ->
                     resource.onSuccess {
-                        updateState { copy(isUserFollowed = FollowStatus.TO_FOLLOW) }
+                        updateState { copy(isUserFollowed = false) }
                     }
                 }
             }

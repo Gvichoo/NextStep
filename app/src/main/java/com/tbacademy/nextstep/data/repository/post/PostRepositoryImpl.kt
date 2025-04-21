@@ -7,7 +7,6 @@ import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
 import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper.Companion.SORT_CREATED_AT
 import com.tbacademy.nextstep.data.remote.dto.PostDto
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.domain.model.ReactionType
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
@@ -34,10 +33,10 @@ class PostRepositoryImpl @Inject constructor(
 
             val postIds = postDtos.map { it.id }
 
-            val (followedGoals, followedUsers) = getUserFollows(userId)
+            val followedGoals = getFollowedGoals(userId)
             val reactions = getUserReactions(userId, postIds)
 
-            mapPostDtos(postDtos, reactions, followedGoals, followedUsers, userId)
+            mapPostDtos(postDtos, reactions, followedGoals, userId)
         }
     }
 
@@ -45,9 +44,9 @@ class PostRepositoryImpl @Inject constructor(
         return firebaseHelper.withUserIdFlow { userId ->
 
             // Get followed goals and users
-            val (followedGoals, followedUsers) = getUserFollows(userId)
+            val followedGoals = getFollowedGoals(userId = userId)
 
-            if (followedGoals.isEmpty() && followedUsers.isEmpty()) {
+            if (followedGoals.isEmpty()) {
                 return@withUserIdFlow emptyList<Post>()
             }
 
@@ -59,9 +58,7 @@ class PostRepositoryImpl @Inject constructor(
 
             val filteredPosts = postQuery.documents.mapNotNull { doc ->
                 val postDto = doc.toObject(PostDto::class.java)?.copy(id = doc.id)
-                if (postDto != null &&
-                    (followedUsers.contains(postDto.authorId) || followedGoals.contains(postDto.goalId))
-                ) {
+                if (postDto != null && followedGoals.contains(postDto.goalId)) {
                     postDto
                 } else null
             }
@@ -69,29 +66,23 @@ class PostRepositoryImpl @Inject constructor(
             val postIds = filteredPosts.map { it.id }
             val reactions = getUserReactions(userId, postIds)
 
-            mapPostDtos(filteredPosts, reactions, followedGoals, followedUsers, userId)
+            mapPostDtos(
+                postDtos = filteredPosts,
+                reactions = reactions,
+                followedGoals = followedGoals,
+                userId = userId
+            )
         }
     }
 
 
-    private suspend fun getUserFollows(userId: String): Pair<Set<String>, Set<String>> {
-        val snapshot = firestore.collection("follows")
+    private suspend fun getFollowedGoals(userId: String): Set<String> {
+        val snapshot = firestore.collection("goal_follows")
             .whereEqualTo("followerId", userId)
             .get()
             .await()
 
-        val goals = mutableSetOf<String>()
-        val users = mutableSetOf<String>()
-
-        snapshot.documents.forEach { doc ->
-            val type = doc.getString("followType")
-            val id = doc.getString("followedId")
-            when (type) {
-                "GOAL" -> id?.let { goals.add(it) }
-                "USER" -> id?.let { users.add(it) }
-            }
-        }
-        return goals to users
+        return snapshot.documents.mapNotNull { it.getString("followedGoalId") }.toSet()
     }
 
     private suspend fun getUserReactions(
@@ -119,22 +110,17 @@ class PostRepositoryImpl @Inject constructor(
         postDtos: List<PostDto>,
         reactions: Map<String, ReactionType>,
         followedGoals: Set<String>,
-        followedUsers: Set<String>,
         userId: String
     ): List<Post> {
         return postDtos.map { postDto ->
             val userReaction = reactions[postDto.id]
-            val isFollowed = when {
-                followedGoals.contains(postDto.goalId) -> FollowType.GOAL
-                followedUsers.contains(postDto.authorId) -> FollowType.USER
-                else -> null
-            }
             val isOwnPost = postDto.authorId == userId
+            val isUserFollowing = followedGoals.contains(postDto.goalId)
 
             postDto.toDomain().copy(
                 userReaction = userReaction,
-                isUserFollowing = isFollowed,
-                isOwnPost = isOwnPost
+                isOwnPost = isOwnPost,
+                isUserFollowing = isUserFollowing
             )
         }
     }

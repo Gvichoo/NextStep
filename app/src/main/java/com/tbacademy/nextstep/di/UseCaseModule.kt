@@ -6,12 +6,10 @@ import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUerFollowedUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
@@ -32,6 +30,10 @@ import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStora
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
@@ -162,13 +164,19 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-    fun bindCreateFollowUseCase(impl: CreateFollowUseCaseImpl): CreateFollowUseCase
+    fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
 
     @Singleton
     @Binds
-    fun bindDeleteFollowUseCase(impl: DeleteFollowUseCaseImpl): DeleteFollowUseCase
+    fun bindDeleteGoalFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
 
     @Singleton
     @Binds
-    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
+    fun bindCreateUserFollowUseCase(impl: CreateUserFollowUseCaseImpl): CreateUserFollowUseCase
+
+    @Singleton
+    @Binds
+    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
+
 }

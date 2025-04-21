@@ -2,15 +2,9 @@ package com.tbacademy.nextstep.data.remote.dto
 
 import com.google.firebase.Timestamp
 
-data class FollowDto(
+data class GoalFollowDto(
     val id: String = "",
     val followerId: String = "",
-    val followType: FollowTypeDto = FollowTypeDto.USER,
-    val followedId: String = "",
+    val followedGoalId: String = "",
     val createdAt: Timestamp = Timestamp.now()
 )
-
-enum class FollowTypeDto {
-    USER,
-    GOAL
-}
