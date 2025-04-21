@@ -24,6 +24,11 @@ sealed interface AddGoalEvent {
     data class ImageSelected(val imageUri: Uri) : AddGoalEvent
     data object ImageCleared : AddGoalEvent
 
+    data object ResetBlockToNull: AddGoalEvent
+    data object ResetFailToNull: AddGoalEvent
+    data object ResetSuccessToNull: AddGoalEvent
+    data object ResetCancelToNull: AddGoalEvent
+
 
     data object Submit : AddGoalEvent
 
@@ -32,7 +37,7 @@ sealed interface AddGoalEvent {
     data class CreateGoal(
         val title: String,
         val description: String,
-        val goalDate: Date,
+        val goalDate: Long,
         val metricTarget: String,
         val metricUnit: String,
         val isMetricEnabled: Boolean,

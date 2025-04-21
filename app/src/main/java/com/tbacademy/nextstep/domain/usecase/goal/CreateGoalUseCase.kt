@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface CreateGoalUseCase {
-    suspend operator fun invoke(goal: Goal): Flow<Resource<Boolean>>
+     operator fun invoke(goal: Goal): Flow<Resource<Boolean>>
 }
 
 class CreateGoalUseCaseImpl @Inject constructor(
     private val goalRepository: GoalRepository
 ) : CreateGoalUseCase {
-    override suspend fun invoke(goal: Goal): Flow<Resource<Boolean>> {
+    override fun invoke(goal: Goal): Flow<Resource<Boolean>> {
         return goalRepository.createGoal(goal)
     }
 }

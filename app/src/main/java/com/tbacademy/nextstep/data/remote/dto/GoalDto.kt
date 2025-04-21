@@ -13,7 +13,7 @@ data class GoalDto(
     val metricTarget: String? = null,
     val metricUnit: String? = null,
     val targetDate: Timestamp,
-    val createdAt: Date = Date(),
+    val createdAt: Long = System.currentTimeMillis(),
     val imageUrl: String? = null,
-    val milestone : List<MilestoneItem>? = null
+    val milestone : List<MilestoneItem>? = emptyList()
 )

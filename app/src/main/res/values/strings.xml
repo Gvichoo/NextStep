@@ -60,4 +60,7 @@
     <string name="followed">✅ Followed</string>
 
 
+    <string name="goal_will_be_uploaded_in_background">Goal will be uploaded in the background when connection is available</string>
+
+
 </resources>
