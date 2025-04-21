@@ -2,6 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.add
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
@@ -256,17 +257,27 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     }
 
     private fun openCamera() {
+        // Use internal storage instead of cache
         val imageFile = File(
-            requireContext().externalCacheDir,
-            "camera_image_${System.currentTimeMillis()}.jpg"
-        )
+            requireContext().filesDir,  // Changed from externalCacheDir
+            "uploads/camera_${System.currentTimeMillis()}.jpg"
+        ).apply { parentFile?.mkdirs() }  // Create directories if needed
+
         cameraImageUri = FileProvider.getUriForFile(
             requireContext(),
             "${requireContext().packageName}.provider",
             imageFile
         )
+
         cameraImageUri?.let { uri ->
             cameraLauncher.launch(uri)
+        }
+    }
+
+    // Add this to delete temporary camera files when done
+    private fun deleteCameraFile() {
+        cameraImageUri?.path?.let { path ->
+            File(path).delete()
         }
     }
 
@@ -276,6 +287,12 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         pickMediaLauncher =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 uri?.let {
+                    // Add this critical permission line
+                    requireContext().contentResolver.takePersistableUriPermission(
+                        it,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+
                     addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(it))
                     binding.image.setImageURI(it)
                     binding.btnCancelImage.isEnabled = true
@@ -285,7 +302,9 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
 
     private fun setDeleteImageButtonListener() {
         binding.btnCancelImage.setOnClickListener {
+            // Clear both UI and backend
             binding.image.setImageDrawable(null)
+            deleteCameraFile()  // Add this
             addGoalViewModel.onEvent(AddGoalEvent.ImageCleared)
             binding.btnCancelImage.isEnabled = false
         }
