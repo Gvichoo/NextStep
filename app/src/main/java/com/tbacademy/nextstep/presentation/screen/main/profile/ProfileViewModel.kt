@@ -1,10 +1,13 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.screen.main.home.model.FollowStatus
@@ -20,6 +23,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
+    private val createUserFollowUseCase: CreateUserFollowUseCase,
+    private val deleteUserFollowUseCase: DeleteUserFollowUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -52,46 +57,43 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun toggleFollowUser() {
-        val newFollowState = if (state.value.isUserFollowed == FollowStatus.TO_FOLLOW) {
+        val newFollowState = if (!state.value.isUserFollowed) {
             createFollow()
-            FollowStatus.FOLLOWED
+            true
         } else {
             deleteFollow()
-            FollowStatus.TO_FOLLOW
+            false
         }
+        updateState { this.copy(isUserFollowed = newFollowState) }
     }
 
 
     private fun createFollow() {
-        TODO()
-//        viewModelScope.launch {
-//            state.value.user?.let {
-//                createFollowUseCase(
-//                    followingId = it.uid,
-//                    followType = FollowType.USER
-//                ).collectLatest { resource ->
-//                    resource.onSuccess {
-//                        updateState { copy(isUserFollowed = FollowStatus.FOLLOWED) }
-//                    }
-//                }
-//            }
-//        }
+        viewModelScope.launch {
+            state.value.user?.let { user ->
+                createUserFollowUseCase(
+                    followedId = user.uid,
+                ).collectLatest { resource ->
+                    resource.onSuccess {
+                        updateState { copy(isUserFollowed = true) }
+                    }
+                }
+            }
+        }
     }
 
     private fun deleteFollow() {
-        TODO()
-//        viewModelScope.launch {
-//            state.value.user?.let {
-//                deleteFollowUseCase(
-//                    followedId = it.uid,
-//                    followType = FollowType.USER
-//                ).collectLatest { resource ->
-//                    resource.onSuccess {
-//                        updateState { copy(isUserFollowed = FollowStatus.TO_FOLLOW) }
-//                    }
-//                }
-//            }
-//        }
+        viewModelScope.launch {
+            state.value.user?.let { user ->
+                deleteUserFollowUseCase(
+                    followedId = user.uid,
+                ).collectLatest { resource ->
+                    resource.onSuccess {
+                        updateState { copy(isUserFollowed = false) }
+                    }
+                }
+            }
+        }
     }
 
     // Api Calls

@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.goal_follow
 
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.repository.follow.GoalFollowRepository
+import com.tbacademy.nextstep.domain.repository.goal_follow.GoalFollowRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

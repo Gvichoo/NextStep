@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
@@ -37,8 +38,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 if (state.user != null) {
                     tvUsername.text = state.user.username
                     btnFollow.isVisible = !state.isOwnProfile
-                    btnFollow.text = requireContext().getString(state.isUserFollowed.textRes)
                     btnBack.isVisible = !state.withBottomNav
+
+
+                    if (!state.isUserFollowed) {
+                        btnFollow.text = requireContext().getString(R.string.follow)
+                    } else {
+                        btnFollow.text = requireContext().getString(R.string.followed)
+                    }
                 }
             }
             Log.d("PROFILE_STATE", "$state")

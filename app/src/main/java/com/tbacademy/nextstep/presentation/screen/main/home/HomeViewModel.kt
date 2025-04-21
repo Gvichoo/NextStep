@@ -286,7 +286,7 @@ class HomeViewModel @Inject constructor(
     private fun createFollow(followedId: String) {
         viewModelScope.launch {
             createFollowUseCase(
-                followingId = followedId,
+                followedId = followedId,
             ).collectLatest { resource ->
                 Log.d("FOLLOW_TEST_CREATE", "$resource")
             }

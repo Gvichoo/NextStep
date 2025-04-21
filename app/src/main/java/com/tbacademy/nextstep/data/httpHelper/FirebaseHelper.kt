@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.httpHelper
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore

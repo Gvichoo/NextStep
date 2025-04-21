@@ -2,7 +2,7 @@ package com.tbacademy.nextstep.di
 
 import com.tbacademy.nextstep.data.repository.auth.AuthRepositoryImpl
 import com.tbacademy.nextstep.data.repository.comment.CommentRepositoryImpl
-import com.tbacademy.nextstep.data.repository.follow.GoalFollowRepositoryImpl
+import com.tbacademy.nextstep.data.repository.goal_follow.GoalFollowRepositoryImpl
 import com.tbacademy.nextstep.data.repository.goal.GoalRepositoryImpl
 import com.tbacademy.nextstep.data.repository.login.LoginRepositoryImpl
 import com.tbacademy.nextstep.data.repository.post.PostRepositoryImpl
@@ -10,9 +10,10 @@ import com.tbacademy.nextstep.data.repository.reaction.ReactionRepositoryImpl
 import com.tbacademy.nextstep.data.repository.register.RegisterRepositoryImpl
 import com.tbacademy.nextstep.data.repository.user.UserRepositoryImpl
 import com.tbacademy.nextstep.data.repository.userSession.UserSessionManagerRepositoryImpl
+import com.tbacademy.nextstep.data.repository.user_follow.UserFollowRepositoryImpl
 import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
 import com.tbacademy.nextstep.domain.repository.comment.CommentRepository
-import com.tbacademy.nextstep.domain.repository.follow.GoalFollowRepository
+import com.tbacademy.nextstep.domain.repository.goal_follow.GoalFollowRepository
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
@@ -20,6 +21,7 @@ import com.tbacademy.nextstep.domain.repository.reaction.ReactionRepository
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
 import com.tbacademy.nextstep.domain.repository.user.UserRepository
 import com.tbacademy.nextstep.domain.repository.userSession.UserSessionManagerRepository
+import com.tbacademy.nextstep.domain.repository.user_follow.UserFollowRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -68,5 +70,9 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindFollowRepository(impl: GoalFollowRepositoryImpl): GoalFollowRepository
+    abstract fun bindGoalFollowRepository(impl: GoalFollowRepositoryImpl): GoalFollowRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindUserFollowRepository(impl: UserFollowRepositoryImpl): UserFollowRepository
 }

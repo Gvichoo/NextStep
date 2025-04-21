@@ -30,6 +30,10 @@ import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStora
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
@@ -160,9 +164,19 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-    fun bindCreateFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
+    fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
 
     @Singleton
     @Binds
-    fun bindDeleteFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
+    fun bindDeleteGoalFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
+
+    @Singleton
+    @Binds
+    fun bindCreateUserFollowUseCase(impl: CreateUserFollowUseCaseImpl): CreateUserFollowUseCase
+
+    @Singleton
+    @Binds
+    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
+
 }
