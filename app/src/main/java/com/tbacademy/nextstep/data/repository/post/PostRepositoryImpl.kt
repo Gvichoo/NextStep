@@ -7,7 +7,6 @@ import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
 import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper.Companion.SORT_CREATED_AT
 import com.tbacademy.nextstep.data.remote.dto.PostDto
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.domain.model.ReactionType
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
@@ -124,16 +123,10 @@ class PostRepositoryImpl @Inject constructor(
     ): List<Post> {
         return postDtos.map { postDto ->
             val userReaction = reactions[postDto.id]
-            val isFollowed = when {
-                followedGoals.contains(postDto.goalId) -> FollowType.GOAL
-                followedUsers.contains(postDto.authorId) -> FollowType.USER
-                else -> null
-            }
             val isOwnPost = postDto.authorId == userId
 
             postDto.toDomain().copy(
                 userReaction = userReaction,
-                isUserFollowing = isFollowed,
                 isOwnPost = isOwnPost
             )
         }

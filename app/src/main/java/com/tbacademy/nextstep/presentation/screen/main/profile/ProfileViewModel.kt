@@ -1,14 +1,9 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
-import com.tbacademy.nextstep.domain.model.FollowType
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
@@ -25,9 +20,6 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
-    private val createFollowUseCase: CreateFollowUseCase,
-    private val deleteFollowUseCase: DeleteFollowUseCase,
-    private val checkIsUserFollowedUseCase: CheckIsUserFollowedUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -54,16 +46,6 @@ class ProfileViewModel @Inject constructor(
                         updateState { this.copy(isOwnProfile = isOwnProfile) }
 
                         getUserInfo(userId = resolvedUserId)
-
-                        if (!isOwnProfile) {
-                            checkIsUserFollowedUseCase(followedId = resolvedUserId).collectLatest { resource ->
-                                resource.onSuccess { isFollowed ->
-                                    if (isFollowed) {
-                                        updateState { this.copy(isUserFollowed = FollowStatus.FOLLOWED) }
-                                    }
-                                }
-                            }
-                        }
                     }
             }
         }
@@ -81,33 +63,35 @@ class ProfileViewModel @Inject constructor(
 
 
     private fun createFollow() {
-        viewModelScope.launch {
-            state.value.user?.let {
-                createFollowUseCase(
-                    followingId = it.uid,
-                    followType = FollowType.USER
-                ).collectLatest { resource ->
-                    resource.onSuccess {
-                        updateState { copy(isUserFollowed = FollowStatus.FOLLOWED) }
-                    }
-                }
-            }
-        }
+        TODO()
+//        viewModelScope.launch {
+//            state.value.user?.let {
+//                createFollowUseCase(
+//                    followingId = it.uid,
+//                    followType = FollowType.USER
+//                ).collectLatest { resource ->
+//                    resource.onSuccess {
+//                        updateState { copy(isUserFollowed = FollowStatus.FOLLOWED) }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun deleteFollow() {
-        viewModelScope.launch {
-            state.value.user?.let {
-                deleteFollowUseCase(
-                    followedId = it.uid,
-                    followType = FollowType.USER
-                ).collectLatest { resource ->
-                    resource.onSuccess {
-                        updateState { copy(isUserFollowed = FollowStatus.TO_FOLLOW) }
-                    }
-                }
-            }
-        }
+        TODO()
+//        viewModelScope.launch {
+//            state.value.user?.let {
+//                deleteFollowUseCase(
+//                    followedId = it.uid,
+//                    followType = FollowType.USER
+//                ).collectLatest { resource ->
+//                    resource.onSuccess {
+//                        updateState { copy(isUserFollowed = FollowStatus.TO_FOLLOW) }
+//                    }
+//                }
+//            }
+//        }
     }
 
     // Api Calls
