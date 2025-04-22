@@ -187,13 +187,17 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
 
-    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
+//    @Singleton
+//    @Binds
+//    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
 
     @Singleton
     @Binds
-    fun bindImageValidator(impl : ImageValidatorImpl) : ImageValidator
+    fun bindImageValidator(impl: ImageValidatorImpl): ImageValidator
 
-    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
+
 
 }
