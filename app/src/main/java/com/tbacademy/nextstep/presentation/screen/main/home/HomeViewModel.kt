@@ -65,6 +65,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.UserSelected -> onUserSelected(userId = event.userId)
             is HomeEvent.FeedStateSelected -> handleFeedStateChanged(event.feedState)
+            is HomeEvent.StartSearch -> onStartSearch()
         }
     }
 
@@ -91,6 +92,12 @@ class HomeViewModel @Inject constructor(
     private fun onUserSelected(userId: String) {
         viewModelScope.launch {
             emitEffect(HomeEffect.NavigateToUserProfile(userId = userId))
+        }
+    }
+
+    private fun onStartSearch() {
+        viewModelScope.launch {
+            emitEffect(HomeEffect.NavigateToUserSearch)
         }
     }
 

@@ -24,6 +24,8 @@ import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
@@ -160,6 +162,10 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
+
+    @Singleton
+    @Binds
     fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
 
     @Singleton
@@ -177,6 +183,4 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
-
-
 }

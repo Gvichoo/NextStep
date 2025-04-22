@@ -74,6 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     override fun listeners() {
         feedTypeToggleListener()
+        searchBtnListener()
     }
 
     override fun observers() {
@@ -84,7 +85,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun observeState() {
         collectLatest(flow = homeViewModel.state) { state ->
                 postsAdapter.submitList(state.posts)
-            binding.pbPosts.isVisible = state.isLoading
+            binding.pbPosts.isVisible = state.isLoading && state.posts.isNullOrEmpty()
 
             Log.d("HOME_STATE", "$state")
         }
@@ -100,6 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 )
 
                 is HomeEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
+                is HomeEffect.NavigateToUserSearch -> navigateToSearch()
             }
         }
     }
@@ -120,6 +122,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+    private fun searchBtnListener() {
+        binding.btnSearch.setOnClickListener {
+            homeViewModel.onEvent(HomeEvent.StartSearch)
+        }
+    }
+
     private fun openCommentsBottomSheet(postId: String, typeActive: Boolean) {
         val commentsSheet = CommentsSheetFragment()
         commentsSheet.arguments = Bundle().apply {
@@ -133,6 +141,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
             userId = userId
         )
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    }
+
+    private fun navigateToSearch() {
+        val action = MainFragmentDirections.actionMainFragmentToUserSearchFragment()
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
 

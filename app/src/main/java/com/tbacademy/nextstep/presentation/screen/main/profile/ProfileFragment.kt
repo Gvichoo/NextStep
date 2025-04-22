@@ -8,6 +8,7 @@ import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
+import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +28,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun observers() {
         observeState()
+    }
+
+    private fun observeEffect() {
+        collectLatest(flow = profileViewModel.effects) { effect ->
+            when (effect) {
+                is ProfileEffect.NavigateBack -> findNavController().navigateUp()
+            }
+        }
     }
 
     private fun observeState() {
@@ -53,7 +62,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun setOnBackBtnListener() {
         binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
+            profileViewModel.onEvent(ProfileEvent.BackRequest)
         }
     }
 

@@ -1,6 +1,5 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
@@ -10,7 +9,6 @@ import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
-import com.tbacademy.nextstep.presentation.screen.main.home.model.FollowStatus
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
 import com.tbacademy.nextstep.presentation.screen.main.profile.state.ProfileState
@@ -33,6 +31,7 @@ class ProfileViewModel @Inject constructor(
         when (event) {
             is ProfileEvent.SetProfileState -> setProfileInfo(userId = event.userId)
             is ProfileEvent.ToggleFollowUser -> toggleFollowUser()
+            is ProfileEvent.BackRequest -> onBackRequest()
         }
     }
 
@@ -65,6 +64,12 @@ class ProfileViewModel @Inject constructor(
             false
         }
         updateState { this.copy(isUserFollowed = newFollowState) }
+    }
+
+    private fun onBackRequest() {
+        viewModelScope.launch {
+            emitEffect(effect = ProfileEffect.NavigateBack)
+        }
     }
 
 
