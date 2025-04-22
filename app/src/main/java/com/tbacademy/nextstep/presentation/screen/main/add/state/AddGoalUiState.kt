@@ -23,7 +23,11 @@ data class AddGoalUiState (
     val uploadedSuccessfully:Unit? = null,
     val failedMessage:String? = null,
     val blocked:Unit? = null,
-    val wasCanceled:Unit? = null
+    val wasCanceled:Unit? = null,
+
+
+
+    val goalImageErrorMessage: Int? = null
 
 )
 
