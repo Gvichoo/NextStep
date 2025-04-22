@@ -28,6 +28,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun observers() {
         observeState()
+        observeEffect()
     }
 
     private fun observeEffect() {

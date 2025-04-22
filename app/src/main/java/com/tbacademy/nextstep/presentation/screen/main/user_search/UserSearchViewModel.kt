@@ -26,8 +26,8 @@ class UserSearchViewModel @Inject constructor(
     override fun onEvent(event: UserSearchEvent) {
         when (event) {
             is UserSearchEvent.QueryChanged -> onQueryChange(query = event.value)
-            is UserSearchEvent.ClearSearch -> {}
-            is UserSearchEvent.BackRequest -> {}
+            is UserSearchEvent.BackRequest -> onBackRequest()
+            is UserSearchEvent.UserSelected -> onUserSelected(userId = event.userId)
         }
     }
 
@@ -36,6 +36,18 @@ class UserSearchViewModel @Inject constructor(
     private fun onQueryChange(query: String) {
         updateState { this.copy(searchQuery = query) }
         debounceSearch(query = query)
+    }
+
+    private fun onUserSelected(userId: String) {
+        viewModelScope.launch {
+            emitEffect(UserSearchEffect.NavigateToProfile(userId = userId))
+        }
+    }
+
+    private fun onBackRequest() {
+        viewModelScope.launch {
+            emitEffect(UserSearchEffect.NavigateBack)
+        }
     }
 
     private fun debounceSearch(query: String) {

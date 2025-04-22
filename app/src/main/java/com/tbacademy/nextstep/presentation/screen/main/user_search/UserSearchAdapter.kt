@@ -19,7 +19,9 @@ class UserDiffUtil: DiffUtil.ItemCallback<UserPresentation>() {
     }
 }
 
-class UserSearchAdapter: ListAdapter<UserPresentation,  UserSearchAdapter.UserViewHolder>(UserDiffUtil()) {
+class UserSearchAdapter(
+    private val onUserClicked: (userId: String) -> Unit
+): ListAdapter<UserPresentation,  UserSearchAdapter.UserViewHolder>(UserDiffUtil()) {
     inner class UserViewHolder(private val binding: ItemSearchUserBinding):
             RecyclerView.ViewHolder(binding.root) {
                 fun onBind(user: UserPresentation) {
@@ -27,6 +29,10 @@ class UserSearchAdapter: ListAdapter<UserPresentation,  UserSearchAdapter.UserVi
                         tvUsername.text = user.username
                         user.profilePictureUrl?.let {
                             ivProfile.loadImagesGlide(url = it)
+                        }
+
+                        root.setOnClickListener {
+                            onUserClicked(user.id)
                         }
                     }
                 }

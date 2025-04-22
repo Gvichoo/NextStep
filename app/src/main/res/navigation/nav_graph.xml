@@ -70,6 +70,10 @@
         android:id="@+id/userSearchFragment"
         android:name="com.tbacademy.nextstep.presentation.screen.main.user_search.UserSearchFragment"
         android:label="fragment_user_search"
-        tools:layout="@layout/fragment_user_search" />
+        tools:layout="@layout/fragment_user_search" >
+        <action
+            android:id="@+id/action_userSearchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
 </navigation>

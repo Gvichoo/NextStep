@@ -1,6 +1,5 @@
 package com.tbacademy.nextstep.data.repository.user
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.common.mapper.toDomain
@@ -22,7 +21,6 @@ class UserRepositoryImpl @Inject constructor(
     override fun getUserInfo(userId: String): Flow<Resource<User>> {
         return flow {
             emit(Resource.Loading(loading = true))
-
             try {
                 val userSnapshot = firestore.collection(USER_COLLECTION_KEY)
                     .document(userId)
