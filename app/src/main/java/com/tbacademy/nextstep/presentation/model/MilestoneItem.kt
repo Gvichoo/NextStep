@@ -7,5 +7,5 @@ data class MilestoneItem(
     var text: String,
     val errorMessage: Int? = null,
     val achieved: Boolean = false,
-    val achievedAt: Timestamp? = null,
+    val achievedAt: Timestamp? = null
 )
