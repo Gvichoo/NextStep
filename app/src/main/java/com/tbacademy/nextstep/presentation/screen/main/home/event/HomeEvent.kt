@@ -14,4 +14,7 @@ sealed interface HomeEvent {
     data class OpenPostComments(val postId: String, val typeActive: Boolean = false) : HomeEvent
     data class UserSelected(val userId: String) : HomeEvent
     data class FeedStateSelected(val feedState: FeedState) : HomeEvent
+    data class OpenMilestone(val goalId: String) : HomeEvent
+
+
 }

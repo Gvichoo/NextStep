@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.tbacademy.nextstep.data.common.mapper.toApiError
+import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.common.mapper.toDto
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.domain.core.ApiError
@@ -70,5 +71,31 @@ class GoalRepositoryImpl @Inject constructor(
             emit(Resource.Loading(loading = false))
         }
     }
+
+    override fun getGoalById(goalId: String): Flow<Resource<Goal>> {
+        return flow {
+            emit(Resource.Loading(true))
+            try {
+                val snapshot = firestore.collection(GOAL_COLLECTION_KEY).document(goalId).get().await()
+                val goalDto = snapshot.toObject(GoalDto::class.java)
+
+                if (goalDto != null) {
+                    emit(Resource.Success(goalDto.toDomain()))
+                } else {
+                    emit(Resource.Error(ApiError.NotFound))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(e.toApiError()))
+            } finally {
+                emit(Resource.Loading(false))
+            }
+        }
+    }
+
+    private companion object {
+        const val GOAL_COLLECTION_KEY = "goals"
+    }
 }
+
+
 

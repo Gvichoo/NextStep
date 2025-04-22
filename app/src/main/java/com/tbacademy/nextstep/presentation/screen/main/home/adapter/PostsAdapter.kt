@@ -66,6 +66,7 @@ class PostsAdapter(
     private val commentsIconClicked: (postId: String) -> Unit,
     private val followClicked: (postId: String) -> Unit,
     private val userClicked: (userId: String) -> Unit,
+    private val onMilestoneClicked: (postId: String) -> Unit
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     companion object {
@@ -159,6 +160,12 @@ class PostsAdapter(
 
                 tvAuthor.setOnClickListener {
                     userClicked(post.authorId)
+                }
+
+                // Milestone
+
+                btnSeeMilestones.setOnClickListener{
+                    onMilestoneClicked(post.id)
                 }
             }
         }

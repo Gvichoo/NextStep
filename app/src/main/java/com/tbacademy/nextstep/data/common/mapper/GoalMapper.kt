@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.common.mapper
 
+import android.net.Uri
 import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.domain.model.Goal
@@ -18,3 +19,19 @@ fun Goal.toDto(): GoalDto {
         milestone = milestone
     )
 }
+
+fun GoalDto.toDomain(): Goal {
+    return Goal(
+        id = id,
+        title = title,
+        description = description,
+        targetDate = targetDate.seconds * 1000,
+        metricUnit = metricUnit,
+        metricTarget = metricTarget,
+        createdAt = createdAt,
+        imageUri = Uri.parse(imageUrl),
+        milestone = milestone ?: emptyList()
+    )
+}
+
+

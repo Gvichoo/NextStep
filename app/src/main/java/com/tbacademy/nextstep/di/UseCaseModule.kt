@@ -12,6 +12,8 @@ import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goalId.GetGoalIdUseCase
+import com.tbacademy.nextstep.domain.usecase.goalId.GetGoalIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -197,7 +199,9 @@ interface UseCaseModule {
     @Binds
     fun bindImageValidator(impl: ImageValidatorImpl): ImageValidator
 
-
+    @Singleton
+    @Binds
+    fun bindGetGoalIdUseCase(impl: GetGoalIdUseCaseImpl): GetGoalIdUseCase
 
 
 }
