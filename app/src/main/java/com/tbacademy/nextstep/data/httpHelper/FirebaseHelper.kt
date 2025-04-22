@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.httpHelper
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +30,19 @@ class FirebaseHelper @Inject constructor(
             } catch (e: Exception) {
                 emit(Resource.Error(e.toApiError()))
             }
+        }
+        emit(Resource.Loading(false))
+    }
+
+    fun <T> safeFlowResource(
+        action: suspend () -> T
+    ): Flow<Resource<T>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val result = action()
+            emit(Resource.Success(result))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
         }
         emit(Resource.Loading(false))
     }

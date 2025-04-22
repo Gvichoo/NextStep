@@ -6,12 +6,10 @@ import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUerFollowedUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.CheckIsUserFollowedUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.CreateFollowUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.follow.DeleteFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
@@ -26,14 +24,23 @@ import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
 import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCaseImpl
+
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidatorImpl
+
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCaseImpl
+
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
@@ -160,21 +167,33 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
+
+    @Singleton
+    @Binds
     fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
 
     @Singleton
     @Binds
-    fun bindCreateFollowUseCase(impl: CreateFollowUseCaseImpl): CreateFollowUseCase
+    fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
 
     @Singleton
     @Binds
-    fun bindDeleteFollowUseCase(impl: DeleteFollowUseCaseImpl): DeleteFollowUseCase
+    fun bindDeleteGoalFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
 
     @Singleton
     @Binds
+    fun bindCreateUserFollowUseCase(impl: CreateUserFollowUseCaseImpl): CreateUserFollowUseCase
+
+    @Singleton
+    @Binds
+
     fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
 
     @Singleton
     @Binds
     fun bindImageValidator(impl : ImageValidatorImpl) : ImageValidator
+
+    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
 }

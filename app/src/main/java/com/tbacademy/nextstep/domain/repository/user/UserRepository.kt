@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     fun getUserInfo(userId: String): Flow<Resource<User>>
+    fun searchUsers(query: String): Flow<Resource<List<User>>>
 }

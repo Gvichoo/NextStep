@@ -2,16 +2,9 @@ package com.tbacademy.nextstep.domain.model
 
 import java.util.Date
 
-
-data class Follow(
+data class UserFollow(
     val id: String,
     val followerId: String,
-    val followType: FollowType,
-    val followedId: String,
+    val followedUserId: String,
     val createdAt: Date
 )
-
-enum class FollowType {
-    USER,
-    GOAL
-}

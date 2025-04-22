@@ -5,6 +5,19 @@ import com.tbacademy.nextstep.domain.model.User
 
 fun UserDto.toDomain(): User {
     return User(
-        uid, email, username, profilePictureUrl
+        uid = uid,
+        email = email,
+        username = username,
+        profilePictureUrl = profilePictureUrl
+    )
+}
+
+fun User.toDto(): UserDto {
+    return UserDto(
+        uid = uid,
+        email = email,
+        username = username,
+        usernameLower = username.lowercase(),
+        profilePictureUrl = profilePictureUrl
     )
 }
