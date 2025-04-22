@@ -1,51 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.screen.main.home.HomeFragment">
 
-    <!-- Top collapsing container -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/pd_screen_horizontal"
         android:backgroundTint="@color/md_theme_surface"
         android:fitsSystemWindows="true"
-        app:elevation="0dp"
-        >
+        android:paddingHorizontal="@dimen/pd_screen_horizontal"
+        app:elevation="0dp">
 
-        <!-- Post Type Switcher -->
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/postTypeToggleGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:layout_gravity="start"
-            app:singleSelection="true"
-            app:checkedButton="@+id/btnGlobal"
-            app:selectionRequired="true"
-            app:layout_scrollFlags="scroll"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:paddingVertical="@dimen/distance_xs"
+            app:layout_scrollFlags="scroll|enterAlways"
+            android:layout_height="wrap_content">
 
-            >
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGlobal"
-                style="@style/Widget.MyApp.Button.Segmented"
+            <!-- Post Type Switcher -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/postTypeToggleGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Global" />
+                android:padding="4dp"
+                app:checkedButton="@+id/btnGlobal"
+                app:selectionRequired="true"
+                app:singleSelection="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFollowed"
-                style="@style/Widget.MyApp.Button.Segmented"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Following" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGlobal"
+                    style="@style/Widget.MyApp.Button.Segmented"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Global" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFollowed"
+                    style="@style/Widget.MyApp.Button.Segmented"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Following" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Search Button -->
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnSearch"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:src="@drawable/ic_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- RecyclerView with scroll behavior -->
@@ -66,5 +84,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

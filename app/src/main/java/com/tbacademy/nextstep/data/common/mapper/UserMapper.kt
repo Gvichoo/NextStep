@@ -11,3 +11,13 @@ fun UserDto.toDomain(): User {
         profilePictureUrl = profilePictureUrl
     )
 }
+
+fun User.toDto(): UserDto {
+    return UserDto(
+        uid = uid,
+        email = email,
+        username = username,
+        usernameLower = username.lowercase(),
+        profilePictureUrl = profilePictureUrl
+    )
+}

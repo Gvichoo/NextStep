@@ -3,9 +3,9 @@ package com.tbacademy.nextstep.data.repository.register
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toApiError
+import com.tbacademy.nextstep.data.remote.dto.UserDto
 import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.model.User
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -35,7 +35,7 @@ class RegisterRepositoryImpl @Inject constructor(
             val uid = authResult.user?.uid
 
             if (uid != null) {
-                val user = User(uid = uid, email = email, username = nickname)
+                val user = UserDto(uid = uid, email = email, username = nickname)
 
                 fireStore.collection("users").document(uid).set(user)
 

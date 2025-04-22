@@ -34,6 +34,19 @@ class FirebaseHelper @Inject constructor(
         emit(Resource.Loading(false))
     }
 
+    fun <T> safeFlowResource(
+        action: suspend () -> T
+    ): Flow<Resource<T>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val result = action()
+            emit(Resource.Success(result))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        }
+        emit(Resource.Loading(false))
+    }
+
 
     fun <T> withUserSnapshotFlow(
         action: suspend (userId: String, userSnapshot: DocumentSnapshot) -> T

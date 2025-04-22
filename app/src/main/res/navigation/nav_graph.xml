@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_userSearchFragment"
+            app:destination="@id/userSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -62,6 +65,15 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <argument android:name="userId" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSearchFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.user_search.UserSearchFragment"
+        android:label="fragment_user_search"
+        tools:layout="@layout/fragment_user_search" >
+        <action
+            android:id="@+id/action_userSearchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
 </navigation>
