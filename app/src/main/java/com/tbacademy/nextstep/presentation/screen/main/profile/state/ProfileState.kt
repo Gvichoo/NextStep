@@ -6,5 +6,6 @@ data class ProfileState(
     val withBottomNav: Boolean = false,
     val user: UserPresentation? = null,
     val isLoading: Boolean = false,
+    val isImageLoading: Boolean = false,
     val errorRes: Int? = null
 )

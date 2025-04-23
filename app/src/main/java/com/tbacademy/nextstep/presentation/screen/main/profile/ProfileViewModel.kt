@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.ApiError
@@ -7,6 +8,7 @@ import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
@@ -25,7 +27,8 @@ class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
-    private val deleteUserFollowUseCase: DeleteUserFollowUseCase
+    private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
+    private val updateUserImageUseCase: UpdateUserImageUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -35,6 +38,10 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.SetProfileState -> setProfileInfo(userId = event.userId)
             is ProfileEvent.ToggleFollowUser -> toggleFollowUser()
             is ProfileEvent.BackRequest -> onBackRequest()
+            is ProfileEvent.UpdateImage -> onUpdateImage()
+            is ProfileEvent.CameraSelected -> onCameraSelected()
+            is ProfileEvent.GallerySelected -> onGallerySelected()
+            is ProfileEvent.ImageSelected -> updateUserImage(imageUri = event.imageUri)
         }
     }
 
@@ -67,6 +74,24 @@ class ProfileViewModel @Inject constructor(
     private fun onBackRequest() {
         viewModelScope.launch {
             emitEffect(effect = ProfileEffect.NavigateBack)
+        }
+    }
+
+    private fun onUpdateImage() {
+        viewModelScope.launch {
+            emitEffect(effect = ProfileEffect.ShowUpdateImageDialog)
+        }
+    }
+
+    private fun onCameraSelected() {
+        viewModelScope.launch {
+            emitEffect(effect = ProfileEffect.LaunchCameraPicker)
+        }
+    }
+
+    private fun onGallerySelected() {
+        viewModelScope.launch {
+            emitEffect(effect = ProfileEffect.LaunchMediaPicker)
         }
     }
 
@@ -109,6 +134,22 @@ class ProfileViewModel @Inject constructor(
                         Log.d("USER_STATE", "${resource.data.toPresentation()}")
                         this.copy(user = resource.data.toPresentation()) }
                     is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
+                }
+            }
+        }
+    }
+
+    private fun updateUserImage(imageUri: Uri) {
+        viewModelScope.launch {
+            state.value.user?.let { user ->
+                updateUserImageUseCase(imageUri = imageUri).collectLatest { resource ->
+                    when (resource) {
+                        is Resource.Error -> {
+                            emitEffect(ProfileEffect.ShowErrorMessage(errorRes = resource.error.toMessageRes()))
+                        }
+                        is Resource.Success -> updateState { this.copy(user = user.copy(profilePictureUrl = resource.data)) }
+                        is Resource.Loading -> updateState { this.copy(isImageLoading = resource.loading) }
+                    }
                 }
             }
         }

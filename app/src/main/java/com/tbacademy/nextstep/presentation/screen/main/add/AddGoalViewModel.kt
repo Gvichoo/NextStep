@@ -163,9 +163,6 @@ class AddGoalViewModel @Inject constructor(
 
     }
 
-
-
-
     private fun createGoal(
         title: String,
         description: String,

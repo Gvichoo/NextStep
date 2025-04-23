@@ -26,6 +26,8 @@ import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
@@ -163,6 +165,10 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
+
+    @Singleton
+    @Binds
+    fun bindUpdateUserImageUseCase(impl: UpdateUserImageUseCaseImpl): UpdateUserImageUseCase
 
     @Singleton
     @Binds
