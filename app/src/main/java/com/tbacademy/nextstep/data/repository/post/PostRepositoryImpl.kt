@@ -3,8 +3,8 @@ package com.tbacademy.nextstep.data.repository.post
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.tbacademy.nextstep.data.common.mapper.toDomain
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper.Companion.SORT_CREATED_AT
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse.Companion.SORT_CREATED_AT
 import com.tbacademy.nextstep.data.remote.dto.PostDto
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Post
@@ -16,11 +16,11 @@ import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseHelper: FirebaseHelper
+    private val firebaseHelper: HandleResponse
 ) : PostRepository {
 
     override suspend fun getGlobalPosts(): Flow<Resource<List<Post>>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
 
             val postSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
                 .orderBy(SORT_CREATED_AT, Query.Direction.DESCENDING)
@@ -41,13 +41,13 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFollowedPosts(): Flow<Resource<List<Post>>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
 
             // Get followed goals and users
             val followedGoals = getFollowedGoals(userId = userId)
 
             if (followedGoals.isEmpty()) {
-                return@withUserIdFlow emptyList<Post>()
+                return@safeApiCallWithUserId emptyList<Post>()
             }
 
             // Query posts where authorId or goalId matches followed IDs

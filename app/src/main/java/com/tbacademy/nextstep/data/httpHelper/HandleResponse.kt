@@ -1,31 +1,32 @@
 package com.tbacademy.nextstep.data.httpHelper
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class FirebaseHelper @Inject constructor(
+class HandleResponse @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val authManager: AuthManager,
     private val firestore: FirebaseFirestore
 ) {
-    fun <T> withUserIdFlow(
+    fun <T> safeApiCallWithUserId(
         action: suspend (userId: String) -> T
     ): Flow<Resource<T>> = flow {
         emit(Resource.Loading(true))
-        val user = firebaseAuth.currentUser
-        if (user == null) {
+        val userId = authManager.getCurrentUserId()
+        if (userId == null) {
             emit(Resource.Error(ApiError.Unauthorized))
         } else {
             try {
-                val result = action(user.uid)
+                val result = action(userId)
                 emit(Resource.Success(result))
             } catch (e: Exception) {
                 emit(Resource.Error(e.toApiError()))
@@ -34,7 +35,7 @@ class FirebaseHelper @Inject constructor(
         emit(Resource.Loading(false))
     }
 
-    fun <T> safeFlowResource(
+    fun <T> safeApiCall(
         action: suspend () -> T
     ): Flow<Resource<T>> = flow {
         emit(Resource.Loading(true))

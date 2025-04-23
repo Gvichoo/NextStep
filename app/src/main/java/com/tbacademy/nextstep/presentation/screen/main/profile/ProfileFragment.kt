@@ -35,6 +35,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         collectLatest(flow = profileViewModel.effects) { effect ->
             when (effect) {
                 is ProfileEffect.NavigateBack -> findNavController().navigateUp()
+                is ProfileEffect.ShowErrorMessage -> {}
             }
         }
     }
@@ -47,10 +48,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
                 if (state.user != null) {
                     tvUsername.text = state.user.username
-                    btnFollow.isVisible = !state.isOwnProfile
+                    btnFollow.isVisible = !state.user.isOwnUser
                     btnBack.isVisible = !state.withBottomNav
 
-                    if (!state.isUserFollowed) {
+                    if (!state.user.isUserFollowed) {
                         btnFollow.text = requireContext().getString(R.string.follow)
                     } else {
                         btnFollow.text = requireContext().getString(R.string.followed)
