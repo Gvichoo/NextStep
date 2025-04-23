@@ -12,6 +12,8 @@ import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -107,6 +109,10 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindGetUserGoalsUseCase(impl: GetUserGoalsUseCaseImpl): GetUserGoalsUseCase
+
+    @Singleton
+    @Binds
     fun bindValidateAddGoalTitleUseCase(impl: ValidateAddGoalTitleUseCaseImpl): ValidateAddGoalTitleUseCase
 
     @Singleton
@@ -120,7 +126,6 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
-
 
     @Singleton
     @Binds

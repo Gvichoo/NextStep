@@ -19,6 +19,7 @@ import com.google.gson.Gson
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
+import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.presentation.MainActivity
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
@@ -67,7 +68,11 @@ class UploadGoalWorker @AssistedInject constructor(
         val goal = Goal(
             id = inputData.getString("id") ?: "",
             title = inputData.getString("title") ?: return Result.failure(),
-            description = inputData.getString("description"),
+            description = inputData.getString("description") ?: "",
+            authorId = inputData.getString("authorId") ?: "",
+            authorUsername = inputData.getString("authorUsername") ?: "",
+            goalStatus = GoalStatus.ACTIVE,
+            imageUrl = inputData.getString("imageUrl") ?: "",
             metricTarget = inputData.getString("metricTarget"),
             metricUnit = inputData.getString("metricUnit"),
             targetDate = targetDateString.toLongOrNull() ?: return Result.failure(),

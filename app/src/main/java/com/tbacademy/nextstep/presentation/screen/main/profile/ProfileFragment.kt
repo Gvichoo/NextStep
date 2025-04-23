@@ -11,6 +11,8 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
@@ -25,6 +27,10 @@ import java.io.File
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
+    private val goalAdapter by lazy {
+        GoalAdapter()
+    }
+
     private val profileViewModel: ProfileViewModel by viewModels()
 
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
@@ -34,6 +40,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     override fun start() {
         checkProfileOwner()
+        setGoalAdapter()
         initCameraLauncher()
         initMediaPickerLauncher()
     }
@@ -66,9 +73,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             binding.apply {
                 pbProfile.isVisible = state.isLoading
                 pbUploadImage.isVisible = state.isImageLoading
+                pbGoals.isVisible = state.goalsLoading
+
                 groupProfileContent.isVisible = !state.isLoading
 
                 if (state.user != null) {
+                    goalAdapter.submitList(state.userGoals)
 
                     state.user.profilePictureUrl?.let {
                         ivProfile.loadImagesGlide(url = it)
@@ -173,6 +183,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
+    private fun setGoalAdapter() {
+        binding.rvGoals.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvGoals.adapter = goalAdapter
+    }
+
     private fun showImagePickerDialog() {
         val options = arrayOf(getString(R.string.camera), getString(R.string.gallery))
         android.app.AlertDialog.Builder(requireContext())
@@ -183,5 +198,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     1 -> profileViewModel.onEvent(ProfileEvent.GallerySelected)
                 }
             }.show()
+    }
+
+    private fun showMessage(message: Int) {
+        view?.let {
+            Snackbar.make(it, getString(message), Snackbar.LENGTH_SHORT).show()
+        }
     }
 }

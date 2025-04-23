@@ -48,12 +48,14 @@ class CommentRepositoryImpl @Inject constructor(
                 userSnapshot.getString(USERNAME_FIELD_KEY) ?: throw FirebaseNoSignedInUserException(
                     "Username can't be found"
                 )
+            val authorProfilePictureUrl = userSnapshot.getString("profilePictureUrl")
 
             val commentDto = CommentDto(
                 id = commentRef.id,
                 postId = postId,
                 authorId = userId,
                 authorUsername = username,
+                authorProfilePictureUrl = authorProfilePictureUrl,
                 text = text
             )
 

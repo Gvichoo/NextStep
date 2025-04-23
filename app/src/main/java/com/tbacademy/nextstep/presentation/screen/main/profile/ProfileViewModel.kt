@@ -7,6 +7,7 @@ import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
@@ -28,7 +29,8 @@ class ProfileViewModel @Inject constructor(
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
-    private val updateUserImageUseCase: UpdateUserImageUseCase
+    private val updateUserImageUseCase: UpdateUserImageUseCase,
+    private val getUserGoalsUseCase: GetUserGoalsUseCase
 ) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
     initialState = ProfileState(),
     initialUiState = Unit
@@ -55,6 +57,7 @@ class ProfileViewModel @Inject constructor(
                 emitEffect(ProfileEffect.ShowErrorMessage(errorRes = ApiError.UserNotFound.toMessageRes()))
             } else {
                 getUserInfo(userId = uid)
+                getUserGoals(userId = uid)
             }
         }
     }
@@ -134,6 +137,19 @@ class ProfileViewModel @Inject constructor(
                         Log.d("USER_STATE", "${resource.data.toPresentation()}")
                         this.copy(user = resource.data.toPresentation()) }
                     is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
+                }
+            }
+        }
+    }
+
+    private fun getUserGoals(userId: String) {
+        viewModelScope.launch {
+            getUserGoalsUseCase(userId = userId).collectLatest { resource ->
+                Log.d("USER_GOAL_RESOURCE", "${resource}")
+                when(resource) {
+                    is Resource.Success -> updateState { this.copy(userGoals = resource.data.map { it.toPresentation() }) }
+                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
+                    is Resource.Error -> updateState { this.copy(errorRes = resource.error.toMessageRes()) }
                 }
             }
         }
