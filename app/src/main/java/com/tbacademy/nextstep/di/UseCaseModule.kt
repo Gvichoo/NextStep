@@ -1,5 +1,7 @@
 package com.tbacademy.nextstep.di
 
+import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
+import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
@@ -12,8 +14,8 @@ import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.goalId.GetGoalIdUseCase
-import com.tbacademy.nextstep.domain.usecase.goalId.GetGoalIdUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -191,17 +193,15 @@ interface UseCaseModule {
     @Binds
     fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
 
-//    @Singleton
-//    @Binds
-//    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
-
     @Singleton
     @Binds
     fun bindImageValidator(impl: ImageValidatorImpl): ImageValidator
 
     @Singleton
     @Binds
-    fun bindGetGoalIdUseCase(impl: GetGoalIdUseCaseImpl): GetGoalIdUseCase
+    fun bindGetMilestoneUseCase(impl: GetMilestoneUseCaseImpl): GetMilestoneUseCase
 
-
+    @Singleton
+    @Binds
+    fun bindUpdateGoalUseCase(impl: UpdateGoalUseCaseImpl): UpdateGoalUseCase
 }

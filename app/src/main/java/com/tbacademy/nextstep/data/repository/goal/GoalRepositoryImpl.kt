@@ -13,6 +13,7 @@ import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
+import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -72,28 +73,43 @@ class GoalRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getGoalById(goalId: String): Flow<Resource<Goal>> {
-        return flow {
-            emit(Resource.Loading(true))
-            try {
-                val snapshot = firestore.collection(GOAL_COLLECTION_KEY).document(goalId).get().await()
-                val goalDto = snapshot.toObject(GoalDto::class.java)
+    override fun getGoalMilestones(goalId: String): Flow<Resource<Goal>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val snapshot = firestore.collection("goals")
+                .document(goalId)
+                .get()
+                .await()
 
-                if (goalDto != null) {
-                    emit(Resource.Success(goalDto.toDomain()))
-                } else {
-                    emit(Resource.Error(ApiError.NotFound))
-                }
-            } catch (e: Exception) {
-                emit(Resource.Error(e.toApiError()))
-            } finally {
-                emit(Resource.Loading(false))
+            val goalDto = snapshot.toObject(GoalDto::class.java)
+
+            if (goalDto != null) {
+                emit(Resource.Success(data = goalDto.toDomain()))
+            } else {
+                emit(Resource.Error(error = ApiError.NotFound))
             }
+
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(false))
         }
     }
 
-    private companion object {
-        const val GOAL_COLLECTION_KEY = "goals"
+    private val goalsCollection = firestore.collection("goals")
+
+    override fun updateGoalMilestone(goalId: String, updatedGoalMilestones: List<MilestoneItem>): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.Loading(true))
+
+            goalsCollection.document(goalId).set(updatedGoalMilestones).await()
+
+            emit(Resource.Success(true))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(false))
+        }
     }
 }
 

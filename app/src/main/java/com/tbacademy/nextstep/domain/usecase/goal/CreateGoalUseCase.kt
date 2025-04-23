@@ -17,3 +17,4 @@ class CreateGoalUseCaseImpl @Inject constructor(
         return goalRepository.createGoal(goal)
     }
 }
+

@@ -1,22 +1,23 @@
 package com.tbacademy.nextstep.data.common.mapper
 
 import android.net.Uri
-import com.google.firebase.Timestamp
+import com.tbacademy.nextstep.data.model.MilestoneItemDto
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.domain.model.Goal
-import java.util.Date
+import com.tbacademy.nextstep.presentation.model.MilestoneItem
+import java.sql.Date
 
 fun Goal.toDto(): GoalDto {
     return GoalDto(
         id = id,
         title = title,
         description = description,
-        targetDate = Timestamp(Date(targetDate)),
+        targetDate = com.google.firebase.Timestamp(Date(targetDate)),
         metricUnit = metricUnit,
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
-        milestone = milestone
+        milestone = milestone?.map { it.toDto() }
     )
 }
 
@@ -30,8 +31,29 @@ fun GoalDto.toDomain(): Goal {
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUri = Uri.parse(imageUrl),
-        milestone = milestone ?: emptyList()
+        milestone = milestone?.map { it.toDomain() } ?: emptyList()
     )
 }
+
+
+fun MilestoneItemDto.toDomain(): MilestoneItem {
+    return MilestoneItem(
+        id = id,
+        text = text,
+        achieved = achieved,
+        achievedAt = achievedAt
+    )
+}
+
+fun MilestoneItem.toDto(): MilestoneItemDto {
+    return MilestoneItemDto(
+        id = id,
+        text = text,
+        achieved = achieved,
+        achievedAt = achievedAt
+    )
+}
+
+
 
 
