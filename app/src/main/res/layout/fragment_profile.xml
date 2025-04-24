@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_sm"
-        android:text="Mua'd dib"
+        android:text=""
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@id/ivProfile"
         app:layout_constraintStart_toStartOf="@id/ivProfile"
@@ -65,6 +65,7 @@
         android:id="@+id/btnFollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/distance_md"
         android:text="+ Follow"
         app:layout_constraintEnd_toEndOf="@id/ivProfile"
@@ -117,6 +118,6 @@
         android:id="@+id/groupProfileContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="btnBack,ivProfile,tvUsername,btnFollow" />
+        app:constraint_referenced_ids="btnBack,tvGoals, ivProfile,tvUsername,btnFollow, rvGoals" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

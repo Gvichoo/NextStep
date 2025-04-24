@@ -58,13 +58,24 @@
         <action
             android:id="@+id/action_mainFragment_to_userSearchFragment"
             app:destination="@id/userSearchFragment" />
+        <action
+            android:id="@+id/action_mainFragment_self"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_goalFragment2"
+            app:destination="@id/goalFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.tbacademy.nextstep.presentation.screen.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
-        <argument android:name="userId" />
+        <argument android:name="userId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_goalFragment"
+            app:destination="@id/goalFragment" />
     </fragment>
     <fragment
         android:id="@+id/userSearchFragment"
@@ -74,6 +85,18 @@
         <action
             android:id="@+id/action_userSearchFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/goalFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.goal.GoalFragment"
+        android:label="fragment_goal"
+        tools:layout="@layout/fragment_goal" >
+        <argument
+            android:name="goalId"
+            app:argType="string" />
+        <argument
+            android:name="goalTitle"
+            app:argType="string" />
     </fragment>
 
 </navigation>

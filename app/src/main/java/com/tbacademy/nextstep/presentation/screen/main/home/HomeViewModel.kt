@@ -233,7 +233,6 @@ class HomeViewModel @Inject constructor(
                 when (resource) {
                     is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
                     is Resource.Success -> updateState {
-                        Log.d("FUNCTION_SJOA_SUCCESS", "${resource.data}")
                         this.copy(posts = resource.data.map { it.toPresentation() }) }
                     is Resource.Error -> updateState { this.copy(error = resource.error) }
                 }

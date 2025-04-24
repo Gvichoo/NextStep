@@ -1,12 +1,13 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.databinding.ItemProfileGoalBinding
-import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
 import com.tbacademy.nextstep.presentation.extension.loadProfilePictureGlide
 import com.tbacademy.nextstep.presentation.screen.main.profile.model.GoalPresentation
 
@@ -21,14 +22,22 @@ class GoalDiffUtil : DiffUtil.ItemCallback<GoalPresentation>() {
     }
 }
 
-class GoalAdapter : ListAdapter<GoalPresentation, GoalAdapter.GoalViewHolder>(GoalDiffUtil()) {
+class GoalAdapter(
+    private val goalClicked: (goalId: String, goalTitle: String) -> Unit
+) : ListAdapter<GoalPresentation, GoalAdapter.GoalViewHolder>(GoalDiffUtil()) {
     inner class GoalViewHolder(private val binding: ItemProfileGoalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(goal: GoalPresentation) {
             binding.apply {
                 tvGoalTitle.text = goal.title
                 tvGoalStatus.text = goal.goalStatus.toString()
+                Log.d("GOALADAPTER", "${goal.goalStatus} ${goal.goalStatus.statusColorRes}")
+                tvGoalStatus.setTextColor(ContextCompat.getColor(itemView.context, goal.goalStatus.statusColorRes))
                 ivGoal.loadProfilePictureGlide(url = goal.imageUrl)
+
+                root.setOnClickListener {
+                    goalClicked(goal.id, goal.title)
+                }
             }
         }
     }

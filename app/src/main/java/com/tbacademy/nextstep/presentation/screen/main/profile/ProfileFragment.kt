@@ -10,6 +10,8 @@ import androidx.core.content.FileProvider
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -18,7 +20,7 @@ import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
-import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
+import com.tbacademy.nextstep.presentation.screen.main.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +30,16 @@ import java.io.File
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
     private val goalAdapter by lazy {
-        GoalAdapter()
+        GoalAdapter(
+            goalClicked = { goalId, goalTitle ->
+                profileViewModel.onEvent(
+                    ProfileEvent.GoalSelected(
+                        goalId = goalId,
+                        goalTitle = goalTitle
+                    )
+                )
+            }
+        )
     }
 
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -64,6 +75,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 is ProfileEffect.ShowUpdateImageDialog -> showImagePickerDialog()
                 is ProfileEffect.LaunchCameraPicker -> checkCameraPermissionAndLaunch()
                 is ProfileEffect.LaunchMediaPicker -> launchImagePicker()
+                is ProfileEffect.NavigateToGoalScreen -> navigateToGoalScreen(
+                    goalId = effect.goalId,
+                    goalTitle = effect.goalTitle,
+                    ownGoal = effect.ownGoal
+                )
             }
         }
     }
@@ -71,11 +87,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private fun observeState() {
         collectLatest(flow = profileViewModel.state) { state ->
             binding.apply {
-                pbProfile.isVisible = state.isLoading
+                pbProfile.isVisible = state.isLoading || state.user == null
                 pbUploadImage.isVisible = state.isImageLoading
                 pbGoals.isVisible = state.goalsLoading
 
-                groupProfileContent.isVisible = !state.isLoading
+                groupProfileContent.isVisible = state.user != null
 
                 if (state.user != null) {
                     goalAdapter.submitList(state.userGoals)
@@ -114,8 +130,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
+    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean) {
+        if (ownGoal) {
+            val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
+                goalId = goalId,
+                goalTitle = goalTitle
+            )
+            requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+        } else {
+            val action = ProfileFragmentDirections.actionProfileFragmentToGoalFragment(goalId = goalId, goalTitle = goalTitle)
+            findNavController().navigate(action)
+        }
+    }
+
     private fun checkProfileOwner() {
-        val usedId = arguments?.getString("userId")
+        val usedId: String? = arguments?.getString("userId")
         profileViewModel.onEvent(ProfileEvent.SetProfileState(userId = usedId))
     }
 

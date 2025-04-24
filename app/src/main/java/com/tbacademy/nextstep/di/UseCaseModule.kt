@@ -16,6 +16,8 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -126,6 +128,10 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
+
+    @Singleton
+    @Binds
+    fun bindGetGoalPostsUseCase(impl: GetGoalPostsUseCaseImpl): GetGoalPostsUseCase
 
     @Singleton
     @Binds
