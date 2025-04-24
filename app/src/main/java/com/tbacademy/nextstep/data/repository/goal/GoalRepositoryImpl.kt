@@ -8,7 +8,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.common.mapper.toDomainWithComputedStatus
-import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.common.mapper.toDto
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
@@ -20,13 +19,13 @@ import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import java.util.Date
 import javax.inject.Inject
 
 class GoalRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val firebaseStorage: FirebaseStorage
+    private val firebaseStorage: FirebaseStorage,
+    private val handleResponse: HandleResponse
 ) : GoalRepository {
     override fun createGoal(goal: Goal): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(loading = true))

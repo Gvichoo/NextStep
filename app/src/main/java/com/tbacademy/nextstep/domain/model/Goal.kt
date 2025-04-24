@@ -1,7 +1,6 @@
 package com.tbacademy.nextstep.domain.model
 
 import android.net.Uri
-import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 
 data class Goal(
@@ -16,7 +15,11 @@ data class Goal(
     val targetDate: Long,
     val createdAt: Long = System.currentTimeMillis(),
     val imageUri: Uri? = null,
+    val imageUrl: String? = null,
     val milestone: List<MilestoneItem>? = emptyList()
-){
-    val imageUrl: String? = null
+)
+enum class GoalStatus {
+    ACTIVE,
+    COMPLETED,
+    FAILED
 }

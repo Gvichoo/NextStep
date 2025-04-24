@@ -71,7 +71,6 @@ class UploadGoalWorker @AssistedInject constructor(
             description = inputData.getString("description") ?: "",
             authorId = inputData.getString("authorId") ?: "",
             authorUsername = inputData.getString("authorUsername") ?: "",
-            goalStatus = GoalStatus.ACTIVE,
             imageUrl = inputData.getString("imageUrl") ?: "",
             metricTarget = inputData.getString("metricTarget"),
             metricUnit = inputData.getString("metricUnit"),
