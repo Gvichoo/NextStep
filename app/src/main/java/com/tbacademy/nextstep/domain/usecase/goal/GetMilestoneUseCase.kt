@@ -6,15 +6,15 @@ import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-interface CreateGoalUseCase {
-     operator fun invoke(goal: Goal): Flow<Resource<Boolean>>
+interface GetMilestoneUseCase {
+    operator fun invoke(goalId: String): Flow<Resource<Goal>>
 }
 
-class CreateGoalUseCaseImpl @Inject constructor(
+class GetMilestoneUseCaseImpl @Inject constructor(
     private val goalRepository: GoalRepository
-) : CreateGoalUseCase {
-    override fun invoke(goal: Goal): Flow<Resource<Boolean>> {
-        return goalRepository.createGoal(goal)
+) : GetMilestoneUseCase {
+    override fun invoke(goalId: String): Flow<Resource<Goal>> {
+        return goalRepository.getGoalMilestones(goalId = goalId)
     }
 }
 

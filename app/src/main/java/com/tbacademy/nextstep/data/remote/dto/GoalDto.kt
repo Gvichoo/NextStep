@@ -1,6 +1,7 @@
 package com.tbacademy.nextstep.data.remote.dto
 
 import com.google.firebase.Timestamp
+import com.tbacademy.nextstep.data.model.MilestoneItemDto
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 
 data class GoalDto(
@@ -14,8 +15,8 @@ data class GoalDto(
     val targetDate: Timestamp = Timestamp.now(),
     val goalStatus: GoalStatusDto = GoalStatusDto.ACTIVE,
     val createdAt: Long = System.currentTimeMillis(),
+    val milestone : List<MilestoneItemDto>? = emptyList()
     val imageUrl: String = "",
-    val milestone : List<MilestoneItem>? = emptyList()
 )
 
 enum class GoalStatusDto{

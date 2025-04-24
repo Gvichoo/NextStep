@@ -28,6 +28,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivProfile" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSeeMilestones"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="105dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="M"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAuthor"
         android:layout_width="wrap_content"
@@ -186,15 +197,15 @@
         android:id="@+id/rvReaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:translationZ="4dp"
-        android:paddingHorizontal="@dimen/distance_xs"
+        android:layout_marginStart="@dimen/distance_xs"
+        android:layout_marginBottom="@dimen/distance_xs"
         android:background="@drawable/bg_reaction_popup"
+        android:paddingHorizontal="@dimen/distance_xs"
         android:paddingVertical="@dimen/distance_xs"
+        android:translationZ="4dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/btnReaction"
         app:layout_constraintEnd_toEndOf="@id/btnComment"
-        android:layout_marginBottom="@dimen/distance_xs"
-        android:layout_marginStart="@dimen/distance_xs"
         app:layout_constraintStart_toStartOf="@id/btnReaction"
         tools:listitem="@layout/item_reaction_option" />
 

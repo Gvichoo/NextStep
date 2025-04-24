@@ -42,6 +42,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private val addGoalViewModel: AddGoalViewModel by viewModels()
 
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var cameraImageUri: Uri? = null

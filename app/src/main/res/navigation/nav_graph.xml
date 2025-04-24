@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_mainFragment_to_userSearchFragment"
             app:destination="@id/userSearchFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_milestoneFragment"
+            app:destination="@id/milestoneFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -74,6 +77,13 @@
         <action
             android:id="@+id/action_userSearchFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/milestoneFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragment"
+        android:label="fragment_milestone"
+        tools:layout="@layout/fragment_milestone" >
+        <argument android:name="goalId" />
     </fragment>
 
 </navigation>

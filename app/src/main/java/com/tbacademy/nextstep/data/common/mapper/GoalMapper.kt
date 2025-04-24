@@ -5,12 +5,14 @@ import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.data.remote.dto.GoalStatusDto
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
-import java.util.Date
+import com.tbacademy.nextstep.presentation.model.MilestoneItem
+import java.sql.Date
 
 fun Goal.toDto(): GoalDto {
     return GoalDto(
         id = id,
         title = title,
+        authorId = authorId,
         description = description,
         targetDate = Timestamp(Date(targetDate)),
         metricUnit = metricUnit,
@@ -43,3 +45,15 @@ fun GoalDto.toDomainWithComputedStatus(currentTime: Long): Goal {
         goalStatus = status
     )
 }
+fun MilestoneItem.toDto(): MilestoneItemDto {
+    return MilestoneItemDto(
+        id = id,
+        text = text,
+        achieved = achieved,
+        achievedAt = achievedAt
+    )
+}
+
+
+
+
