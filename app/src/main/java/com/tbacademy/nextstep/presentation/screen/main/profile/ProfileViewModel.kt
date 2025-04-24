@@ -46,7 +46,12 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.CameraSelected -> onCameraSelected()
             is ProfileEvent.GallerySelected -> onGallerySelected()
             is ProfileEvent.ImageSelected -> updateUserImage(imageUri = event.imageUri)
+            is ProfileEvent.GoalSelected -> onGoalSelected(goalId = event.goalId, goalTitle = event.goalTitle)
         }
+    }
+
+    init {
+        updateState { this.copy(isLoading = true) }
     }
 
     private fun setProfileInfo(userId: String?) {
@@ -100,6 +105,11 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    private fun onGoalSelected(goalId: String, goalTitle: String) {
+        viewModelScope.launch {
+            emitEffect(effect = ProfileEffect.NavigateToGoalScreen(goalId = goalId, goalTitle = goalTitle, ownGoal = state.value.withBottomNav))
+        }
+    }
 
     private fun createFollow() {
         viewModelScope.launch {

@@ -6,4 +6,5 @@ sealed interface ProfileEffect {
     data object ShowUpdateImageDialog: ProfileEffect
     data object LaunchMediaPicker : ProfileEffect
     data object LaunchCameraPicker : ProfileEffect
+    data class NavigateToGoalScreen(val goalId: String, val goalTitle: String, val ownGoal: Boolean): ProfileEffect
 }
