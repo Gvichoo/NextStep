@@ -64,6 +64,8 @@
         <action
             android:id="@+id/action_mainFragment_to_goalFragment2"
             app:destination="@id/goalFragment" />
+            android:id="@+id/action_mainFragment_to_milestoneFragment"
+            app:destination="@id/milestoneFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -97,6 +99,11 @@
         <argument
             android:name="goalTitle"
             app:argType="string" />
+        android:id="@+id/milestoneFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragment"
+        android:label="fragment_milestone"
+        tools:layout="@layout/fragment_milestone" >
+        <argument android:name="goalId" />
     </fragment>
 
 </navigation>

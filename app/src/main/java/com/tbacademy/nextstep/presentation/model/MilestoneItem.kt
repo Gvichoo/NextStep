@@ -9,4 +9,28 @@ data class MilestoneItem(
     val errorMessage: Int? = null,
     val achieved: Boolean = false,
     val achievedAt: Timestamp? = null,
+    val targetDate : Timestamp? = null
 )
+
+
+fun MilestoneItem.toPresentation(): MilestonePresentation {
+    return MilestonePresentation(
+        id = id,
+        text = text,
+        achieved = achieved,
+        achievedAt = achievedAt,
+        targetDate = targetDate
+    )
+}
+
+fun MilestonePresentation.toMilestoneItem() = MilestoneItem(
+    id = id,
+    text = text,
+    achieved = achieved,
+    achievedAt = achievedAt,
+    errorMessage = null
+)
+
+fun List<MilestoneItem>.toPresentationList(): List<MilestonePresentation> {
+    return this.map { it.toPresentation() }
+}

@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.tbacademy.nextstep.data.worker.UploadGoalWorker
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.model.Goal
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
@@ -41,9 +42,10 @@ class AddGoalViewModel @Inject constructor(
     private val validateMetricTargetUseCase: ValidateMetricTargetUseCase,
     private val validateMetricUnitUseCase: ValidateMetricUnitUseCase,
     private val validateMilestoneUseCase: ValidateMilestoneUseCase,
+    private val validateImage : ImageValidator,
     private val application: Application
 
-    ) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
+) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
     initialState = AddGoalState(),
     initialUiState = AddGoalUiState()
 ) {
@@ -92,9 +94,6 @@ class AddGoalViewModel @Inject constructor(
         }
     }
 
-//    private val _workStatus = MutableStateFlow(WorkerStatusState())
-//    val workStatus = _workStatus.asStateFlow()
-
 
     private fun writeUserData(goal: Goal) {
 
@@ -134,7 +133,7 @@ class AddGoalViewModel @Inject constructor(
                     workInfoList.forEach { workInfo ->
                         when(workInfo.state){
                             WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> {
-                               updateState { copy(isLoading = true) }
+                                updateState { copy(isLoading = true) }
 
                             }
                             WorkInfo.State.SUCCEEDED -> {
@@ -188,25 +187,6 @@ class AddGoalViewModel @Inject constructor(
             )
 
             writeUserData(newGoal)
-//            createGoalUseCase(
-//
-//                goal = newGoal,
-//            ).collect { result ->
-//                when (result) {
-//
-//                    is Resource.Error ->
-//                        emitEffect(AddGoalEffect.ShowError(result.error.toMessageRes()))
-//
-//                    is Resource.Loading ->
-//                        updateState { copy(isLoading = result.loading) }
-//
-//                    is Resource.Success -> {
-//                        updateState { copy(isSuccess = true) }
-//                        writeUserData(goal = newGoal)
-//                        emitEffect(AddGoalEffect.NavToHomeFragment)
-//                    }
-//                }
-//            }
             Log.d("CREATE_GOAL", "GOAL: $newGoal")
         }
     }
@@ -378,7 +358,10 @@ class AddGoalViewModel @Inject constructor(
                 validateMetricUnitUseCase(metricUnit = metricUnit).getErrorMessageResId()
             metricTargetError =
                 validateMetricTargetUseCase(metricTarget = metricTarget).getErrorMessageResId()
+
         }
+
+        val imageValidationError = validateImage(imageUri?.toString()).getErrorMessageResId()
         // Update states of errors
         updateState {
             copy(
@@ -387,8 +370,12 @@ class AddGoalViewModel @Inject constructor(
                 goalDateErrorMessage = dateValidationError,
                 goalMetricUnitErrorMessage = metricUnitError,
                 goalMetricTargetErrorMessage = metricTargetError,
-
-                )
+            )
+        }
+        updateUiState {
+            copy(
+                goalImageErrorMessage = imageValidationError
+            )
         }
         if (isMilestoneEnable) {
             val updatedMilestones = milestone.map {
@@ -411,6 +398,7 @@ class AddGoalViewModel @Inject constructor(
             dateValidationError,
             if (isMetricEnabled) metricUnitError else null,
             if (isMetricEnabled) metricTargetError else null,
+            imageValidationError
         )
 
         return errors.all { it == null }
@@ -424,21 +412,3 @@ class AddGoalViewModel @Inject constructor(
         else null
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,9 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile.mapper
 
 import com.tbacademy.nextstep.domain.model.Goal
-import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.presentation.screen.main.profile.model.GoalPresentation
-import com.tbacademy.nextstep.presentation.screen.main.profile.model.GoalStatusPresentation
 import java.sql.Date
 
 fun Goal.toPresentation(): GoalPresentation {
@@ -19,14 +17,5 @@ fun Goal.toPresentation(): GoalPresentation {
         createdAt = createdAt,
         imageUrl = imageUrl,
         milestone = milestone,
-        goalStatus = goalStatus.toPresentation()
     )
-}
-
-fun GoalStatus.toPresentation(): GoalStatusPresentation {
-    return when (this) {
-        GoalStatus.ACTIVE -> GoalStatusPresentation.ACTIVE
-        GoalStatus.COMPLETED -> GoalStatusPresentation.COMPLETED
-        GoalStatus.FAILED -> GoalStatusPresentation.FAILED
-    }
 }

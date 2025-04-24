@@ -15,10 +15,10 @@ import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
+import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import java.util.Date
 import javax.inject.Inject
 
 class GoalRepositoryImpl @Inject constructor(
@@ -48,6 +48,7 @@ class GoalRepositoryImpl @Inject constructor(
                 storageRef.downloadUrl.await().toString()
             }
 
+
             val goalRef = firestore.collection("goals").document()
             val goalId = goalRef.id
             val username: String? = userSnapshot.getString("username")
@@ -74,6 +75,52 @@ class GoalRepositoryImpl @Inject constructor(
             emit(Resource.Loading(loading = false))
         }
     }
+
+    override fun getGoalMilestones(goalId: String): Flow<Resource<Goal>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val snapshot = firestore.collection("goals")
+                .document(goalId)
+                .get()
+                .await()
+
+            val goalDto = snapshot.toObject(GoalDto::class.java)
+
+            if (goalDto != null) {
+                emit(Resource.Success(data = goalDto.toDomain()))
+            } else {
+                emit(Resource.Error(error = ApiError.NotFound))
+            }
+
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(false))
+        }
+    }
+
+
+    override fun updateGoalMilestone(
+        goalId: String,
+        updatedGoalMilestones: List<MilestoneItem>
+    ): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading(true))
+        try {
+            val goalRef = firestore.collection("goals").document(goalId)
+
+            // Update the milestones field
+            goalRef.update("milestone", updatedGoalMilestones).await()
+
+            emit(Resource.Success(true))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(false))
+        }
+    }
+
+
+
 
     override fun getUserGoals(userId: String): Flow<Resource<List<Goal>>> {
         return handleResponse.safeApiCall {

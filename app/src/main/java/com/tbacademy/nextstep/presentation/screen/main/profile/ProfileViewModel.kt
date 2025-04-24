@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.core.onSuccess
+import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
@@ -27,6 +28,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
+    private val authManager: AuthManager,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
     private val updateUserImageUseCase: UpdateUserImageUseCase,
@@ -57,7 +59,7 @@ class ProfileViewModel @Inject constructor(
             if (userId == null)
                 updateState { this.copy(withBottomNav = true) }
 
-            val uid: String? = userId ?: getAuthUserIdUseCase()
+            val uid: String? = userId ?: authManager.getCurrentUserId()
             if (uid == null) {
                 emitEffect(ProfileEffect.ShowErrorMessage(errorRes = ApiError.UserNotFound.toMessageRes()))
             } else {

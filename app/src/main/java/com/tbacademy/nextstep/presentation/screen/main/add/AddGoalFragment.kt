@@ -26,6 +26,7 @@ import com.tbacademy.nextstep.presentation.extension.onTextChanged
 import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdapter
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
+import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,6 +42,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private val addGoalViewModel: AddGoalViewModel by viewModels()
 
     private lateinit var pickMediaLauncher: ActivityResultLauncher<PickVisualMediaRequest>
+
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var cameraImageUri: Uri? = null
@@ -77,7 +79,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         observeState()
         observeEffects()
         observeUiState()
-//        observeWorkerState()
         bindWorkerResultObserver()
 
     }
@@ -116,6 +117,10 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                         .load(uri)
                         .into(image)
                 }
+
+
+//                tlImage.error = uiState.goalImageErrorMessage?.let { getString(it) }
+                tlImage.error = if (uiState.imageUri != null) null else uiState.goalImageErrorMessage?.let { getString(it) }
             }
         }
     }
@@ -130,15 +135,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
-//    private fun observeWorkerState() {
-//        collect(flow = addGoalViewModel.workerState) { state -> // Assuming workerState is the correct flow from the ViewModel
-//            binding.apply {
-//                loaderAddGoal.loaderContainer.isVisible = state.isLoading
-//                setUIElementsEnabled(!state.isLoading)
-//            }
-//            handleWorkerStatusState(state) // Handle worker state changes here
-//        }
-//    }
 
     //WorkManager
     private fun bindWorkerResultObserver() {
@@ -201,6 +197,8 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             showImagePickerDialog()
         }
     }
+
+
 
     private fun showImagePickerDialog() {
         val options = arrayOf("Camera", "Gallery")
@@ -269,6 +267,8 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
+
+
     private fun launchImagePicker() {
         pickMediaLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
@@ -294,6 +294,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             addGoalViewModel.onEvent(AddGoalEvent.MileStoneToggle(isChecked))
         }
     }
+
 
     private fun setMetricTargetInputListener() {
         binding.etMetricTarget.onTextChanged { metricTarget ->

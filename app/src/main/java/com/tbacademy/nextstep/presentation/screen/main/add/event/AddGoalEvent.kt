@@ -1,6 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.add.event
 
 import android.net.Uri
+import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import java.util.Date
 

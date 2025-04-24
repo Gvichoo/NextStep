@@ -5,13 +5,12 @@ data class AddGoalState(
     val isSuccess: Boolean = false,
     val formBeenSubmitted: Boolean = false,
 
-    val goalTitleErrorMessage : Int? = null,
+    val goalTitleErrorMessage: Int? = null,
     val goalDescriptionErrorMessage: Int? = null,
     val goalDateErrorMessage: Int? = null,
-    val goalMetricTargetErrorMessage : Int? = null,
-    val goalMetricUnitErrorMessage : Int? = null,
-    val goalMilestoneErrorMessage : Int? = null
-){
+    val goalMetricTargetErrorMessage: Int? = null,
+    val goalMetricUnitErrorMessage: Int? = null,
+) {
     val isCreateGoalEnabled: Boolean
         get() = goalTitleErrorMessage == null && goalDescriptionErrorMessage == null
 }

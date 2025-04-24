@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/scrollView"
     tools:context=".presentation.screen.main.add.AddGoalFragment">
 
 
@@ -72,16 +73,29 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlImage"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/distance_sm"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/place_holder"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tlTargetDate" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
+            android:layout_marginTop="@dimen/distance_md"
+            android:hint="Image"
+            app:layout_constraintTop_toBottomOf="@+id/tlTargetDate"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="@dimen/distance_sm"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/place_holder"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSelectImage"
@@ -91,7 +105,7 @@
             android:layout_marginTop="@dimen/distance_sm"
             android:text="Add Image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image" />
+            app:layout_constraintTop_toBottomOf="@id/tlImage" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -173,8 +187,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/switchMileStones"
-            app:layout_constraintBottom_toTopOf="@+id/btnForAddAndMinusMileStoneEts"/>
+            app:layout_constraintBottom_toTopOf="@+id/btnForAddAndMinusMileStoneEts"
+            app:layout_constraintTop_toBottomOf="@+id/switchMileStones" />
 
 
         <LinearLayout
@@ -214,7 +228,6 @@
             app:layout_constraintEnd_toEndOf="@id/tlGoalTitle"
             app:layout_constraintStart_toStartOf="@id/tlGoalTitle"
             app:layout_constraintTop_toBottomOf="@id/btnForAddAndMinusMileStoneEts" />
-
 
 
         <include

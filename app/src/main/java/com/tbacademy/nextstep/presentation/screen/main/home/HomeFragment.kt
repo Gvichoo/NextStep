@@ -61,6 +61,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         userId = userId
                     )
                 )
+            },
+            onMilestoneClicked = { goalId ->
+                homeViewModel.onEvent(
+                    event = HomeEvent.OpenMilestone(
+                        goalId = goalId
+                    )
+                )
             }
         )
     }
@@ -102,6 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
                 is HomeEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
                 is HomeEffect.NavigateToUserSearch -> navigateToSearch()
+                is HomeEffect.NavigateToMilestone -> navigateToMilestone(goalId = effect.goalId)
             }
         }
     }
@@ -122,6 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
     }
 
+
     private fun searchBtnListener() {
         binding.btnSearch.setOnClickListener {
             homeViewModel.onEvent(HomeEvent.StartSearch)
@@ -140,6 +149,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun navigateToProfile(userId: String?) {
         val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
             userId = userId
+        )
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    }
+
+    private fun navigateToMilestone(goalId : String){
+        val action = MainFragmentDirections.actionMainFragmentToMilestoneFragment(
+            goalId = goalId
         )
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
