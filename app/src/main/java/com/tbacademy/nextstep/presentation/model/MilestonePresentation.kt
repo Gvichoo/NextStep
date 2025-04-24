@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.model
 
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
 
 data class  MilestonePresentation(
     val id: Int = 0,
@@ -8,5 +8,4 @@ data class  MilestonePresentation(
     val text: String = "",
     val achieved : Boolean = false,
     val achievedAt: Timestamp? = null,
-    val status: String = ""
 )

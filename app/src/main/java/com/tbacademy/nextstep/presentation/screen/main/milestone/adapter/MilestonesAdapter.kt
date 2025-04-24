@@ -1,21 +1,19 @@
 package com.tbacademy.nextstep.presentation.screen.main.milestone.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.ItemMilestoneBinding
 import com.tbacademy.nextstep.presentation.model.MilestonePresentation
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 
 class MilestonesAdapter(
-    private val btnMarkAsDoneClicked: (milestoneId: Int) -> Unit,
+    private val onMarkAsDoneClick: (MilestonePresentation) -> Unit
 ) : ListAdapter<MilestonePresentation, MilestonesAdapter.MilestoneViewHolder>(MilestoneDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MilestoneViewHolder {
@@ -33,30 +31,22 @@ class MilestonesAdapter(
         fun bind(milestone: MilestonePresentation) {
             binding.apply {
                 tvMilestoneTitle.text = milestone.text
+                tvNumber.text = "${milestone.id + 1})"
 
-                tvMilestoneTime.text = milestone.achievedAt?.let {
-                    SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date(it.time))
-                } ?: "Not Achieved"
+                tvAchievedAt.text = milestone.achievedAt?.let { timestamp ->
+                    val date = timestamp.toDate()
+                    SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
+                } ?: ""
 
 
-                tvMilestoneTime.visibility = if (milestone.achieved) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
 
-                val colorRes = if (milestone.achieved) {
-                    R.color.md_theme_tertiary
-                } else {
-                    R.color.md_theme_error
-                }
+                tvAchievedAt.isVisible = milestone.achieved
 
-                tvMilestoneTime.setTextColor(ContextCompat.getColor(itemView.context, colorRes))
+                btnMarkAsDone.isVisible = !milestone.achieved
 
                 btnMarkAsDone.setOnClickListener {
-                    btnMarkAsDoneClicked(milestone.id)
+                    onMarkAsDoneClick(milestone)
                 }
-
             }
         }
     }

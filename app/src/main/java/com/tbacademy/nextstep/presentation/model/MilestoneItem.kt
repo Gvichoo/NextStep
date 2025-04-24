@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.model
 
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
 
 data class MilestoneItem(
     val id: Int = 0,
@@ -19,6 +19,14 @@ fun MilestoneItem.toPresentation(): MilestonePresentation {
         achievedAt = achievedAt
     )
 }
+
+fun MilestonePresentation.toMilestoneItem() = MilestoneItem(
+    id = id,
+    text = text,
+    achieved = achieved,
+    achievedAt = achievedAt,
+    errorMessage = null
+)
 
 fun List<MilestoneItem>.toPresentationList(): List<MilestonePresentation> {
     return this.map { it.toPresentation() }

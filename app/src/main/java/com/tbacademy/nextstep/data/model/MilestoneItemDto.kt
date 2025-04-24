@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.data.model
 
-import java.sql.Timestamp
+import com.google.firebase.Timestamp
 
 data class MilestoneItemDto(
     val id: Int = 0,

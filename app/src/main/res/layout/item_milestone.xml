@@ -36,7 +36,7 @@
             app:layout_constraintTop_toTopOf="@id/tvNumber" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvMilestoneTime"
+            android:id="@+id/tvAchievedAt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -56,7 +56,7 @@
             android:layout_marginEnd="8dp"
             android:text="Mark as Done"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvMilestoneTime"
+            app:layout_constraintTop_toBottomOf="@id/tvAchievedAt"
             app:layout_constraintWidth_percent="0.4" />
 
 

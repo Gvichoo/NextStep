@@ -2,10 +2,13 @@ package com.tbacademy.nextstep.presentation.screen.main.milestone
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
+import com.tbacademy.nextstep.presentation.model.toMilestoneItem
 import com.tbacademy.nextstep.presentation.model.toPresentationList
 import com.tbacademy.nextstep.presentation.screen.main.milestone.effect.MilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.milestone.event.MilestoneEvent
@@ -14,12 +17,12 @@ import com.tbacademy.nextstep.presentation.screen.main.milestone.state.Milestone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
 import javax.inject.Inject
 
 @HiltViewModel
 class MilestoneViewModel @Inject constructor(
     private val getGoalMilestones : GetMilestoneUseCase,
+    private val updateGoalUseCase: UpdateGoalUseCase
 ) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect, MilestoneUiState>(
     initialState = MilestoneState(),
     initialUiState = MilestoneUiState()
@@ -29,20 +32,40 @@ class MilestoneViewModel @Inject constructor(
         when (event) {
             is MilestoneEvent.LoadMilestones -> getMilestoneById(goalId = event.goalId )
             is MilestoneEvent.MarkMilestoneAsDone -> {
-                val currentTimestamp = Timestamp(System.currentTimeMillis())
-                updateState {
-                    val updatedList = milestoneList.map {
-                        if (it.id == event.milestoneId) {
-                            it.copy(achieved = true, achievedAt = currentTimestamp)
-                        } else {
-                            it
-                        }
+                viewModelScope.launch {
+                    // Accessing the current list of milestones from the state
+                    val updatedMilestones = state.value.milestoneList.map {
+                        if (it.id == event.id) {
+                            it.copy(
+                                achieved = true,
+                                achievedAt = Timestamp.now()
+                            )
+                        } else it
                     }
-                    copy(milestoneList = updatedList)
+
+                    // Call your use case to update the goal in Firebase
+                    updateGoalUseCase(event.goalId, updatedMilestones.map { it.toMilestoneItem() })
+                        .collectLatest { result ->
+                            when (result) {
+                                is Resource.Success -> {
+                                    updateState { copy(milestoneList = updatedMilestones) }
+                                }
+                                is Resource.Error -> {
+                                    emitEffect(MilestoneEffect.ShowError(result.error.toMessageRes()
+                                        .toString()))
+                                }
+                                is Resource.Loading -> {
+                                    updateState { copy(isLoading = result.loading) }
+                                }
+                            }
+                        }
                 }
             }
         }
     }
+
+
+
 
     private fun getMilestoneById(goalId : String){
         viewModelScope.launch {

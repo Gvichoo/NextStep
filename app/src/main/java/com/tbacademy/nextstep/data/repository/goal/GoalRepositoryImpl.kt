@@ -1,6 +1,7 @@
 package com.tbacademy.nextstep.data.repository.goal
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class GoalRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -96,21 +98,26 @@ class GoalRepositoryImpl @Inject constructor(
         }
     }
 
-    private val goalsCollection = firestore.collection("goals")
 
-    override fun updateGoalMilestone(goalId: String, updatedGoalMilestones: List<MilestoneItem>): Flow<Resource<Boolean>> = flow {
+    override fun updateGoalMilestone(
+        goalId: String,
+        updatedGoalMilestones: List<MilestoneItem>
+    ): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading(true))
+
         try {
-            emit(Resource.Loading(true))
+            val goalRef = firestore.collection("goals").document(goalId)
 
-            goalsCollection.document(goalId).set(updatedGoalMilestones).await()
+            // Update just the milestone field
+            goalRef.update("milestone", updatedGoalMilestones).await()
 
             emit(Resource.Success(true))
+            emit(Resource.Loading(false))
         } catch (e: Exception) {
             emit(Resource.Error(e.toApiError()))
-        } finally {
-            emit(Resource.Loading(false))
         }
     }
+
 }
 
 

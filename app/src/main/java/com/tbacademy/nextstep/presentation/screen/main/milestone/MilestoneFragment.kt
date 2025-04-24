@@ -17,12 +17,13 @@ class MilestoneFragment : BaseFragment<FragmentMilestoneBinding>(FragmentMilesto
 
     private val milestoneViewModel: MilestoneViewModel by viewModels()
     private val args: MilestoneFragmentArgs by navArgs()
+
     private val adapter by lazy {
         MilestonesAdapter(
-            btnMarkAsDoneClicked = { milestoneId ->
-                milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(milestoneId))
-            },
-
+            onMarkAsDoneClick = { milestone ->
+                val goalId = args.goalId
+                milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))  // Pass milestone.id
+            }
         )
     }
 
