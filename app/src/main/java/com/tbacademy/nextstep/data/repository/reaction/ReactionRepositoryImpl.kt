@@ -3,7 +3,7 @@ package com.tbacademy.nextstep.data.repository.reaction
 import android.content.res.Resources.NotFoundException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.ReactionDto
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.ReactionType
@@ -14,14 +14,14 @@ import javax.inject.Inject
 
 class ReactionRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseHelper: FirebaseHelper
+    private val firebaseHelper: HandleResponse
 ) : ReactionRepository {
 
     override suspend fun createReaction(
         postId: String,
         type: ReactionType
     ): Flow<Resource<Boolean>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
             val reactionRef = firestore.collection(REACTION_COLLECTION_KEY).document()
 
             val reactionDto = ReactionDto(
@@ -41,7 +41,7 @@ class ReactionRepositoryImpl @Inject constructor(
         postId: String,
         newType: ReactionType
     ): Flow<Resource<Boolean>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
             getReactionDoc(postId = postId, userId = userId).update(REACTION_TYPE_FIELD, newType)
                 .await()
             true
@@ -50,7 +50,7 @@ class ReactionRepositoryImpl @Inject constructor(
 
 
     override suspend fun deleteReaction(postId: String): Flow<Resource<Boolean>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
             getReactionDoc(postId = postId, userId = userId).delete().await()
             true
         }

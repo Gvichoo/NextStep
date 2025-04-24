@@ -6,7 +6,10 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.tbacademy.nextstep.data.common.mapper.toApiError
+import com.tbacademy.nextstep.data.common.mapper.toDomain
+import com.tbacademy.nextstep.data.common.mapper.toDomainWithComputedStatus
 import com.tbacademy.nextstep.data.common.mapper.toDto
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
@@ -15,12 +18,14 @@ import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 
 class GoalRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val firebaseStorage: FirebaseStorage
+    private val firebaseStorage: FirebaseStorage,
+    private val handleResponse: HandleResponse
 ) : GoalRepository {
     override fun createGoal(goal: Goal): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(loading = true))
@@ -43,7 +48,6 @@ class GoalRepositoryImpl @Inject constructor(
                 storageRef.downloadUrl.await().toString()
             }
 
-
             val goalRef = firestore.collection("goals").document()
             val goalId = goalRef.id
             val username: String? = userSnapshot.getString("username")
@@ -53,7 +57,7 @@ class GoalRepositoryImpl @Inject constructor(
                     authorId = currentUser.uid,
                     authorUsername = username,
                     id = goalId,
-                    imageUrl = imageUrl
+                    imageUrl = imageUrl ?: ""
                 )
 
                 // Upload goal to Firestore
@@ -68,6 +72,24 @@ class GoalRepositoryImpl @Inject constructor(
             Log.d("CREATE_GOAL", "GoalId: $e")
         } finally {
             emit(Resource.Loading(loading = false))
+        }
+    }
+
+    override fun getUserGoals(userId: String): Flow<Resource<List<Goal>>> {
+        return handleResponse.safeApiCall {
+            val snapshot = firestore.collection("goals")
+                .whereEqualTo("authorId", userId)
+                .get()
+                .await()
+
+            val now = System.currentTimeMillis()
+
+            val goalList: List<Goal> = snapshot.documents.mapNotNull { doc ->
+                val goalDto = doc.toObject(GoalDto::class.java)?.copy(id = doc.id)
+                goalDto?.toDomainWithComputedStatus(now)
+            }
+
+            goalList
         }
     }
 }

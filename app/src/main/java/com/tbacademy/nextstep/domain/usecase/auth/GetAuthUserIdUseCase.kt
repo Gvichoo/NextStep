@@ -1,18 +1,16 @@
 package com.tbacademy.nextstep.domain.usecase.auth
 
-import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
-import kotlinx.coroutines.flow.Flow
+import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import javax.inject.Inject
 
 interface GetAuthUserIdUseCase {
-    suspend operator fun invoke(): Flow<Resource<String>>
+    suspend operator fun invoke(): String?
 }
 
 class GetAuthUserIdUseCaseImpl @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authManager: AuthManager
 ): GetAuthUserIdUseCase {
-    override suspend fun invoke(): Flow<Resource<String>> {
-        return authRepository.getCurrentUserId()
+    override suspend fun invoke(): String? {
+        return authManager.getCurrentUserId()
     }
 }

@@ -23,9 +23,32 @@
         android:layout_marginTop="@dimen/distance_md"
         android:src="@drawable/df_profile_picture"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/CircleImageShape" />
+
+    <ProgressBar
+        android:id="@+id/pbUploadImage"
+        app:layout_constraintTop_toTopOf="@id/ivProfile"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        app:layout_constraintEnd_toEndOf="@id/ivProfile"
+        app:layout_constraintStart_toStartOf="@id/ivProfile"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btnUpdateImage"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/ivProfile"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn_update_picture"
+        android:padding="@dimen/distance_xs"
+        android:src="@drawable/baseline_camera_alt_24" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvUsername"
@@ -58,6 +81,37 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGoals"
+        android:text="Goals:"
+        android:paddingVertical="@dimen/distance_sm"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/btnFollow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvGoals"
+        app:layout_constraintTop_toBottomOf="@id/tvGoals"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
+        tools:listitem="@layout/item_profile_goal"
+        android:layout_height="0dp"
+        />
+
+    <ProgressBar
+        android:id="@+id/pbGoals"
+        app:layout_constraintTop_toTopOf="@id/rvGoals"
+        app:layout_constraintStart_toStartOf="@id/rvGoals"
+        app:layout_constraintEnd_toEndOf="@id/rvGoals"
+        app:layout_constraintBottom_toBottomOf="@id/rvGoals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupProfileContent"

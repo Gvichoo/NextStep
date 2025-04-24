@@ -3,7 +3,7 @@ package com.tbacademy.nextstep.data.repository.goal_follow
 import android.content.res.Resources.NotFoundException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toDomain
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalFollowDto
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.GoalFollow
@@ -14,12 +14,12 @@ import javax.inject.Inject
 
 class GoalFollowRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseHelper: FirebaseHelper
+    private val firebaseHelper: HandleResponse
 ): GoalFollowRepository {
     override suspend fun createGoalFollow(
         followedId: String
     ): Flow<Resource<GoalFollow>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
             val goalFollowRef = firestore.collection(GOAL_FOLLOW_COLLECTION_KEY).document()
 
             val goalFollowDto = GoalFollowDto(
@@ -35,7 +35,7 @@ class GoalFollowRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteGoalFollow(followedId: String): Flow<Resource<Unit>> {
-        return firebaseHelper.withUserIdFlow { userId ->
+        return firebaseHelper.safeApiCallWithUserId { userId ->
             val query = firestore.collection(GOAL_FOLLOW_COLLECTION_KEY)
                 .whereEqualTo(FIELD_FOLLOWER_ID, userId)
                 .whereEqualTo(FIELD_FOLLOWED_GOAL_ID, followedId)

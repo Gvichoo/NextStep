@@ -12,6 +12,8 @@ import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
@@ -26,6 +28,8 @@ import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
@@ -110,6 +114,10 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindGetUserGoalsUseCase(impl: GetUserGoalsUseCaseImpl): GetUserGoalsUseCase
+
+    @Singleton
+    @Binds
     fun bindValidateAddGoalTitleUseCase(impl: ValidateAddGoalTitleUseCaseImpl): ValidateAddGoalTitleUseCase
 
     @Singleton
@@ -123,7 +131,6 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
-
 
     @Singleton
     @Binds
@@ -168,6 +175,10 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
+
+    @Singleton
+    @Binds
+    fun bindUpdateUserImageUseCase(impl: UpdateUserImageUseCaseImpl): UpdateUserImageUseCase
 
     @Singleton
     @Binds

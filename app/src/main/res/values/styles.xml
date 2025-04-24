@@ -25,4 +25,12 @@
         <item name="strokeWidth">1dp</item>
         <item name="backgroundTint">@color/segmented_button_bg</item>
     </style>
+
+    <style name="RightSideRoundedShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
 </resources>

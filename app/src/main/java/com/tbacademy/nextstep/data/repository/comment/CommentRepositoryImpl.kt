@@ -5,8 +5,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.common.mapper.toDomain
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper
-import com.tbacademy.nextstep.data.httpHelper.FirebaseHelper.Companion.SORT_CREATED_AT
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.CommentDto
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Comment
@@ -18,7 +17,7 @@ import javax.inject.Inject
 
 class CommentRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseHelper: FirebaseHelper
+    private val firebaseHelper: HandleResponse
 ) : CommentRepository {
     override suspend fun getComments(postId: String): Flow<Resource<List<Comment>>> {
         return flow {
@@ -49,12 +48,14 @@ class CommentRepositoryImpl @Inject constructor(
                 userSnapshot.getString(USERNAME_FIELD_KEY) ?: throw FirebaseNoSignedInUserException(
                     "Username can't be found"
                 )
+            val authorProfilePictureUrl = userSnapshot.getString("profilePictureUrl")
 
             val commentDto = CommentDto(
                 id = commentRef.id,
                 postId = postId,
                 authorId = userId,
                 authorUsername = username,
+                authorProfilePictureUrl = authorProfilePictureUrl,
                 text = text
             )
 

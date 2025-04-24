@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GoalRepository {
      fun createGoal(goal: Goal): Flow<Resource<Boolean>>
+     fun getUserGoals(userId: String): Flow<Resource<List<Goal>>>
 }
