@@ -7,7 +7,8 @@ data class MilestoneItem(
     var text: String = "",
     val errorMessage: Int? = null,
     val achieved: Boolean = false,
-    val achievedAt: Timestamp? = null
+    val achievedAt: Timestamp? = null,
+    val targetDate : Timestamp? = null
 )
 
 
@@ -16,7 +17,8 @@ fun MilestoneItem.toPresentation(): MilestonePresentation {
         id = id,
         text = text,
         achieved = achieved,
-        achievedAt = achievedAt
+        achievedAt = achievedAt,
+        targetDate = targetDate
     )
 }
 

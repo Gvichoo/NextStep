@@ -1,10 +1,12 @@
 package com.tbacademy.nextstep.domain.model
 
 import android.net.Uri
+import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 
 data class Goal(
     val id: String = "",
+    val authorId: String = "",
     val title: String = "",
     val description: String? = null,
     val isMetricBased: Boolean = false,

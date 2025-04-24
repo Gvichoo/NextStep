@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.milestone.state
 
+import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.presentation.model.MilestonePresentation
 
 data class MilestoneState(
@@ -7,5 +8,7 @@ data class MilestoneState(
     val milestoneList: List<MilestonePresentation> = emptyList(),
     val errorMessage: Int? = null,
     val isSuccess : Boolean = false,
-    val authorId: String? = null
+    val authorId: String? = null,
+    val targetDate: Long? = null
+
 )

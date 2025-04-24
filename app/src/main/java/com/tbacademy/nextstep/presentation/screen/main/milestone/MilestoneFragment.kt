@@ -5,6 +5,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.databinding.FragmentMilestoneBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
@@ -17,13 +18,15 @@ class MilestoneFragment : BaseFragment<FragmentMilestoneBinding>(FragmentMilesto
 
     private val milestoneViewModel: MilestoneViewModel by viewModels()
     private val args: MilestoneFragmentArgs by navArgs()
+    private var targetDate: Long? = null
 
     private val adapter by lazy {
         MilestonesAdapter(
             onMarkAsDoneClick = { milestone ->
                 val goalId = args.goalId
-                milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))  // Pass milestone.id
-            }
+                milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))
+            },
+            targetDate = targetDate
         )
     }
 
@@ -40,7 +43,7 @@ class MilestoneFragment : BaseFragment<FragmentMilestoneBinding>(FragmentMilesto
     private fun observeUiState() {
         collect(flow = milestoneViewModel.state) { state ->
             binding.apply {
-                Log.d("FragmentState", "$state")
+                targetDate = state.targetDate
                 adapter.submitList(state.milestoneList)
                 milestoneLoader.loaderContainer.isVisible = state.isLoading
             }

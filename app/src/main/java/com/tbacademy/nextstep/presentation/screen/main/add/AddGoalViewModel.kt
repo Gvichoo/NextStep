@@ -45,7 +45,7 @@ class AddGoalViewModel @Inject constructor(
     private val validateImage : ImageValidator,
     private val application: Application
 
-    ) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
+) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(
     initialState = AddGoalState(),
     initialUiState = AddGoalUiState()
 ) {
@@ -133,7 +133,7 @@ class AddGoalViewModel @Inject constructor(
                     workInfoList.forEach { workInfo ->
                         when(workInfo.state){
                             WorkInfo.State.ENQUEUED, WorkInfo.State.RUNNING -> {
-                               updateState { copy(isLoading = true) }
+                                updateState { copy(isLoading = true) }
 
                             }
                             WorkInfo.State.SUCCEEDED -> {
@@ -373,7 +373,7 @@ class AddGoalViewModel @Inject constructor(
                 goalDateErrorMessage = dateValidationError,
                 goalMetricUnitErrorMessage = metricUnitError,
                 goalMetricTargetErrorMessage = metricTargetError,
-                )
+            )
         }
         updateUiState {
             copy(
@@ -415,21 +415,3 @@ class AddGoalViewModel @Inject constructor(
         else null
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

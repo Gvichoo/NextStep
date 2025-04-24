@@ -13,7 +13,8 @@ import java.util.Locale
 
 
 class MilestonesAdapter(
-    private val onMarkAsDoneClick: (MilestonePresentation) -> Unit
+    private val onMarkAsDoneClick: (MilestonePresentation) -> Unit,
+    private val targetDate: Long?
 ) : ListAdapter<MilestonePresentation, MilestonesAdapter.MilestoneViewHolder>(MilestoneDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MilestoneViewHolder {
@@ -38,11 +39,24 @@ class MilestonesAdapter(
                     SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
                 } ?: ""
 
-
-
                 tvAchievedAt.isVisible = milestone.achieved
 
                 btnMarkAsDone.isVisible = !milestone.achieved
+                btnPost.isVisible = milestone.isPostVisible
+
+                val now = System.currentTimeMillis()
+                val targetMillis = targetDate
+
+                if (milestone.achieved) {
+                    binding.status.text = "Done"
+                    binding.status.isVisible = true
+                } else if (targetMillis != null && now > targetMillis) {
+                    binding.status.text = "Failed"
+                    binding.status.isVisible = true
+                    btnMarkAsDone.isVisible = false
+                } else {
+                    binding.status.isVisible = false
+                }
 
                 btnMarkAsDone.setOnClickListener {
                     onMarkAsDoneClick(milestone)

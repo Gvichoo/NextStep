@@ -102,19 +102,21 @@ class GoalRepositoryImpl @Inject constructor(
         updatedGoalMilestones: List<MilestoneItem>
     ): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(true))
-
         try {
             val goalRef = firestore.collection("goals").document(goalId)
 
-            // Update just the milestone field
+            // Update the milestones field
             goalRef.update("milestone", updatedGoalMilestones).await()
 
             emit(Resource.Success(true))
-            emit(Resource.Loading(false))
         } catch (e: Exception) {
             emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(false))
         }
     }
+
+
 
 }
 

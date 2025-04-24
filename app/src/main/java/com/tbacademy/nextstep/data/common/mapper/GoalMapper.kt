@@ -11,6 +11,7 @@ fun Goal.toDto(): GoalDto {
     return GoalDto(
         id = id,
         title = title,
+        authorId = authorId,
         description = description,
         targetDate = com.google.firebase.Timestamp(Date(targetDate)),
         metricUnit = metricUnit,
@@ -25,6 +26,7 @@ fun GoalDto.toDomain(): Goal {
     return Goal(
         id = id,
         title = title,
+        authorId = authorId,
         description = description,
         targetDate = targetDate.seconds * 1000,
         metricUnit = metricUnit,
