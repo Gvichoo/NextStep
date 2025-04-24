@@ -8,13 +8,13 @@ data class GoalPresentation(
     val authorId: String,
     val authorUsername: String,
     val title: String,
-    val description: String,
+    val description: String?,
     val metricTarget: String? = null,
     val metricUnit: String? = null,
     val targetDate: Date,
     val goalStatus: GoalStatusPresentation = GoalStatusPresentation.ACTIVE,
     val createdAt: Long = System.currentTimeMillis(),
-    val imageUrl: String,
+    val imageUrl: String?,
     val milestone : List<MilestoneItem>? = emptyList()
 )
 

@@ -1,6 +1,8 @@
 package com.tbacademy.nextstep.data.common.mapper
 
+import android.net.Uri
 import com.google.firebase.Timestamp
+import com.tbacademy.nextstep.data.model.MilestoneItemDto
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.data.remote.dto.GoalStatusDto
 import com.tbacademy.nextstep.domain.model.Goal
@@ -19,9 +21,25 @@ fun Goal.toDto(): GoalDto {
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
-        milestone = milestone
+        milestone = milestone?.map { it.toDto() }
     )
 }
+
+fun GoalDto.toDomain(): Goal {
+    return Goal(
+        id = id,
+        title = title,
+        authorId = authorId,
+        description = description,
+        targetDate = targetDate.seconds * 1000,
+        metricUnit = metricUnit,
+        metricTarget = metricTarget,
+        createdAt = createdAt,
+        imageUri = Uri.parse(imageUrl),
+        milestone = milestone?.map { it.toDomain() } ?: emptyList()
+    )
+}
+
 
 fun GoalDto.toDomainWithComputedStatus(currentTime: Long): Goal {
     val status = when {
@@ -41,8 +59,7 @@ fun GoalDto.toDomainWithComputedStatus(currentTime: Long): Goal {
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
-        milestone = milestone,
-        goalStatus = status
+        milestone = milestone?.map { it.toDomain() },
     )
 }
 fun MilestoneItem.toDto(): MilestoneItemDto {
