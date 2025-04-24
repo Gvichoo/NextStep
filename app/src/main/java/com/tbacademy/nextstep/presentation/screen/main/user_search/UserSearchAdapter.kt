@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.databinding.ItemSearchUserBinding
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
+import com.tbacademy.nextstep.presentation.extension.loadProfilePictureGlide
 import com.tbacademy.nextstep.presentation.screen.main.user_search.model.UserPresentation
 
 class UserDiffUtil: DiffUtil.ItemCallback<UserPresentation>() {
@@ -27,9 +28,7 @@ class UserSearchAdapter(
                 fun onBind(user: UserPresentation) {
                     binding.apply {
                         tvUsername.text = user.username
-                        user.profilePictureUrl?.let {
-                            ivProfile.loadImagesGlide(url = it)
-                        }
+                        ivProfile.loadProfilePictureGlide(url = user.profilePictureUrl)
 
                         root.setOnClickListener {
                             onUserClicked(user.id)

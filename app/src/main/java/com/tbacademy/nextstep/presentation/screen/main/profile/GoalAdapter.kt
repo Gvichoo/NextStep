@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.databinding.ItemProfileGoalBinding
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
+import com.tbacademy.nextstep.presentation.extension.loadProfilePictureGlide
 import com.tbacademy.nextstep.presentation.screen.main.profile.model.GoalPresentation
 
 
@@ -27,9 +28,8 @@ class GoalAdapter : ListAdapter<GoalPresentation, GoalAdapter.GoalViewHolder>(Go
             binding.apply {
                 tvGoalTitle.text = goal.title
                 tvGoalStatus.text = goal.goalStatus.toString()
-                ivGoal.loadImagesGlide(url = goal.imageUrl)
+                ivGoal.loadProfilePictureGlide(url = goal.imageUrl)
             }
-
         }
     }
 
