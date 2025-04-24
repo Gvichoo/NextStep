@@ -34,7 +34,7 @@ class MilestoneViewModel @Inject constructor(
         when (event) {
             is MilestoneEvent.LoadMilestones -> getMilestoneById(goalId = event.goalId)
             is MilestoneEvent.MarkMilestoneAsDone -> {
-                markMilestoneAsDone(event.goalId,event.milestoneId)
+                markMilestoneAsDone(event.goalId, event.milestoneId)
 
             }
         }
@@ -43,60 +43,84 @@ class MilestoneViewModel @Inject constructor(
 
     private fun markMilestoneAsDone(goalId: String, milestoneId: Int) {
         viewModelScope.launch {
-            val updatedMilestones = state.value.milestoneList.map {
-                if (it.id == milestoneId) {
-                    it.copy(
-                        achieved = true,
-                        achievedAt = Timestamp.now()
-                    )
-                } else it
-            }
+            // Collect the current user's ID from the Flow
+            getAuthUserIdUseCase().collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val currentUserId = resource.data // This is the current user's ID
+                        // Check if the current user is the author of the goal
+                        if (currentUserId == state.value.authorId) {
+                            val updatedMilestones = state.value.milestoneList.map {
+                                if (it.id == milestoneId) {
+                                    it.copy(
+                                        achieved = true,
+                                        achievedAt = Timestamp.now()
+                                    )
+                                } else it
+                            }
 
-            updateGoalUseCase(goalId, updatedMilestones.map { it.toMilestoneItem() })
-                .collectLatest { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            updateState { copy(milestoneList = updatedMilestones) }
+                            // Update the milestone in the database (or server)
+                            updateGoalUseCase(
+                                goalId,
+                                updatedMilestones.map { it.toMilestoneItem() })
+                                .collectLatest { result ->
+                                    when (result) {
+                                        is Resource.Success -> {
+                                            updateState { copy(milestoneList = updatedMilestones) }
+                                        }
+
+                                        is Resource.Error -> {
+                                            emitEffect(
+                                                MilestoneEffect.ShowError(
+                                                    result.error.toMessageRes().toString()
+                                                )
+                                            )
+                                        }
+
+                                        is Resource.Loading -> {
+                                            updateState { copy(isLoading = result.loading) }
+                                        }
+                                    }
+                                }
+                        } else {
+                            // If the current user is not the author, show an error
+                            emitEffect(MilestoneEffect.ShowError("You are not the author of this goal."))
                         }
+                    }
 
-                        is Resource.Error -> {
-                            emitEffect(
-                                MilestoneEffect.ShowError(
-                                    result.error.toMessageRes()
-                                        .toString()
-                                )
+                    is Resource.Error -> {
+                        emitEffect(MilestoneEffect.ShowError("Error retrieving user ID"))
+                    }
+
+                    is Resource.Loading -> {
+                        updateState { copy(isLoading = resource.loading) }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun getMilestoneById(goalId: String) {
+        viewModelScope.launch {
+            getGoalMilestones(goalId = goalId).collectLatest { resource ->
+                when (resource) {
+                    is Resource.Error -> updateState { this.copy(errorMessage = resource.error.toMessageRes()) }
+                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
+
+                    is Resource.Success -> {
+                        val milestones = resource.data.milestone ?: emptyList()
+                        val presentations = milestones.toPresentationList()
+                        Log.d("MilestoneViewModel", "${resource.data}")
+                        updateState {
+                            copy(
+                                milestoneList = presentations,
+                                authorId = authorId
                             )
                         }
-
-                        is Resource.Loading -> {
-                            updateState { copy(isLoading = result.loading) }
-                        }
-                    }
-                }
-        }
-    }
-
-
-private fun getMilestoneById(goalId: String) {
-    viewModelScope.launch {
-        getGoalMilestones(goalId = goalId).collectLatest { resource ->
-            when (resource) {
-                is Resource.Error -> updateState { this.copy(errorMessage = resource.error.toMessageRes()) }
-                is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
-
-                is Resource.Success -> {
-                    val milestones = resource.data.milestone ?: emptyList()
-                    val presentations = milestones.toPresentationList()
-                    Log.d("MilestoneViewModel", "${resource.data}")
-                    updateState {
-                        copy(
-                            milestoneList = presentations,
-                            authorId = authorId
-                        )
                     }
                 }
             }
         }
     }
-}
 }
