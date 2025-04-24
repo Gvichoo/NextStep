@@ -36,10 +36,15 @@ import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStora
 import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCaseImpl
+
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidatorImpl
+
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCaseImpl
+
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
@@ -194,4 +199,16 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
+//    @Singleton
+//    @Binds
+//    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
+
+    @Singleton
+    @Binds
+    fun bindImageValidator(impl: ImageValidatorImpl): ImageValidator
+
+
+
+
 }
