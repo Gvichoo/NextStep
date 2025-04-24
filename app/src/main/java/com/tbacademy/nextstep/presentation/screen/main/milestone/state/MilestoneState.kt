@@ -6,5 +6,6 @@ data class MilestoneState(
     val isLoading: Boolean = false,
     val milestoneList: List<MilestonePresentation> = emptyList(),
     val errorMessage: Int? = null,
-    val isSuccess : Boolean = false
+    val isSuccess : Boolean = false,
+    val authorId: String? = null
 )

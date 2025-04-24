@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp
 data class  MilestonePresentation(
     val id: Int = 0,
     val goalId: String = "",
+    val authorId: String = "",
     val text: String = "",
     val achieved : Boolean = false,
     val achievedAt: Timestamp? = null,
