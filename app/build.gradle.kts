@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.lifecycle.runtime.android)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -99,9 +100,4 @@ dependencies {
 
     //Gson
     implementation ("com.google.code.gson:gson:2.11.0")
-
-
-
-
-
 }

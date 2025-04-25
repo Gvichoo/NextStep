@@ -26,6 +26,7 @@ navigation = "2.8.9"
 firebaseStorageKtx = "21.0.1"
 hiltCommon = "1.2.0"
 hiltWork = "1.2.0"
+swiperefreshlayout = "1.1.0"
 workRuntimeKtx = "2.10.0"
 
 [libraries]
@@ -35,6 +36,7 @@ androidx-credentials-play-services-auth = { module = "androidx.credentials:crede
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltCompiler" }
 androidx-hilt-work-v110 = { module = "androidx.hilt:hilt-work", version.ref = "hiltWorkVersion" }
+androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
