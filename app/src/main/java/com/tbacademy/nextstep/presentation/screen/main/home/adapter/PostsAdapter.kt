@@ -26,7 +26,6 @@ import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.extension.topReactions
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionOption
 
