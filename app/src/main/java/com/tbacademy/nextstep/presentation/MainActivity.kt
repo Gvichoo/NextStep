@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,22 +34,20 @@ class MainActivity : AppCompatActivity() {
                 view.paddingLeft,
                 systemBarsInsets.top,
                 view.paddingRight,
-                systemBarsInsets.bottom
+                0
             )
 
             WindowInsetsCompat.CONSUMED
         }
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+
         // Top Bar Color
         val isDarkMode = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         val insetsController = WindowInsetsControllerCompat(window, window.decorView)
         insetsController.isAppearanceLightStatusBars = !isDarkMode
 
-
         setUpNotificationPermission()
-
-
         setContentView(binding.root)
 
 

@@ -1,11 +1,11 @@
 package com.tbacademy.nextstep.presentation.extension
 
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 
 fun Int.adjustCount(
-    old: PostReactionType?,
-    new: PostReactionType?,
-    target: PostReactionType
+    old: ReactionTypePresentation?,
+    new: ReactionTypePresentation?,
+    target: ReactionTypePresentation
 ): Int {
     return when {
         old == target && new != target -> this - 1

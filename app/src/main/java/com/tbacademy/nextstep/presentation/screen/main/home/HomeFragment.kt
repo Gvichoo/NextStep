@@ -12,12 +12,12 @@ import com.tbacademy.nextstep.databinding.FragmentHomeBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
-import com.tbacademy.nextstep.presentation.screen.main.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.CommentsSheetFragment
 import com.tbacademy.nextstep.presentation.screen.main.home.effect.HomeEffect
 import com.tbacademy.nextstep.presentation.screen.main.home.event.HomeEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
+import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

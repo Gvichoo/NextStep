@@ -1,11 +1,11 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.event
 
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
 
 sealed interface HomeEvent {
     data object FetchPosts : HomeEvent
-    data class HandleReactToPost(val postId: String, val reactionType: PostReactionType?) :
+    data class HandleReactToPost(val postId: String, val reactionType: ReactionTypePresentation?) :
         HomeEvent
 
     data object StartSearch: HomeEvent

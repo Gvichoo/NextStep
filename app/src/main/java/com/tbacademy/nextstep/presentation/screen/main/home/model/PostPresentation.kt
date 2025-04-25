@@ -18,7 +18,7 @@ data class PostPresentation(
     val commentCount: Int,
     val imageUrl: String? = null,
     val createdAt: String,
-    val userReaction: PostReactionType? = null,
+    val userReaction: ReactionTypePresentation? = null,
     val isUserFollowing: Boolean = false,
     val isOwnPost: Boolean,
     val isReactionsPopUpVisible: Boolean = false,

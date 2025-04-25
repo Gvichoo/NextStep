@@ -18,6 +18,12 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
+import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCase
+import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
+import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.CreateMilestonePostUseCase
 import com.tbacademy.nextstep.domain.usecase.post.CreateMilestonePostUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
@@ -228,6 +234,18 @@ interface UseCaseModule {
     @Binds
     fun bindUpdateGoalUseCase(impl: UpdateGoalUseCaseImpl): UpdateGoalUseCase
 
+    @Singleton
+    @Binds
+    fun bindGetUserNotificationsUseCase(impl: GetUserNotificationsUseCaseImpl): GetUserNotificationsUseCase
+
+    @Singleton
+    @Binds
+    fun bindListenForUnreadNotificationsUseCase(impl: ListenForUnreadNotificationsUseCaseImpl): ListenForUnreadNotificationsUseCase
+
+    @Singleton
+    @Binds
+    fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
+  
     @Singleton
     @Binds
     fun bindCreateMilestonePostUseCase(impl: CreateMilestonePostUseCaseImpl): CreateMilestonePostUseCase

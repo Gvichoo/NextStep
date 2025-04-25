@@ -6,13 +6,13 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.databinding.ItemReactionOptionBinding
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionOption
 
 class ReactionPickerAdapter(
     private val reactions: List<ReactionOption>,
-    private val onReactionSelected: (PostReactionType) -> Unit,
-    private val onReactionHovered: ((PostReactionType?) -> Unit)? = null
+    private val onReactionSelected: (ReactionTypePresentation) -> Unit,
+    private val onReactionHovered: ((ReactionTypePresentation?) -> Unit)? = null
 ) : RecyclerView.Adapter<ReactionPickerAdapter.ReactionViewHolder>() {
 
     inner class ReactionViewHolder(private val binding: ItemReactionOptionBinding) :

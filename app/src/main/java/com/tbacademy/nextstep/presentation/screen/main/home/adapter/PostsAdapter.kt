@@ -25,6 +25,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_COUNT_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.extension.topReactions
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionOption
@@ -62,7 +63,7 @@ class PostsDiffUtil : DiffUtil.ItemCallback<PostPresentation>() {
 }
 
 class PostsAdapter(
-    private val updateUserReaction: (postId: String, reactionType: PostReactionType?) -> Unit,
+    private val updateUserReaction: (postId: String, reactionType: ReactionTypePresentation?) -> Unit,
     private val reactionBtnHold: (postId: String, visible: Boolean) -> Unit,
     private val commentsClicked: (postId: String) -> Unit,
     private val commentsIconClicked: (postId: String) -> Unit,
@@ -78,7 +79,7 @@ class PostsAdapter(
         const val COMMENT_COUNT_CHANGED_KEY = "comment_count_changed"
         const val FOLLOW_STATUS_CHANGED_KEY = "follow_status_changed"
 
-        val REACTION_OPTIONS = PostReactionType.entries.map {
+        val REACTION_OPTIONS = ReactionTypePresentation.entries.map {
             ReactionOption(type = it)
         }
     }
@@ -134,7 +135,7 @@ class PostsAdapter(
                 // Handle Reaction
                 btnReaction.setOnClickListener {
                     val selectedReaction = if (post.userReaction == null)
-                        PostReactionType.FIRE
+                        ReactionTypePresentation.FIRE
                     else
                         null
                     updateUserReaction(post.id, selectedReaction)
@@ -194,7 +195,7 @@ class PostsAdapter(
                         // Handle Reaction
                         btnReaction.setOnClickListener {
                             val selectedReaction = if (post.userReaction == null)
-                                PostReactionType.FIRE
+                                ReactionTypePresentation.FIRE
                             else
                                 null
                             updateUserReaction(post.id, selectedReaction)
@@ -241,7 +242,7 @@ class PostsAdapter(
                 tvReactionText.text = itemView.context.getString(it.titleRes)
             } ?: run {
                 tvReactionText.text = itemView.context.getString(R.string.react)
-                ivReactionIcon.setImageResource(PostReactionType.FIRE.iconRes)
+                ivReactionIcon.setImageResource(ReactionTypePresentation.FIRE.iconRes)
             }
 
             post.imageUrl?.let { ivPostImage.loadImagesGlide(url = it) }

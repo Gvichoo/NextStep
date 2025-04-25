@@ -12,5 +12,6 @@ interface PostRepository {
     fun createMilestonePost(milestonePost : MilestonePost): Flow<Resource<Boolean>>
 
     suspend fun getGoalPosts(goalId: String): Flow<Resource<List<Post>>>
+    suspend fun getPost(postId: String): Flow<Resource<Post>>
 
 }

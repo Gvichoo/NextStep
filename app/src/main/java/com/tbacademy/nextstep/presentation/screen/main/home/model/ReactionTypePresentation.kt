@@ -2,7 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.home.model
 
 import com.tbacademy.nextstep.R
 
-enum class PostReactionType(
+enum class ReactionTypePresentation(
     val iconRes: Int,
     val titleRes: Int = R.string.react,
     val backgroundRes: Int
