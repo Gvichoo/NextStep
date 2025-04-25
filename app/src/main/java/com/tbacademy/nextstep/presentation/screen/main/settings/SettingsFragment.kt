@@ -7,7 +7,7 @@ import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentSettingsBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
-import com.tbacademy.nextstep.presentation.screen.main.MainFragmentDirections
+import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
 import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
 import dagger.hilt.android.AndroidEntryPoint

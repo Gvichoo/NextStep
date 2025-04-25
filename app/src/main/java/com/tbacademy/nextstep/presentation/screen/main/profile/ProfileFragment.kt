@@ -20,7 +20,7 @@ import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
-import com.tbacademy.nextstep.presentation.screen.main.MainFragmentDirections
+import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
 import dagger.hilt.android.AndroidEntryPoint
