@@ -41,15 +41,16 @@ class NotificationAdapter(
                 tvAuthor.text = notification.authorUsername
                 ivProfile.loadProfilePictureGlide(url = notification.authorProfilePictureUrl)
                 tvDate.text = notification.createdAt
-                ivReactionIcon.isVisible = notification.reactionType != null
+                ivNotificationIcon.isVisible = notification.reactionType != null
                 notification.reactionType?.let {
-                    ivReactionIcon.setImageResource(it.iconRes)
+                    ivNotificationIcon.setImageResource(it.iconRes)
+                    ivNotificationIcon.setBackgroundResource(it.backgroundRes)
                 }
 
 
                 if (notification.type == NotificationTypePresentation.POST_REACTED) {
                     root.setOnClickListener {
-                        reactionNotificationClicked(notification.id)
+                        notification.postId?.let { id -> reactionNotificationClicked(id) }
                     }
                 }
             }

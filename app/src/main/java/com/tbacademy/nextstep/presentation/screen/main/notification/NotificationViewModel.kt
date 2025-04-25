@@ -1,11 +1,9 @@
 package com.tbacademy.nextstep.presentation.screen.main.notification
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
-
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
+import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.screen.main.notification.effect.NotificationEffect
@@ -26,16 +24,22 @@ class NotificationViewModel @Inject constructor(
     override fun onEvent(event: NotificationEvent) {
         when (event) {
             is NotificationEvent.GetNotifications -> getUserNotifications(isRefresh = event.refresh)
+            is NotificationEvent.ReactNotificationSelected -> onReactNotificationSelected(postId = event.postId)
         }
     }
 
+    private fun onReactNotificationSelected(postId: String) {
+        viewModelScope.launch {
+            emitEffect(effect = NotificationEffect.NavigateToPost(postId = postId))
+        }
+    }
+
+
     private fun getUserNotifications(isRefresh: Boolean = false) {
         viewModelScope.launch {
-
             if (isRefresh) {
                 updateState { copy(isRefreshing = true) }
             }
-
             getUserNotificationsUseCase().collectLatest { resource ->
                 when (resource) {
                     is Resource.Success -> {
@@ -49,9 +53,13 @@ class NotificationViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-                        Log.d("NOTIFICATION_ERROR", "${resource.error}")
                         emitEffect(effect = NotificationEffect.ShowErrorMessage(errorMessageRes = resource.error.toMessageRes()))
-                        updateState { copy(errorMessageRes = resource.error.toMessageRes(), isRefreshing = false) }
+                        updateState {
+                            copy(
+                                errorMessageRes = resource.error.toMessageRes(),
+                                isRefreshing = false
+                            )
+                        }
                     }
 
                     is Resource.Loading -> updateState { copy(isLoading = resource.loading) }

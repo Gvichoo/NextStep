@@ -1,18 +1,46 @@
 package com.tbacademy.nextstep.presentation.screen.main.post
 
+import androidx.lifecycle.viewModelScope
+import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
+import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
+import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
 import com.tbacademy.nextstep.presentation.screen.main.post.effect.PostEffect
 import com.tbacademy.nextstep.presentation.screen.main.post.event.PostEvent
 import com.tbacademy.nextstep.presentation.screen.main.post.state.PostState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostViewModel @Inject constructor() : BaseViewModel<PostState, PostEvent, PostEffect, Unit>
-    (initialState = PostState(), Unit) {
+class PostViewModel @Inject constructor(
+    private val getPostUseCase: GetPostUseCase
+) : BaseViewModel<PostState, PostEvent, PostEffect, Unit>(
+    initialState = PostState(),
+    initialUiState = Unit
+) {
+
     override fun onEvent(event: PostEvent) {
         when (event) {
-            is PostEvent.GetPost -> {}
+            is PostEvent.GetPost -> getPost(postId = event.postId)
+        }
+    }
+
+    private fun getPost(postId: String) {
+        viewModelScope.launch {
+            getPostUseCase(postId = postId).collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> updateState { copy(post = resource.data.toPresentation()) }
+                    is Resource.Error -> {
+                        updateState { copy(errorMessageRes = resource.error.toMessageRes()) }
+                        emitEffect(effect = PostEffect.ShowErrorMessage(errorMessageRes = resource.error.toMessageRes()))
+                    }
+
+                    is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
+                }
+            }
         }
     }
 }

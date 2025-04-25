@@ -66,5 +66,6 @@
     <string name="select_image">Select Image</string>
 
     <string name="no_milestones_message">No milestones available</string>
+    <string name="cooked">Cooked</string>
 
 </resources>

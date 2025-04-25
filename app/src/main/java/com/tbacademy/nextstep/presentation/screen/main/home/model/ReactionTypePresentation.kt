@@ -9,7 +9,7 @@ enum class ReactionTypePresentation(
 ) {
     FIRE(
         iconRes = R.drawable.ic_reaction_fire_24px,
-        titleRes = R.string.fire,
+        titleRes = R.string.cooked,
         backgroundRes = R.drawable.bg_reaction_fire
     ),
     HEART(
