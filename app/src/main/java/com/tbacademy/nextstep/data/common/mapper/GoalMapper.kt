@@ -8,6 +8,7 @@ import com.tbacademy.nextstep.data.remote.dto.GoalStatusDto
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.sql.Date
 
 fun Goal.toDto(): GoalDto {
@@ -21,7 +22,8 @@ fun Goal.toDto(): GoalDto {
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
-        milestone = milestone?.map { it.toDto() }
+        milestone = milestone?.map { it.toDto() },
+        type = PostType.GOAL
     )
 }
 

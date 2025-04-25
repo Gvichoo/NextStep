@@ -3,6 +3,7 @@ package com.tbacademy.nextstep.presentation.screen.main.home.adapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.extension.topReactions
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionOption
 
 class PostsDiffUtil : DiffUtil.ItemCallback<PostPresentation>() {
@@ -165,6 +167,15 @@ class PostsAdapter(
                 btnSeeMilestones.setOnClickListener{
                     onMilestoneClicked(post.goalId)
                 }
+                Log.d("POST_TYPE_CHECK", "Post title: ${post.title}, type: ${post.type}")
+
+                if (post.type == PostType.MILESTONE) {
+                    tvPostType.visibility = View.VISIBLE
+                    tvPostType.text = "Milestone"
+                } else if (post.type == PostType.GOAL) {
+                    tvPostType.visibility = View.VISIBLE
+                    tvPostType.text = "Goal"
+                }
             }
         }
 
@@ -219,7 +230,6 @@ class PostsAdapter(
                             btnFollow.text = itemView.context.getString(R.string.followed)
                         }
                     }
-
                 }
             }
         }

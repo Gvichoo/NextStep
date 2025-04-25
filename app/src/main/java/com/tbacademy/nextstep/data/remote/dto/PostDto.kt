@@ -1,6 +1,7 @@
 package com.tbacademy.nextstep.data.remote.dto
 
 import com.google.firebase.Timestamp
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.util.Date
 
 data class PostDto(
@@ -17,8 +18,7 @@ data class PostDto(
     val reactionCheerCount: Int = 0,
     val reactionDisappointmentCount: Int = 0,
     val commentCount: Int = 0,
-    val referenceType: String = "",
-    val referenceId: String = "",
     val imageUrl: String = "",
-    val createdAt: Timestamp = Timestamp(Date())
+    val createdAt: Timestamp = Timestamp(Date()),
+    val type: PostType = PostType.MILESTONE
 )

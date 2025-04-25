@@ -10,5 +10,6 @@ data class  MilestonePresentation(
     val achievedAt: Timestamp? = null,
     val isPostVisible: Boolean = false,
     val isAuthor: Boolean = false,
+    val authorId: String? = null,
     val targetDate: Timestamp?
 )
