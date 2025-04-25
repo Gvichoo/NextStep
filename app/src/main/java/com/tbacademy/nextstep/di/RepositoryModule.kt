@@ -6,6 +6,7 @@ import com.tbacademy.nextstep.data.repository.comment.CommentRepositoryImpl
 import com.tbacademy.nextstep.data.repository.goal_follow.GoalFollowRepositoryImpl
 import com.tbacademy.nextstep.data.repository.goal.GoalRepositoryImpl
 import com.tbacademy.nextstep.data.repository.login.LoginRepositoryImpl
+import com.tbacademy.nextstep.data.repository.notification.NotificationRepositoryImpl
 import com.tbacademy.nextstep.data.repository.post.PostRepositoryImpl
 import com.tbacademy.nextstep.data.repository.reaction.ReactionRepositoryImpl
 import com.tbacademy.nextstep.data.repository.register.RegisterRepositoryImpl
@@ -18,6 +19,7 @@ import com.tbacademy.nextstep.domain.repository.comment.CommentRepository
 import com.tbacademy.nextstep.domain.repository.goal_follow.GoalFollowRepository
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
+import com.tbacademy.nextstep.domain.repository.notification.NotificationRepository
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
 import com.tbacademy.nextstep.domain.repository.reaction.ReactionRepository
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
@@ -81,4 +83,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationRepository(impl: NotificationRepositoryImpl): NotificationRepository
 }

@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.tbacademy.nextstep.presentation.screen.main.MainFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
