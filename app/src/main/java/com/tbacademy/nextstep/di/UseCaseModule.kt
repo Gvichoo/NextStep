@@ -18,6 +18,8 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
+import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCase
 import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
@@ -229,6 +231,10 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindUpdateGoalUseCase(impl: UpdateGoalUseCaseImpl): UpdateGoalUseCase
+
+    @Singleton
+    @Binds
+    fun bindGetUserNotificationsUseCase(impl: GetUserNotificationsUseCaseImpl): GetUserNotificationsUseCase
 
     @Singleton
     @Binds

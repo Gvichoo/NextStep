@@ -85,7 +85,7 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.skipCollapsed = true
             val layoutParams = bottomSheet.layoutParams
-            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+            layoutParams.height = resources.displayMetrics.heightPixels
             bottomSheet.layoutParams = layoutParams
         }
 

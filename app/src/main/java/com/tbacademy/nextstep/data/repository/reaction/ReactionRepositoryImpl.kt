@@ -3,6 +3,7 @@ package com.tbacademy.nextstep.data.repository.reaction
 import android.content.res.Resources.NotFoundException
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.tbacademy.nextstep.data.common.mapper.toDto
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.ReactionDto
 import com.tbacademy.nextstep.domain.core.Resource
@@ -28,7 +29,7 @@ class ReactionRepositoryImpl @Inject constructor(
                 id = reactionRef.id,
                 postId = postId,
                 authorId = userId,
-                type = type
+                type = type.toDto()
             )
             reactionRef.set(reactionDto).await()
 

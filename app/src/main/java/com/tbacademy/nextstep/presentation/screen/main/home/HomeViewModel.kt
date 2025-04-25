@@ -18,7 +18,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.effect.HomeEffect
 import com.tbacademy.nextstep.presentation.screen.main.home.event.HomeEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toDomain
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostReactionType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
 import com.tbacademy.nextstep.presentation.screen.main.home.state.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -108,7 +108,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun reactToPost(id: String, newReaction: PostReactionType?) {
+    private fun reactToPost(id: String, newReaction: ReactionTypePresentation?) {
         val updatedPosts = state.value.posts?.map { post ->
             if (post.id != id) return@map post
             val oldReaction = post.userReaction
@@ -145,27 +145,27 @@ class HomeViewModel @Inject constructor(
                 reactionFireCount = post.reactionFireCount.adjustCount(
                     old = oldReaction,
                     new = newReaction,
-                    target = PostReactionType.FIRE
+                    target = ReactionTypePresentation.FIRE
                 ),
                 reactionHeartCount = post.reactionHeartCount.adjustCount(
                     old = oldReaction,
                     new = newReaction,
-                    target = PostReactionType.HEART
+                    target = ReactionTypePresentation.HEART
                 ),
                 reactionCookieCount = post.reactionCookieCount.adjustCount(
                     old = oldReaction,
                     new = newReaction,
-                    target = PostReactionType.COOKIE
+                    target = ReactionTypePresentation.COOKIE
                 ),
                 reactionCheerCount = post.reactionCheerCount.adjustCount(
                     old = oldReaction,
                     new = newReaction,
-                    target = PostReactionType.CHEER
+                    target = ReactionTypePresentation.CHEER
                 ),
                 reactionDisappointmentCount = post.reactionDisappointmentCount.adjustCount(
                     old = oldReaction,
                     new = newReaction,
-                    target = PostReactionType.DISAPPOINTMENT
+                    target = ReactionTypePresentation.DISAPPOINTMENT
                 ),
                 isReactionsPopUpVisible = false
             )
@@ -205,7 +205,7 @@ class HomeViewModel @Inject constructor(
         updateState { copy(posts = updatedPosts) }
     }
 
-    private fun debounceCreateReaction(postId: String, reactionType: PostReactionType) {
+    private fun debounceCreateReaction(postId: String, reactionType: ReactionTypePresentation) {
         debounceJobs[postId]?.cancel()
         debounceJobs[postId] = viewModelScope.launch {
             delay(150)
@@ -214,7 +214,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun debounceUpdateReaction(postId: String, reactionType: PostReactionType) {
+    private fun debounceUpdateReaction(postId: String, reactionType: ReactionTypePresentation) {
         debounceJobs[postId]?.cancel()
         debounceJobs[postId] = viewModelScope.launch {
             delay(150)
@@ -261,7 +261,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun createReaction(postId: String, reactionType: PostReactionType) {
+    private fun createReaction(postId: String, reactionType: ReactionTypePresentation) {
         viewModelScope.launch {
             createReactionUseCase(
                 postId = postId,
@@ -274,7 +274,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateReaction(postId: String, reactionType: PostReactionType) {
+    private fun updateReaction(postId: String, reactionType: ReactionTypePresentation) {
         viewModelScope.launch {
             updateReactionUseCase(
                 postId = postId, reactionType = reactionType.toDomain()
