@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/bg_post_item"
+    android:elevation="4dp"
+    android:padding="16dp">
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1987, 18th november"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_md"
+        android:text="Write new misery novel"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivPostImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_sm"
+        android:scaleType="centerCrop"
+        android:src="@color/md_theme_tertiary"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:shapeAppearanceOverlay="@style/RoundedImageShape" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_sm"
+        android:text="@string/paul_sheldon_goal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flowReactions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_md"
+        app:constraint_referenced_ids="ivReaction1,ivReaction2,ivReaction3"
+        app:flow_horizontalAlign="start"
+        app:flow_horizontalGap="-6dp"
+        app:flow_wrapMode="chain"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivReaction1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_reaction_fire"
+        android:src="@drawable/ic_reaction_fire_24px"
+        android:translationZ="2dp"
+        android:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivReaction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_reaction_heart"
+        android:src="@drawable/ic_reaction_heart_24px"
+        android:translationZ="1dp"
+         />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivReaction3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_reaction_cookie"
+        android:src="@drawable/ic_reaction_cookie_24px"
+         />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvReactionsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/distance_xs"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@id/ivReaction1"
+        app:layout_constraintStart_toEndOf="@id/flowReactions"
+        app:layout_constraintTop_toTopOf="@id/ivReaction1" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvComments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/distance_xs"
+        android:text="Comments:"
+        app:layout_constraintBottom_toBottomOf="@id/ivReaction1"
+        app:layout_constraintEnd_toStartOf="@id/tvCommentsCount" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvCommentsCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@id/ivReaction1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

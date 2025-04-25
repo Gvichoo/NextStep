@@ -26,6 +26,7 @@
         android:id="@+id/tvGoalStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="ACTIVE"
         app:layout_constraintTop_toBottomOf="@id/tvGoalTitle"
         android:paddingVertical="@dimen/distance_sm"

@@ -146,7 +146,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         commentsSheet.show(childFragmentManager, "CommentsSheet")
     }
 
-    private fun navigateToProfile(userId: String) {
+    private fun navigateToProfile(userId: String?) {
         val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
             userId = userId
         )

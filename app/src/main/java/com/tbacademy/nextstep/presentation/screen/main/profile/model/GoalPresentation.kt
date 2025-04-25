@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile.model
 
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import java.sql.Date
 
@@ -18,8 +19,8 @@ data class GoalPresentation(
     val milestone : List<MilestoneItem>? = emptyList()
 )
 
-enum class GoalStatusPresentation{
-    ACTIVE,
-    COMPLETED,
-    FAILED
+enum class GoalStatusPresentation(val statusColorRes: Int){
+    ACTIVE(statusColorRes = R.color.active),
+    COMPLETED(statusColorRes = R.color.completed),
+    FAILED(statusColorRes = R.color.failed)
 }

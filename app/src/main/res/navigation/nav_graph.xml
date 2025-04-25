@@ -59,6 +59,12 @@
             android:id="@+id/action_mainFragment_to_userSearchFragment"
             app:destination="@id/userSearchFragment" />
         <action
+            android:id="@+id/action_mainFragment_self"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_goalFragment2"
+            app:destination="@id/goalFragment" />
+        <action
             android:id="@+id/action_mainFragment_to_milestoneFragment"
             app:destination="@id/milestoneFragment" />
     </fragment>
@@ -67,7 +73,12 @@
         android:name="com.tbacademy.nextstep.presentation.screen.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
-        <argument android:name="userId" />
+        <argument android:name="userId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_goalFragment"
+            app:destination="@id/goalFragment" />
     </fragment>
     <fragment
         android:id="@+id/userSearchFragment"
@@ -79,9 +90,23 @@
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
+        android:id="@+id/goalFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.goal.GoalFragment"
+        android:label="fragment_goal"
+        tools:layout="@layout/fragment_goal" >
+        <argument
+            android:name="goalId"
+            app:argType="string" />
+        <argument
+            android:name="goalTitle"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
         android:id="@+id/milestoneFragment"
         android:name="com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragment"
         android:label="fragment_milestone"
+
         tools:layout="@layout/fragment_milestone" >
         <argument android:name="goalId" />
         <action
@@ -99,6 +124,10 @@
         <argument
             android:name="text"
             app:argType="string" />
+
+        tools:layout="@layout/fragment_milestone">
+
+
         <argument
             android:name="goalId"
             app:argType="string" />

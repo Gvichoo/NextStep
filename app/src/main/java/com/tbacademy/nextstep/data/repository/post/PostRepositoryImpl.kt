@@ -5,8 +5,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+
 import com.google.firebase.storage.FirebaseStorage
 import com.tbacademy.nextstep.data.common.mapper.toApiError
+
+import com.google.firebase.firestore.toObject
+
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse.Companion.SORT_CREATED_AT
@@ -26,13 +30,17 @@ import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
+
     private val firebaseHelper: HandleResponse,
     private val firebaseStorage: FirebaseStorage,
     private val firebaseAuth: FirebaseAuth
+
+    private val handleResponse: HandleResponse
+
 ) : PostRepository {
 
     override suspend fun getGlobalPosts(): Flow<Resource<List<Post>>> {
-        return firebaseHelper.safeApiCallWithUserId { userId ->
+        return handleResponse.safeApiCallWithUserId { userId ->
 
             val postSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
                 .orderBy(SORT_CREATED_AT, Query.Direction.DESCENDING)
@@ -53,7 +61,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFollowedPosts(): Flow<Resource<List<Post>>> {
-        return firebaseHelper.safeApiCallWithUserId { userId ->
+        return handleResponse.safeApiCallWithUserId { userId ->
 
             // Get followed goals and users
             val followedGoals = getFollowedGoals(userId = userId)
@@ -86,6 +94,7 @@ class PostRepositoryImpl @Inject constructor(
             )
         }
     }
+
 
     override fun createMilestonePost(milestonePost: MilestonePost): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(loading = true))
@@ -148,6 +157,21 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+
+
+
+    override suspend fun getGoalPosts(goalId: String): Flow<Resource<List<Post>>> {
+        return handleResponse.safeApiCall {
+            val postSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
+                .whereEqualTo("goalId", goalId)
+                .get()
+                .await()
+
+            val postDtoList = postSnapshot.mapNotNull { it.toObject(PostDto::class.java).copy(id = it.id) }
+
+            postDtoList.map { it.toDomain() }
+        }
+    }
 
 
 

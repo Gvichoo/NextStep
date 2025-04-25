@@ -83,7 +83,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivPostImage"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_sm"
         android:scaleType="centerCrop"
         android:src="@color/md_theme_tertiary"

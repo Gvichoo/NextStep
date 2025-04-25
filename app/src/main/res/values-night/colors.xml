@@ -146,4 +146,8 @@
     <color name="reaction_cookie_bg">#6A5E36</color>
     <color name="reaction_cheer_bg">#2C4B5B</color>
     <color name="reaction_task_bg">#3B3C5C</color>
+
+    <color name="active">#90CAF9</color>
+    <color name="completed">#A5D6A7</color>
+    <color name="failed">#EF9A9A</color>
 </resources>
