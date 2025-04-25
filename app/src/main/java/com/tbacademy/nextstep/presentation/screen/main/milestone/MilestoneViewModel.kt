@@ -35,8 +35,14 @@ class MilestoneViewModel @Inject constructor(
             is MilestoneEvent.LoadMilestones -> getMilestoneById(goalId = event.goalId)
             is MilestoneEvent.MarkMilestoneAsDone -> {
                 markMilestoneAsDone(event.goalId, event.milestoneId)
-
             }
+            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(event.milestoneId,event.text)
+        }
+    }
+
+    private fun onPostMilestoneClicked(milestoneId: String, text: String) {
+        viewModelScope.launch {
+            emitEffect(MilestoneEffect.NavigateToMilestonePost(milestoneId = milestoneId, text = text))
         }
     }
 
@@ -54,11 +60,12 @@ class MilestoneViewModel @Inject constructor(
                         if (currentUserId == authorId) {
                             val updatedMilestones = state.value.milestoneList.map {
                                 if (it.id == milestoneId) {
+
                                     Log.d("MilestoneViewModel", "Milestone updated: ${it.text}, isAuthor: true")
                                     it.copy(
                                         achieved = true,
                                         achievedAt = Timestamp.now(),
-                                        isPostVisible = true
+                                        isPostVisible = true // Ensure this remains true after marking as done
                                     )
                                 } else it
                             }
@@ -68,7 +75,7 @@ class MilestoneViewModel @Inject constructor(
                                     when (updateResult) {
                                         is Resource.Success -> {
                                             Log.d("MilestoneViewModel", "Milestone marked as done successfully.")
-                                            updateState { copy(milestoneList = updatedMilestones) }
+                                            updateState { copy(milestoneList = updatedMilestones) } // Update the state with the new milestone list
                                         }
                                         is Resource.Error -> {
                                             emitEffect(MilestoneEffect.ShowError(updateResult.error.toMessageRes().toString()))
@@ -94,6 +101,8 @@ class MilestoneViewModel @Inject constructor(
             }
         }
     }
+
+
 
 
     private fun getMilestoneById(goalId: String) {

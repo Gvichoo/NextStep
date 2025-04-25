@@ -11,7 +11,6 @@ fun PostDto.toDomain(): Post {
         authorUsername = authorUsername,
         authorId = authorId,
         goalId = goalId,
-        type = referenceType,
         commentCount = commentCount,
         reactionCount = reactionCount,
         reactionFireCount = reactionFireCount,

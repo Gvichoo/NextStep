@@ -118,8 +118,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                         .into(image)
                 }
 
-
-//                tlImage.error = uiState.goalImageErrorMessage?.let { getString(it) }
                 tlImage.error = if (uiState.imageUri != null) null else uiState.goalImageErrorMessage?.let { getString(it) }
             }
         }
@@ -134,7 +132,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             }
         }
     }
-
 
     //WorkManager
     private fun bindWorkerResultObserver() {

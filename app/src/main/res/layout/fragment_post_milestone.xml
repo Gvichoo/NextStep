@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.screen.main.postMilestone.PostMilestoneFragment">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_md"
+        android:text="Post Milestone"
+        android:textSize="@dimen/title_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tlMilestoneTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
+        android:layout_marginTop="@dimen/distance_md"
+        android:hint="text"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMilestoneTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tlMilestoneDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
+        android:layout_marginTop="@dimen/distance_md"
+        android:hint="Description"
+        app:layout_constraintTop_toBottomOf="@id/tlMilestoneTitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMilestoneDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tlImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
+        android:layout_marginTop="@dimen/distance_md"
+        android:hint="Image"
+        app:layout_constraintTop_toBottomOf="@+id/tlMilestoneDescription"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/distance_sm"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/place_holder"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSelectImage"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/distance_sm"
+        android:layout_marginTop="@dimen/distance_sm"
+        android:text="Add Image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tlImage" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancelImage"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/distance_sm"
+        android:enabled="false"
+        android:text="Cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnSelectImage" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_md"
+        android:paddingVertical="@dimen/btn_vertical_padding"
+        android:text="Post Milestone 🎯"
+        android:layout_marginStart="@dimen/distance_sm"
+        android:layout_marginEnd="@dimen/distance_sm"
+        android:textAllCaps="false"
+        android:textSize="@dimen/body_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectImage" />
+
+    <include
+        android:id="@+id/loaderMilestone"
+        layout="@layout/loader" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

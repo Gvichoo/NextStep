@@ -16,6 +16,7 @@ import java.util.Locale
 class MilestonesAdapter(
     private val onMarkAsDoneClick: (MilestonePresentation) -> Unit,
     private val targetDate: Long?,
+    private val onPostClick: (milestoneId : String,text : String) -> Unit
 ) : ListAdapter<MilestonePresentation, MilestonesAdapter.MilestoneViewHolder>(MilestoneDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MilestoneViewHolder {
@@ -40,16 +41,18 @@ class MilestonesAdapter(
                 tvMilestoneTitle.text = milestone.text
                 tvNumber.text = "${milestone.id + 1})"
 
+                // Make sure the date is always visible
+                tvAchievedAt.isVisible = true
+
+                // Set the achieved date or an empty string if not achieved
                 tvAchievedAt.text = milestone.achievedAt?.let { timestamp ->
                     val date = timestamp.toDate()
                     SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
-                } ?: ""
+                } ?: "Not Achieved Yet" // Placeholder text when not achieved
 
-                tvAchievedAt.isVisible = milestone.achieved
-
-                // Check visibility conditions
+                // Check visibility conditions for "Mark as Done" button
                 btnMarkAsDone.isVisible = milestone.isAuthor && !milestone.achieved
-                btnPost.isVisible = milestone.isPostVisible
+                btnPost.isVisible = milestone.achieved && milestone.isAuthor
 
                 val now = System.currentTimeMillis()
                 val targetMillis = targetDate
@@ -65,13 +68,17 @@ class MilestonesAdapter(
                     binding.status.isVisible = false
                 }
 
-
                 btnMarkAsDone.setOnClickListener {
                     btnMarkAsDone.isVisible = false
                     onMarkAsDoneClick(milestone)
                 }
+
+                btnPost.setOnClickListener {
+                    onPostClick(milestone.id.toString(), milestone.text)
+                }
             }
         }
+
     }
     class MilestoneDiffCallback : DiffUtil.ItemCallback<MilestonePresentation>() {
         override fun areItemsTheSame(oldItem: MilestonePresentation, newItem: MilestonePresentation): Boolean {

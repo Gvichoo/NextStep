@@ -20,5 +20,5 @@ data class PostDto(
     val referenceType: String = "",
     val referenceId: String = "",
     val imageUrl: String = "",
-    val createdAt: Timestamp = Timestamp(Date())
+    val createdAt: Timestamp = Timestamp(Date()),
 )
