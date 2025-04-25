@@ -33,7 +33,7 @@ class PostRepositoryImpl @Inject constructor(
 
     private val firebaseHelper: HandleResponse,
     private val firebaseStorage: FirebaseStorage,
-    private val firebaseAuth: FirebaseAuth
+    private val firebaseAuth: FirebaseAuth,
 
     private val handleResponse: HandleResponse
 
