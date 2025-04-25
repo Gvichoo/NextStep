@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.repository.post
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -131,8 +132,10 @@ class PostRepositoryImpl @Inject constructor(
                 commentCount = 0,
                 imageUrl = imageUrl,
                 createdAt = Date(),
-                type = PostType.GOAL
+                type = PostType.MILESTONE
             )
+            Log.d("POST_UPLOAD", "Post to upload: $post")
+
 
             // ✅ Save only to the 'posts' collection
             postRef.set(post).await()

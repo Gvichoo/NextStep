@@ -99,6 +99,9 @@
         <argument
             android:name="text"
             app:argType="string" />
+        <argument
+            android:name="goalId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

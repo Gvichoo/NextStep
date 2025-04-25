@@ -3,7 +3,6 @@ package com.tbacademy.nextstep.presentation.screen.main.home.mapper
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.presentation.common.extension.toTimeAgo
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 
 fun Post.toPresentation(): PostPresentation {
     return PostPresentation(
@@ -25,6 +24,6 @@ fun Post.toPresentation(): PostPresentation {
         isUserFollowing = isUserFollowing,
         isOwnPost = isOwnPost,
         userReaction = userReaction?.toPresentation(),
-        type = PostType.MILESTONE
+        type = type
     )
 }

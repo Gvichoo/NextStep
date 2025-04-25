@@ -36,13 +36,13 @@ class MilestoneViewModel @Inject constructor(
             is MilestoneEvent.MarkMilestoneAsDone -> {
                 markMilestoneAsDone(event.goalId, event.milestoneId)
             }
-            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(event.milestoneId,event.text)
+            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(event.milestoneId,event.text,event.goalId)
         }
     }
 
-    private fun onPostMilestoneClicked(milestoneId: String, text: String) {
+    private fun onPostMilestoneClicked(milestoneId: String, text: String,goalId: String) {
         viewModelScope.launch {
-            emitEffect(MilestoneEffect.NavigateToMilestonePost(milestoneId = milestoneId, text = text))
+            emitEffect(MilestoneEffect.NavigateToMilestonePost(milestoneId = milestoneId, text = text, goalId = goalId))
         }
     }
 

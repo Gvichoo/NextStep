@@ -172,13 +172,10 @@ class PostsAdapter(
                 if (post.type == PostType.MILESTONE) {
                     tvPostType.visibility = View.VISIBLE
                     tvPostType.text = "Milestone"
-                } else {
+                } else if (post.type == PostType.GOAL) {
                     tvPostType.visibility = View.VISIBLE
                     tvPostType.text = "Goal"
                 }
-
-
-
             }
         }
 
@@ -233,7 +230,6 @@ class PostsAdapter(
                             btnFollow.text = itemView.context.getString(R.string.followed)
                         }
                     }
-
                 }
             }
         }

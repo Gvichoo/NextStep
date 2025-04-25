@@ -16,7 +16,7 @@ import java.util.Locale
 class MilestonesAdapter(
     private val onMarkAsDoneClick: (MilestonePresentation) -> Unit,
     private val targetDate: Long?,
-    private val onPostClick: (milestoneId : String,text : String) -> Unit
+    private val onPostClick: (milestoneId : String,text : String,goalId : String) -> Unit
 ) : ListAdapter<MilestonePresentation, MilestonesAdapter.MilestoneViewHolder>(MilestoneDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MilestoneViewHolder {
@@ -74,7 +74,7 @@ class MilestonesAdapter(
                 }
 
                 btnPost.setOnClickListener {
-                    onPostClick(milestone.id.toString(), milestone.text)
+                    onPostClick(milestone.id.toString(), milestone.text,milestone.goalId)
                 }
             }
         }

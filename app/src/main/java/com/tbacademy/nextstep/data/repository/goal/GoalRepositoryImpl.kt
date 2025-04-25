@@ -50,6 +50,7 @@ class GoalRepositoryImpl @Inject constructor(
             }
 
 
+
             val goalRef = firestore.collection("goals").document()
             val goalId = goalRef.id
             val username: String? = userSnapshot.getString("username")
@@ -63,8 +64,7 @@ class GoalRepositoryImpl @Inject constructor(
                     imageUrl = imageUrl ?: "",
                     type = PostType.GOAL
                 )
-
-
+                Log.d("UPLOAD_GOAL", "Goal to upload: $goalDto")
                 // Upload goal to Firestore
                 goalRef.set(goalDto).await()
                 emit(Resource.Success(data = true))

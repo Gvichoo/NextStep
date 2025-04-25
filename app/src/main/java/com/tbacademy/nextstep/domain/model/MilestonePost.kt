@@ -2,6 +2,7 @@ package com.tbacademy.nextstep.domain.model
 
 import android.net.Uri
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.util.Date
 
 data class MilestonePost(
@@ -20,7 +21,6 @@ data class MilestonePostDto(
     val authorUsername: String,
     val id: String,
     val goalTitle: String = ""
-
 )
 
 
@@ -44,6 +44,7 @@ fun MilestonePostDto.toPost(): Post {
         isOwnPost = false,
         goalId = "",
         createdAt = Date(),
+        type = PostType.MILESTONE
 
     )
 }

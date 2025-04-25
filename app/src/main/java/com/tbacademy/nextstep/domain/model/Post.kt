@@ -23,5 +23,5 @@ data class Post(
     val commentCount: Int,
     val imageUrl: String? = null,
     val createdAt: Date,
-    val type: PostType = PostType.GOAL
+    val type: PostType
 )

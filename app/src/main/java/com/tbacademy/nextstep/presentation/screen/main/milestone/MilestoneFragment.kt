@@ -30,11 +30,12 @@ class MilestoneFragment :
                 milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))
             },
             targetDate = targetDate,
-            onPostClick = { milestoneId, text ->
+            onPostClick = { milestoneId, text,goalId ->
                 milestoneViewModel.onEvent(
                     event = MilestoneEvent.OpenMilestone(
                         milestoneId = milestoneId,
-                        text = text
+                        text = text,
+                        goalId = goalId
                     )
                 )
             }
@@ -55,10 +56,11 @@ class MilestoneFragment :
         observeUiState()
     }
 
-    private fun navigateToMilestone(milestoneId: String, text: String) {
+    private fun navigateToMilestone(milestoneId: String, text: String,goalId : String) {
         val action = MilestoneFragmentDirections.actionMilestoneFragmentToPostMilestoneFragment(
             milestoneId = milestoneId,
-            text = text
+            text = text,
+            goalId = goalId
         )
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
@@ -86,7 +88,8 @@ class MilestoneFragment :
                 MilestoneEffect.NavigateBack -> {}
                 is MilestoneEffect.NavigateToMilestonePost -> navigateToMilestone(
                     milestoneId = effects.milestoneId,
-                    text = effects.text
+                    text = effects.text,
+                    goalId = effects.goalId
                 )
 
                 is MilestoneEffect.ShowError -> {}

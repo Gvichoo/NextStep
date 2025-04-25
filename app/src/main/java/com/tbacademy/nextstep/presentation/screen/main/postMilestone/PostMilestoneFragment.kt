@@ -35,6 +35,7 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
         val args: PostMilestoneFragmentArgs by navArgs()
         val milestoneId = args.milestoneId
         val text = args.text
+        val goalId = args.goalId
 
         initMediaPickerLauncher()
         initCameraLauncher()

@@ -1,5 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.model
 
+import com.tbacademy.nextstep.R
+
 data class PostPresentation(
     val id: String,
     val authorId: String,
