@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
@@ -45,6 +46,7 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCommentsSheetBinding.inflate(inflater, container, false)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         return binding.root
     }
 
@@ -83,7 +85,7 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.skipCollapsed = true
             val layoutParams = bottomSheet.layoutParams
-            layoutParams.height = resources.displayMetrics.heightPixels
+            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             bottomSheet.layoutParams = layoutParams
         }
 

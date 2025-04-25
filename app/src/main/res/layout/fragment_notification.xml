@@ -3,17 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/pd_screen_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.screen.main.notification.NotificationFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tvHeader"
+        android:text="Notifications"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/distance_md"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:textSize="@dimen/title_regular"
-        android:text="Notifications"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNotifications"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        android:layout_marginTop="@dimen/distance_sm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_notification"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
