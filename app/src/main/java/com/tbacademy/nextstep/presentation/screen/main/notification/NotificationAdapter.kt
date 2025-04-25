@@ -1,17 +1,16 @@
 package com.tbacademy.nextstep.presentation.screen.main.notification
 
-import android.content.res.ColorStateList
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tbacademy.nextstep.databinding.ItemNotificationBinding
+import com.tbacademy.nextstep.domain.model.NotificationType
 import com.tbacademy.nextstep.presentation.extension.loadProfilePictureGlide
 import com.tbacademy.nextstep.presentation.screen.main.notification.model.NotificationPresentation
+import com.tbacademy.nextstep.presentation.screen.main.notification.model.NotificationTypePresentation
 
 class NotificationDiffUtil : DiffUtil.ItemCallback<NotificationPresentation>() {
     override fun areItemsTheSame(
@@ -29,7 +28,9 @@ class NotificationDiffUtil : DiffUtil.ItemCallback<NotificationPresentation>() {
     }
 }
 
-class NotificationAdapter :
+class NotificationAdapter(
+    private val reactionNotificationClicked: (postId: String) -> Unit
+) :
     ListAdapter<NotificationPresentation, NotificationAdapter.NotificationViewHolder>(
         NotificationDiffUtil()
     ) {
@@ -43,6 +44,13 @@ class NotificationAdapter :
                 ivReactionIcon.isVisible = notification.reactionType != null
                 notification.reactionType?.let {
                     ivReactionIcon.setImageResource(it.iconRes)
+                }
+
+
+                if (notification.type == NotificationTypePresentation.POST_REACTED) {
+                    root.setOnClickListener {
+                        reactionNotificationClicked(notification.id)
+                    }
                 }
             }
         }

@@ -8,8 +8,9 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/icon_btn_dimen"
+        android:layout_height="@dimen/icon_btn_dimen"
+        android:scaleType="centerCrop"
         android:src="@drawable/baseline_arrow_back_24"
         android:background="@null"
         app:layout_constraintTop_toTopOf="@id/ivProfile"

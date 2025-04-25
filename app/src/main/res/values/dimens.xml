@@ -9,4 +9,5 @@
     <dimen name="distance_sm">16dp</dimen>
     <dimen name="distance_md">24dp</dimen>
     <dimen name="dimen_reaction_size">36dp</dimen>
+    <dimen name="icon_btn_dimen">36dp</dimen>
 </resources>

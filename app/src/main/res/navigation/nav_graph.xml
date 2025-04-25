@@ -67,6 +67,9 @@
         <action
             android:id="@+id/action_mainFragment_to_milestoneFragment"
             app:destination="@id/milestoneFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_postFragment"
+            app:destination="@id/postFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -110,6 +113,15 @@
 
         <argument
             android:name="goalId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.post.PostFragment"
+        android:label="fragment_post"
+        tools:layout="@layout/fragment_post" >
+        <argument
+            android:name="postId"
             app:argType="string" />
     </fragment>
 

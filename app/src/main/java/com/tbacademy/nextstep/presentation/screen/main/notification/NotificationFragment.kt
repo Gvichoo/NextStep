@@ -10,12 +10,17 @@ import com.tbacademy.nextstep.presentation.screen.main.notification.event.Notifi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotificationFragment : BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::inflate) {
+class NotificationFragment :
+    BaseFragment<FragmentNotificationBinding>(FragmentNotificationBinding::inflate) {
 
     private val notificationViewModel: NotificationViewModel by viewModels()
 
     private val notificationAdapter by lazy {
-        NotificationAdapter()
+        NotificationAdapter(
+            reactionNotificationClicked = { postId ->
+
+            }
+        )
     }
 
     override fun start() {
