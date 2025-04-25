@@ -5,5 +5,6 @@ import com.tbacademy.nextstep.presentation.screen.main.notification.model.Notifi
 data class NotificationState(
     val notifications: List<NotificationPresentation>? = null,
     val isLoading: Boolean = false,
-    val errorMessageRes: Int? = null
+    val isRefreshing: Boolean = false,
+    val errorMessageRes: Int? = null,
 )

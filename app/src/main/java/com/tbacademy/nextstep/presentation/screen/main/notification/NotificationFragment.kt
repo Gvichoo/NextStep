@@ -20,11 +20,11 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(FragmentN
 
     override fun start() {
         setUpNotificationAdapter()
-        notificationViewModel.onEvent(event = NotificationEvent.GetNotifications)
+        notificationViewModel.onEvent(event = NotificationEvent.GetNotifications())
     }
 
     override fun listeners() {
-
+        setReactionsSwipeListener()
     }
 
     override fun observers() {
@@ -33,11 +33,20 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(FragmentN
 
     private fun observeState() {
         collectLatest(flow = notificationViewModel.state) { state ->
-            notificationAdapter.submitList(state.notifications)
-
             binding.apply {
-                pbNotifications.isVisible = state.isLoading
+                pbNotifications.isVisible = state.isLoading && !state.isRefreshing
+                swipeRefreshLayoutNotifications.isRefreshing = state.isRefreshing
             }
+
+            notificationAdapter.submitList(state.notifications) {
+                binding.rvNotifications.scrollToPosition(0)
+            }
+        }
+    }
+
+    private fun setReactionsSwipeListener() {
+        binding.swipeRefreshLayoutNotifications.setOnRefreshListener {
+            notificationViewModel.onEvent(event = NotificationEvent.GetNotifications(refresh = true))
         }
     }
 

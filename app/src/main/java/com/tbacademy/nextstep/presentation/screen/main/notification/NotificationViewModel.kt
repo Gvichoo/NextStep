@@ -25,17 +25,25 @@ class NotificationViewModel @Inject constructor(
     (initialState = NotificationState(), initialUiState = Unit) {
     override fun onEvent(event: NotificationEvent) {
         when (event) {
-            is NotificationEvent.GetNotifications -> getUserNotifications()
+            is NotificationEvent.GetNotifications -> getUserNotifications(isRefresh = event.refresh)
         }
     }
 
-    private fun getUserNotifications() {
+    private fun getUserNotifications(isRefresh: Boolean = false) {
         viewModelScope.launch {
+
+            if (isRefresh) {
+                updateState { copy(isRefreshing = true) }
+            }
+
             getUserNotificationsUseCase().collectLatest { resource ->
                 when (resource) {
                     is Resource.Success -> {
                         updateState {
-                            copy(notifications = resource.data.map { it.toPresentation() })
+                            copy(
+                                notifications = resource.data.map { it.toPresentation() },
+                                isRefreshing = false
+                            )
                         }
                         markAllAsRead()
                     }
@@ -43,7 +51,7 @@ class NotificationViewModel @Inject constructor(
                     is Resource.Error -> {
                         Log.d("NOTIFICATION_ERROR", "${resource.error}")
                         emitEffect(effect = NotificationEffect.ShowErrorMessage(errorMessageRes = resource.error.toMessageRes()))
-                        updateState { copy(errorMessageRes = resource.error.toMessageRes()) }
+                        updateState { copy(errorMessageRes = resource.error.toMessageRes(), isRefreshing = false) }
                     }
 
                     is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
