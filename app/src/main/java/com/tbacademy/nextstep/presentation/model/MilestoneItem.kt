@@ -9,7 +9,9 @@ data class MilestoneItem(
     val errorMessage: Int? = null,
     val achieved: Boolean = false,
     val achievedAt: Timestamp? = null,
-    val targetDate : Timestamp? = null
+    val targetDate : Timestamp? = null,
+    var isAuthor: Boolean = false,
+    val authorId: String? = null
 )
 
 
@@ -19,7 +21,9 @@ fun MilestoneItem.toPresentation(): MilestonePresentation {
         text = text,
         achieved = achieved,
         achievedAt = achievedAt,
-        targetDate = targetDate
+        targetDate = targetDate,
+        isAuthor = isAuthor,
+        authorId = authorId
     )
 }
 
@@ -28,7 +32,9 @@ fun MilestonePresentation.toMilestoneItem() = MilestoneItem(
     text = text,
     achieved = achieved,
     achievedAt = achievedAt,
-    errorMessage = null
+    errorMessage = null,
+    isAuthor = isAuthor,
+    authorId = authorId
 )
 
 fun List<MilestoneItem>.toPresentationList(): List<MilestonePresentation> {

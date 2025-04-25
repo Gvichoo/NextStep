@@ -10,7 +10,7 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.model.toMilestoneItem
-import com.tbacademy.nextstep.presentation.model.toPresentationList
+import com.tbacademy.nextstep.presentation.model.toPresentation
 import com.tbacademy.nextstep.presentation.screen.main.milestone.effect.MilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.milestone.event.MilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.milestone.state.MilestoneState
@@ -35,46 +35,47 @@ class MilestoneViewModel @Inject constructor(
             is MilestoneEvent.LoadMilestones -> getMilestoneById(goalId = event.goalId)
             is MilestoneEvent.MarkMilestoneAsDone -> {
                 markMilestoneAsDone(event.goalId, event.milestoneId)
-
             }
+            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(event.milestoneId,event.text,event.goalId)
+        }
+    }
+
+    private fun onPostMilestoneClicked(milestoneId: String, text: String,goalId: String) {
+        viewModelScope.launch {
+            emitEffect(MilestoneEffect.NavigateToMilestonePost(milestoneId = milestoneId, text = text, goalId = goalId))
         }
     }
 
 
     private fun markMilestoneAsDone(goalId: String, milestoneId: Int) {
         viewModelScope.launch {
-            // Collect current user ID using the use case
             getAuthUserIdUseCase().collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        val currentUserId = result.data // Current logged-in user ID
-                        val authorId = state.value.authorId // The authorId of the goal
+                        val currentUserId = result.data
+                        val authorId = state.value.authorId
 
-                        // Log both values to check if they match
                         Log.d("MilestoneViewModel", "Current User ID: $currentUserId, Goal Author ID: $authorId")
 
-                        // Compare current user ID with the authorId
                         if (currentUserId == authorId) {
-                            // Proceed to mark the milestone as done
                             val updatedMilestones = state.value.milestoneList.map {
                                 if (it.id == milestoneId) {
+
+                                    Log.d("MilestoneViewModel", "Milestone updated: ${it.text}, isAuthor: true")
                                     it.copy(
                                         achieved = true,
                                         achievedAt = Timestamp.now(),
-                                        isPostVisible = true, // make post button visible
-                                        isAuthor = true
+                                        isPostVisible = true // Ensure this remains true after marking as done
                                     )
                                 } else it
                             }
 
-                            // Call the use case to update the goal
                             updateGoalUseCase(goalId, updatedMilestones.map { it.toMilestoneItem() })
                                 .collectLatest { updateResult ->
                                     when (updateResult) {
                                         is Resource.Success -> {
-                                            // Log success and update UI
                                             Log.d("MilestoneViewModel", "Milestone marked as done successfully.")
-                                            updateState { copy(milestoneList = updatedMilestones) }
+                                            updateState { copy(milestoneList = updatedMilestones) } // Update the state with the new milestone list
                                         }
                                         is Resource.Error -> {
                                             emitEffect(MilestoneEffect.ShowError(updateResult.error.toMessageRes().toString()))
@@ -90,7 +91,6 @@ class MilestoneViewModel @Inject constructor(
                         }
                     }
                     is Resource.Error -> {
-                        // Handle error if user ID retrieval fails
                         Log.d("MilestoneViewModel", "Error retrieving user ID")
                         emitEffect(MilestoneEffect.ShowError("Error retrieving user ID"))
                     }
@@ -103,8 +103,17 @@ class MilestoneViewModel @Inject constructor(
     }
 
 
+
+
     private fun getMilestoneById(goalId: String) {
         viewModelScope.launch {
+            var currentUserId: String? = null
+
+            getAuthUserIdUseCase().collect { result ->
+                if (result is Resource.Success) {
+                    currentUserId = result.data
+                }
+            }
             getGoalMilestones(goalId = goalId).collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> updateState { this.copy(errorMessage = resource.error.toMessageRes()) }
@@ -114,12 +123,21 @@ class MilestoneViewModel @Inject constructor(
                         Log.d("MilestoneViewModel", "Goal data: ${resource.data}")
 
                         val milestones = resource.data.milestone ?: emptyList()
-                        val presentations = milestones.toPresentationList()
-                        Log.d("MilestoneViewModel", "${resource.data}")
+                        val authorId = resource.data.authorId // Get the authorId from the goal data
+
+                        // Map the milestones to include authorId and isAuthor flag
+                        val presentations = milestones.map { milestone ->
+                            milestone.toPresentation().copy(
+                                authorId = authorId, // Ensure authorId is correctly passed
+                                isAuthor = (currentUserId == authorId)
+                                // Compare authorId with milestone authorId
+                            )
+                        }
+
                         updateState {
                             copy(
                                 milestoneList = presentations,
-                                authorId = resource.data.authorId,
+                                authorId = authorId, // Set authorId in the state
                                 targetDate = resource.data.targetDate
                             )
                         }

@@ -16,6 +16,7 @@ import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
@@ -49,18 +50,21 @@ class GoalRepositoryImpl @Inject constructor(
             }
 
 
+
             val goalRef = firestore.collection("goals").document()
             val goalId = goalRef.id
             val username: String? = userSnapshot.getString("username")
+
 
             if (username != null) {
                 val goalDto: GoalDto = goal.toDto().copy(
                     authorId = currentUser.uid,
                     authorUsername = username,
                     id = goalId,
-                    imageUrl = imageUrl ?: ""
+                    imageUrl = imageUrl ?: "",
+                    type = PostType.GOAL
                 )
-
+                Log.d("UPLOAD_GOAL", "Goal to upload: $goalDto")
                 // Upload goal to Firestore
                 goalRef.set(goalDto).await()
                 emit(Resource.Success(data = true))

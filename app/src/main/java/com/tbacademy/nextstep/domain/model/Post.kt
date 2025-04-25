@@ -1,14 +1,16 @@
 package com.tbacademy.nextstep.domain.model
 
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.util.Date
 
 data class Post(
     val id: String,
     val authorId: String,
-    val authorUsername: String,
+    val authorUsername :String ,
     val goalId: String = "",
+    val goalTitle: String = "",
     val title: String,
-    val description: String,
+    val description: String ,
     val reactionCount: Int,
     val reactionFireCount: Int = 0,
     val reactionHeartCount: Int = 0,
@@ -19,7 +21,7 @@ data class Post(
     val isUserFollowing: Boolean = false,
     val isOwnPost: Boolean = false,
     val commentCount: Int,
-    val type: String,
     val imageUrl: String? = null,
-    val createdAt: Date
+    val createdAt: Date,
+    val type: PostType
 )

@@ -1,23 +1,42 @@
 package com.tbacademy.nextstep.data.repository.post
 
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+
+import com.google.firebase.storage.FirebaseStorage
+import com.tbacademy.nextstep.data.common.mapper.toApiError
+
 import com.google.firebase.firestore.toObject
+
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse.Companion.SORT_CREATED_AT
 import com.tbacademy.nextstep.data.remote.dto.PostDto
+import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.model.MilestonePost
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.domain.model.ReactionType
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 
 class PostRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
+
+    private val firebaseHelper: HandleResponse,
+    private val firebaseStorage: FirebaseStorage,
+    private val firebaseAuth: FirebaseAuth,
+
     private val handleResponse: HandleResponse
+
 ) : PostRepository {
 
     override suspend fun getGlobalPosts(): Flow<Resource<List<Post>>> {
@@ -76,6 +95,71 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+
+    override fun createMilestonePost(milestonePost: MilestonePost): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading(loading = true))
+        try {
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                emit(Resource.Error(ApiError.Unauthorized))
+                return@flow
+            }
+
+            val userSnapshot: DocumentSnapshot? = firestore.collection("users")
+                .document(currentUser.uid).get().await()
+
+            if (userSnapshot == null || !userSnapshot.exists()) {
+                emit(Resource.Error(ApiError.Unauthorized))
+                return@flow
+            }
+
+            val username = userSnapshot.getString("username") ?: return@flow emit(Resource.Error(ApiError.Unauthorized))
+
+            val imageUrl = try {
+                milestonePost.imageUri?.let { uri ->
+                    val storageRef = firebaseStorage.reference
+                        .child("milestone_post_images/${currentUser.uid}/${System.currentTimeMillis()}")
+                    storageRef.putFile(uri).await()
+                    storageRef.downloadUrl.await().toString()
+                }
+            } catch (e: Exception) {
+                null
+            }
+
+            // ✅ Generate a new post ID from the 'posts' collection
+            val postRef = firestore.collection(POSTS_COLLECTION_PATH).document()
+            val milestonePostId = postRef.id
+
+            val post = Post(
+                id = milestonePostId,
+                authorId = currentUser.uid,
+                authorUsername = username,
+                goalId = milestonePost.goalId,
+                title = milestonePost.title,
+                description = milestonePost.description,
+                reactionCount = 0,
+                commentCount = 0,
+                imageUrl = imageUrl,
+                createdAt = Date(),
+                type = PostType.MILESTONE
+            )
+            Log.d("POST_UPLOAD", "Post to upload: $post")
+
+
+            // ✅ Save only to the 'posts' collection
+            postRef.set(post).await()
+
+            emit(Resource.Success(data = true))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.toApiError()))
+        } finally {
+            emit(Resource.Loading(loading = false))
+        }
+    }
+
+
+
+
     override suspend fun getGoalPosts(goalId: String): Flow<Resource<List<Post>>> {
         return handleResponse.safeApiCall {
             val postSnapshot = firestore.collection(POSTS_COLLECTION_PATH)
@@ -95,6 +179,7 @@ class PostRepositoryImpl @Inject constructor(
 //
 //        }
     }
+
 
 
     private suspend fun getFollowedGoals(userId: String): Set<String> {

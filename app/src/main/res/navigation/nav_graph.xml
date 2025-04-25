@@ -109,7 +109,27 @@
         android:id="@+id/milestoneFragment"
         android:name="com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragment"
         android:label="fragment_milestone"
+
+        tools:layout="@layout/fragment_milestone" >
+        <argument android:name="goalId" />
+        <action
+            android:id="@+id/action_milestoneFragment_to_postMilestoneFragment"
+            app:destination="@id/postMilestoneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postMilestoneFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.postMilestone.PostMilestoneFragment"
+        android:label="fragment_post_milestone"
+        tools:layout="@layout/fragment_post_milestone" >
+        <argument
+            android:name="milestoneId"
+            app:argType="string" />
+        <argument
+            android:name="text"
+            app:argType="string" />
+
         tools:layout="@layout/fragment_milestone">
+
 
         <argument
             android:name="goalId"

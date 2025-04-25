@@ -24,6 +24,8 @@ import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotific
 import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
 import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.CreateMilestonePostUseCase
+import com.tbacademy.nextstep.domain.usecase.post.CreateMilestonePostUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
@@ -243,4 +245,8 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
+  
+    @Singleton
+    @Binds
+    fun bindCreateMilestonePostUseCase(impl: CreateMilestonePostUseCaseImpl): CreateMilestonePostUseCase
 }
