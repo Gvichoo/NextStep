@@ -4,7 +4,8 @@ import android.net.Uri
 
 
 sealed interface PostMilestoneEvent {
-    data class TitleChanged(val title: String) : PostMilestoneEvent
+    data class SetTitle(val title: String) : PostMilestoneEvent
+
     data class DescriptionChanged(val description: String) : PostMilestoneEvent
 
     data object PickImageClicked : PostMilestoneEvent
@@ -12,6 +13,8 @@ sealed interface PostMilestoneEvent {
     data object ImageCleared : PostMilestoneEvent
 
     data object Submit : PostMilestoneEvent
+
+    data object NavigateBack : PostMilestoneEvent
 
 
 

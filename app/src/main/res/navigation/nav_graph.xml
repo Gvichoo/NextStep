@@ -102,7 +102,9 @@
             app:argType="string" />
         <argument
             android:name="goalTitle"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true"/>
     </fragment>
 
     <fragment
@@ -128,12 +130,12 @@
             android:name="text"
             app:argType="string" />
 
-        tools:layout="@layout/fragment_milestone">
-
-
         <argument
             android:name="goalId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_postMilestoneFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/postFragment"

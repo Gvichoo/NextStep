@@ -68,7 +68,8 @@ class PostsAdapter(
     private val commentsIconClicked: (postId: String) -> Unit,
     private val followClicked: (postId: String) -> Unit,
     private val userClicked: (userId: String) -> Unit,
-    private val onMilestoneClicked: (goalId: String) -> Unit
+    private val onMilestoneClicked: (goalId: String) -> Unit,
+    private val onPostTypeTextViewClicked: (goalId: String) -> Unit
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     companion object {
@@ -164,20 +165,25 @@ class PostsAdapter(
                 }
 
                 // Milestone
-                btnSeeMilestones.setOnClickListener{
+                btnSeeMilestones.setOnClickListener {
                     onMilestoneClicked(post.goalId)
                 }
-                Log.d("POST_TYPE_CHECK", "Post title: ${post.title}, type: ${post.type}")
 
                 if (post.type == PostType.MILESTONE) {
                     tvPostType.visibility = View.VISIBLE
+                    btnSeeMilestones.visibility = View.GONE
                     tvPostType.text = "Milestone"
                 } else if (post.type == PostType.GOAL) {
                     tvPostType.visibility = View.VISIBLE
                     tvPostType.text = "Goal"
                 }
+
+                tvPostType.setOnClickListener {
+                    onPostTypeTextViewClicked(post.goalId)
+                }
             }
         }
+
 
         fun updatePartial(post: PostPresentation, payload: Bundle) {
             payload.apply {

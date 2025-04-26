@@ -15,13 +15,13 @@ import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.state.PostMilestoneState
+import com.tbacademy.nextstep.presentation.screen.main.user_search.effect.UserSearchEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PostMilestoneViewModel @Inject constructor(
-    private val validateTitleUseCase: ValidateAddGoalTitleUseCase,
     private val validateDescriptionUseCase: ValidateAddGoalDescriptionUseCase,
     private val validateImage: ImageValidator,
     private val createMilestonePostUseCase: CreateMilestonePostUseCase
@@ -33,21 +33,26 @@ class PostMilestoneViewModel @Inject constructor(
     override fun onEvent(event: PostMilestoneEvent) {
         when(event){
             is PostMilestoneEvent.DescriptionChanged -> onDescriptionChanged(event.description)
-            is PostMilestoneEvent.TitleChanged -> onTitleChanged(event.title)
 
             PostMilestoneEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
             is PostMilestoneEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
             PostMilestoneEvent.PickImageClicked -> viewModelScope.launch { emitEffect(PostMilestoneEffect.LaunchMediaPicker) }
 
             PostMilestoneEvent.Submit -> submitMilestonePostForm()
-
+            is PostMilestoneEvent.SetTitle -> updateState { copy(title = event.title) }
+            PostMilestoneEvent.NavigateBack -> onBackRequest()
         }
     }
 
 
+    private fun onBackRequest() {
+        viewModelScope.launch {
+            emitEffect(PostMilestoneEffect.NavigateBack)
+        }
+    }
+
     private fun submitMilestonePostForm() {
         val formIsValid = validateForm(
-            title = state.value.title,
             description = state.value.description,
             imageUri = state.value.imageUri,
         )
@@ -99,6 +104,7 @@ class PostMilestoneViewModel @Inject constructor(
                         // Handle success (e.g., show a success message or navigate)
                         Log.d("POST_CREATION", "Post creation successful")  // Log success
                         updateState { copy(isLoading = false) }
+                        emitEffect(PostMilestoneEffect.NavigateToPosts)
                     }
                     is Resource.Error -> {
                         // Handle error (e.g., show error message)
@@ -113,13 +119,11 @@ class PostMilestoneViewModel @Inject constructor(
 
 
     private fun validateForm(
-        title: String,
         description: String,
         imageUri: Uri?,
     ): Boolean {
 
         // Validate Inputs
-        val titleValidationError = validateTitleUseCase(title = title).getErrorMessageResId()
         val descriptionValidationForm =
             validateDescriptionUseCase(description = description).getErrorMessageResId()
 
@@ -127,7 +131,6 @@ class PostMilestoneViewModel @Inject constructor(
         // Update states of errors
         updateState {
             copy(
-                titleErrorMessage = titleValidationError,
                 descriptionErrorMessage = descriptionValidationForm,
                 imageErrorMessage = imageValidationError
             )
@@ -135,7 +138,6 @@ class PostMilestoneViewModel @Inject constructor(
 
         // Check if form if valid
         val errors: List<Int?> = listOf(
-            titleValidationError,
             descriptionValidationForm,
             imageValidationError
         )
@@ -143,13 +145,6 @@ class PostMilestoneViewModel @Inject constructor(
         return errors.all { it == null }
     }
 
-    private fun onTitleChanged(title: String) {
-        updateState { this.copy(title = title) }
-
-        val titleValidationResult = validateInputOnChange { validateTitleUseCase(title = title) }
-        val titleErrorMessage: Int? = titleValidationResult?.getErrorMessageResId()
-        updateState { this.copy(titleErrorMessage = titleErrorMessage) }
-    }
 
     // On Description Update
     private fun onDescriptionChanged(description: String) {

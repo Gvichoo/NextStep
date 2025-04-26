@@ -67,6 +67,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.FeedStateSelected -> handleFeedStateChanged(event.feedState)
             is HomeEvent.StartSearch -> onStartSearch()
             is HomeEvent.OpenMilestone -> onMilestoneSelected(goalId = event.goalId)
+            is HomeEvent.OpenGoalFragment -> onPostTypeSelected(goalId = event.goalId)
         }
     }
 
@@ -93,6 +94,12 @@ class HomeViewModel @Inject constructor(
     private fun onUserSelected(userId: String) {
         viewModelScope.launch {
             emitEffect(HomeEffect.NavigateToUserProfile(userId = userId))
+        }
+    }
+
+    private fun onPostTypeSelected(goalId: String) {
+        viewModelScope.launch {
+            emitEffect(HomeEffect.NavigateToGoal(goalId = goalId))
         }
     }
 

@@ -8,15 +8,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentPostMilestoneBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.onTextChanged
+import com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
+import com.tbacademy.nextstep.presentation.screen.main.user_search.event.UserSearchEvent
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
@@ -34,9 +39,10 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
     override fun start() {
         val args: PostMilestoneFragmentArgs by navArgs()
         val milestoneId = args.milestoneId
-        val text = args.text
+        val title = args.text
         val goalId = args.goalId
-
+        postMilestoneViwModel.onEvent(PostMilestoneEvent.SetTitle(title))
+        binding.tvMilestoneTitle.text = args.text
         initMediaPickerLauncher()
         initCameraLauncher()
     }
@@ -46,10 +52,12 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
         setDeleteImageButtonListener()
         setSelectImageButtonListener()
         setSubmitBtnListener()
+        setBackBtnListener()
     }
     private fun setSubmitBtnListener() {
         binding.btnPost.setOnClickListener {
             postMilestoneViwModel.onEvent(PostMilestoneEvent.Submit)
+
         }
     }
 
@@ -63,7 +71,7 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
             binding.apply {
                 loaderMilestone.loaderContainer.isVisible = state.isLoading
 
-                tlMilestoneTitle.error = state.titleErrorMessage?.let { getString(it) }
+//                tlMilestoneTitle.error = state.titleErrorMessage?.let { getString(it) }
                 tlMilestoneDescription.error = state.descriptionErrorMessage?.let { getString(it) }
 
                 btnPost.isEnabled = state.isPostButtonEnable
@@ -84,21 +92,25 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
         collectLatest(flow = postMilestoneViwModel.effects) { effects ->
             when (effects) {
                 PostMilestoneEffect.LaunchMediaPicker -> launchImagePicker()
+                PostMilestoneEffect.NavigateToPosts -> navigateToPosts()
+                PostMilestoneEffect.NavigateBack -> findNavController().navigateUp()
             }
         }
     }
 
-
-    private fun setInputListeners() {
-        setTitleInputListener()
-        setDescriptionInputListener()
+    private fun setBackBtnListener() {
+        binding.btnBack.setOnClickListener {
+            postMilestoneViwModel.onEvent(PostMilestoneEvent.NavigateBack)
+        }
     }
 
+    private fun navigateToPosts(){
+        val action = PostMilestoneFragmentDirections.actionPostMilestoneFragmentToMainFragment()
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    }
 
-    private fun setTitleInputListener() {
-        binding.etMilestoneTitle.onTextChanged { title ->
-            postMilestoneViwModel.onEvent(PostMilestoneEvent.TitleChanged(title = title))
-        }
+    private fun setInputListeners() {
+        setDescriptionInputListener()
     }
 
     private fun setDescriptionInputListener() {
@@ -106,7 +118,6 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
             postMilestoneViwModel.onEvent(PostMilestoneEvent.DescriptionChanged(description = description))
         }
     }
-
 
     private fun initCameraLauncher() {
         // Permission launcher
