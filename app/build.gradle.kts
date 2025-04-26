@@ -100,4 +100,7 @@ dependencies {
 
     //Gson
     implementation ("com.google.code.gson:gson:2.11.0")
+
+    //Animations
+    implementation ("com.airbnb.android:lottie:6.3.0")
 }
