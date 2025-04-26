@@ -3,7 +3,6 @@ package com.tbacademy.nextstep.presentation.screen.main.milestone
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tbacademy.nextstep.R
@@ -30,12 +29,12 @@ class MilestoneFragment :
                 milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))
             },
             targetDate = targetDate,
-            onPostClick = { milestoneId, text,goalId ->
+            onPostClick = { milestoneId, text, ->
                 milestoneViewModel.onEvent(
                     event = MilestoneEvent.OpenMilestone(
                         milestoneId = milestoneId,
                         text = text,
-                        goalId = goalId
+                        goalId = args.goalId
                     )
                 )
             }
@@ -56,7 +55,7 @@ class MilestoneFragment :
         observeUiState()
     }
 
-    private fun navigateToMilestone(milestoneId: String, text: String,goalId : String) {
+    private fun navigateToMilestone(milestoneId: String, text: String, goalId: String) {
         val action = MilestoneFragmentDirections.actionMilestoneFragmentToPostMilestoneFragment(
             milestoneId = milestoneId,
             text = text,

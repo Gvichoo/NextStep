@@ -39,7 +39,6 @@ class GoalViewModel @Inject constructor(
     private fun getPosts(goalId: String) {
         viewModelScope.launch {
             getGoalPostsUseCase(goalId = goalId).collectLatest { resource ->
-                Log.d("GETPOSTS_RESOURCE", "${resource}")
                 when (resource) {
                     is Resource.Error -> {
                         Log.d("GETPOSTS_ERROR", "${resource.error}")

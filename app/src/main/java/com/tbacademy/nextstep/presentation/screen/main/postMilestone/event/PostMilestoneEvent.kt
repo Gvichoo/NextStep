@@ -12,10 +12,7 @@ sealed interface PostMilestoneEvent {
     data class ImageSelected(val imageUri: Uri) : PostMilestoneEvent
     data object ImageCleared : PostMilestoneEvent
 
-    data object Submit : PostMilestoneEvent
+    data class Submit(val goalId: String) : PostMilestoneEvent
 
     data object NavigateBack : PostMilestoneEvent
-
-
-
 }

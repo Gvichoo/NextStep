@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavArgs
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,12 +37,11 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
     private var cameraImageUri: Uri? = null
 
+    private val args: PostMilestoneFragmentArgs by navArgs()
+
     override fun start() {
-        val args: PostMilestoneFragmentArgs by navArgs()
-        val milestoneId = args.milestoneId
         val title = args.text
-        val goalId = args.goalId
-        postMilestoneViwModel.onEvent(PostMilestoneEvent.SetTitle(title))
+        postMilestoneViwModel.onEvent(PostMilestoneEvent.SetTitle(title = title))
         binding.tvMilestoneTitle.text = args.text
         initMediaPickerLauncher()
         initCameraLauncher()
@@ -56,7 +56,7 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
     }
     private fun setSubmitBtnListener() {
         binding.btnPost.setOnClickListener {
-            postMilestoneViwModel.onEvent(PostMilestoneEvent.Submit)
+            postMilestoneViwModel.onEvent(PostMilestoneEvent.Submit(goalId = args.goalId))
 
         }
     }
@@ -146,8 +146,6 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
             showImagePickerDialog()
         }
     }
-
-
 
     private fun showImagePickerDialog() {
         val options = arrayOf("Camera", "Gallery")

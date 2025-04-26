@@ -36,13 +36,24 @@ class MilestoneViewModel @Inject constructor(
             is MilestoneEvent.MarkMilestoneAsDone -> {
                 markMilestoneAsDone(event.goalId, event.milestoneId)
             }
-            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(event.milestoneId,event.text,event.goalId)
+
+            is MilestoneEvent.OpenMilestone -> onPostMilestoneClicked(
+                event.milestoneId,
+                event.text,
+                event.goalId
+            )
         }
     }
 
-    private fun onPostMilestoneClicked(milestoneId: String, text: String,goalId: String) {
+    private fun onPostMilestoneClicked(milestoneId: String, text: String, goalId: String) {
         viewModelScope.launch {
-            emitEffect(MilestoneEffect.NavigateToMilestonePost(milestoneId = milestoneId, text = text, goalId = goalId))
+            emitEffect(
+                MilestoneEffect.NavigateToMilestonePost(
+                    milestoneId = milestoneId,
+                    text = text,
+                    goalId = goalId
+                )
+            )
         }
     }
 
@@ -55,13 +66,19 @@ class MilestoneViewModel @Inject constructor(
                         val currentUserId = result.data
                         val authorId = state.value.authorId
 
-                        Log.d("MilestoneViewModel", "Current User ID: $currentUserId, Goal Author ID: $authorId")
+                        Log.d(
+                            "MilestoneViewModel",
+                            "Current User ID: $currentUserId, Goal Author ID: $authorId"
+                        )
 
                         if (currentUserId == authorId) {
                             val updatedMilestones = state.value.milestoneList.map {
                                 if (it.id == milestoneId) {
 
-                                    Log.d("MilestoneViewModel", "Milestone updated: ${it.text}, isAuthor: true")
+                                    Log.d(
+                                        "MilestoneViewModel",
+                                        "Milestone updated: ${it.text}, isAuthor: true"
+                                    )
                                     it.copy(
                                         achieved = true,
                                         achievedAt = Timestamp.now(),
@@ -70,16 +87,27 @@ class MilestoneViewModel @Inject constructor(
                                 } else it
                             }
 
-                            updateGoalUseCase(goalId, updatedMilestones.map { it.toMilestoneItem() })
+                            updateGoalUseCase(
+                                goalId,
+                                updatedMilestones.map { it.toMilestoneItem() })
                                 .collectLatest { updateResult ->
                                     when (updateResult) {
                                         is Resource.Success -> {
-                                            Log.d("MilestoneViewModel", "Milestone marked as done successfully.")
+                                            Log.d(
+                                                "MilestoneViewModel",
+                                                "Milestone marked as done successfully."
+                                            )
                                             updateState { copy(milestoneList = updatedMilestones) } // Update the state with the new milestone list
                                         }
+
                                         is Resource.Error -> {
-                                            emitEffect(MilestoneEffect.ShowError(updateResult.error.toMessageRes().toString()))
+                                            emitEffect(
+                                                MilestoneEffect.ShowError(
+                                                    updateResult.error.toMessageRes().toString()
+                                                )
+                                            )
                                         }
+
                                         is Resource.Loading -> {
                                             updateState { copy(isLoading = updateResult.loading) }
                                         }
@@ -90,10 +118,12 @@ class MilestoneViewModel @Inject constructor(
                             emitEffect(MilestoneEffect.ShowError("You are not the author of this goal."))
                         }
                     }
+
                     is Resource.Error -> {
                         Log.d("MilestoneViewModel", "Error retrieving user ID")
                         emitEffect(MilestoneEffect.ShowError("Error retrieving user ID"))
                     }
+
                     is Resource.Loading -> {
                         // Handle loading state if needed
                     }
@@ -101,9 +131,6 @@ class MilestoneViewModel @Inject constructor(
             }
         }
     }
-
-
-
 
     private fun getMilestoneById(goalId: String) {
         viewModelScope.launch {

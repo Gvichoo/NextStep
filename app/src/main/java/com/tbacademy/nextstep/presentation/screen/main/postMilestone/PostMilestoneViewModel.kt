@@ -5,17 +5,15 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.model.MilestonePost
-import com.tbacademy.nextstep.domain.usecase.post.CreateMilestonePostUseCase
+import com.tbacademy.nextstep.domain.usecase.post.CreatePostUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.state.PostMilestoneState
-import com.tbacademy.nextstep.presentation.screen.main.user_search.effect.UserSearchEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,21 +22,25 @@ import javax.inject.Inject
 class PostMilestoneViewModel @Inject constructor(
     private val validateDescriptionUseCase: ValidateAddGoalDescriptionUseCase,
     private val validateImage: ImageValidator,
-    private val createMilestonePostUseCase: CreateMilestonePostUseCase
+    private val createPostUseCase: CreatePostUseCase
 
 ) : BaseViewModel<PostMilestoneState, PostMilestoneEvent, PostMilestoneEffect, Unit>(
     initialState = PostMilestoneState(),
     initialUiState = Unit
 ) {
     override fun onEvent(event: PostMilestoneEvent) {
-        when(event){
+        when (event) {
             is PostMilestoneEvent.DescriptionChanged -> onDescriptionChanged(event.description)
 
             PostMilestoneEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
             is PostMilestoneEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
-            PostMilestoneEvent.PickImageClicked -> viewModelScope.launch { emitEffect(PostMilestoneEffect.LaunchMediaPicker) }
+            PostMilestoneEvent.PickImageClicked -> viewModelScope.launch {
+                emitEffect(
+                    PostMilestoneEffect.LaunchMediaPicker
+                )
+            }
 
-            PostMilestoneEvent.Submit -> submitMilestonePostForm()
+            is PostMilestoneEvent.Submit -> submitMilestonePostForm(goalId = event.goalId)
             is PostMilestoneEvent.SetTitle -> updateState { copy(title = event.title) }
             PostMilestoneEvent.NavigateBack -> onBackRequest()
         }
@@ -51,21 +53,27 @@ class PostMilestoneViewModel @Inject constructor(
         }
     }
 
-    private fun submitMilestonePostForm() {
+    private fun submitMilestonePostForm(goalId: String) {
         val formIsValid = validateForm(
             description = state.value.description,
             imageUri = state.value.imageUri,
         )
 
+        val imageUri: Uri? = state.value.imageUri
+
         Log.d("SUBMIT_FORM", "Form is valid: $formIsValid")  // Log whether form is valid or not
 
-        if (formIsValid) {
-            Log.d("POST_CREATION", "Creating Milestone Post: Title = ${state.value.title}, Description = ${state.value.description}, ImageUri = ${state.value.imageUri}")  // Log here
+        if (formIsValid && imageUri != null) {
+            Log.d(
+                "POST_CREATION",
+                "Creating Milestone Post: Title = ${state.value.title}, Description = ${state.value.description}, ImageUri = ${state.value.imageUri}"
+            )  // Log here
             // If the form is valid, call the createMilestonePost function
             createMilestonePost(
                 title = state.value.title,
                 description = state.value.description,
-                imageUri = state.value.imageUri,
+                imageUri = imageUri,
+                goalId = goalId
             )
         } else {
             // If the form is invalid, update the state and stop the loader
@@ -74,49 +82,37 @@ class PostMilestoneViewModel @Inject constructor(
         }
     }
 
-
-
-
     private fun createMilestonePost(
         title: String,
         description: String,
-        imageUri: Uri?
+        imageUri: Uri,
+        goalId: String
     ) {
         viewModelScope.launch {
-            // Create the MilestonePost object
-            val post = MilestonePost(
+
+            createPostUseCase(
                 title = title,
                 description = description,
-                imageUri = imageUri
-            )
-
-            Log.d("CREATE_MILESTONE_POST", "Post being created: Title = ${post.title}, Description = ${post.description}, ImageUri = ${post.imageUri}")  // Log here
-
-            // Call the use case to create the post
-            createMilestonePostUseCase(post).collect { result ->
+                imageUri = imageUri,
+                type = PostType.MILESTONE,
+                goalId = goalId
+            ).collect { result ->
                 when (result) {
                     is Resource.Loading -> {
-                        // Handle loading state (e.g., show a progress indicator)
                         updateState { copy(isLoading = result.loading) }
-                        Log.d("POST_CREATION", "Loading...")  // Log loading state
                     }
+
                     is Resource.Success -> {
-                        // Handle success (e.g., show a success message or navigate)
-                        Log.d("POST_CREATION", "Post creation successful")  // Log success
-                        updateState { copy(isLoading = false) }
                         emitEffect(PostMilestoneEffect.NavigateToPosts)
                     }
+
                     is Resource.Error -> {
-                        // Handle error (e.g., show error message)
-                        Log.d("POST_CREATION", "Error: ${result.error}")  // Log error message
-                        updateState { copy(isLoading = false) }
                     }
                 }
             }
 
         }
     }
-
 
     private fun validateForm(
         description: String,
@@ -144,7 +140,6 @@ class PostMilestoneViewModel @Inject constructor(
 
         return errors.all { it == null }
     }
-
 
     // On Description Update
     private fun onDescriptionChanged(description: String) {

@@ -13,7 +13,8 @@ data class PostMilestoneState (
 
     val title : String = "",
     val description: String = "",
-    val imageUri: Uri? = null, val isSubmitted: Boolean = false,
+    val imageUri: Uri? = null,
+    val isSubmitted: Boolean = false,
 ){
     val isPostButtonEnable: Boolean
         get() = titleErrorMessage == null && descriptionErrorMessage == null

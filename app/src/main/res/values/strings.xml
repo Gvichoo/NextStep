@@ -70,5 +70,6 @@
     <string name="reacted_to_your_post">Reacted to your post</string>
     <string name="commented_on_your_post">Commented on your post</string>
     <string name="started_following_you">started following you</string>
+    <string name="done_icon">Done Icon</string>
 
 </resources>

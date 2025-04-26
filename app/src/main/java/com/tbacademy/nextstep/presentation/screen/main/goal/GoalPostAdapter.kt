@@ -30,7 +30,8 @@ class GoalPostAdapter(
             fun onBind(post: PostPresentation) {
                 binding.apply {
                     tvTitle.text = post.title
-                    tvDescription.text = post.title
+                    tvDescription.text = post.description
+                    tvDate.text = post.createdAt
                     post.imageUrl?.let { ivPostImage.loadImagesGlide(url = it) }
                     tvCommentsCount.text = post.commentCount.toString()
                     tvReactionsCount.text = post.reactionCount.toString()

@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.domain.model
 
+import android.net.Uri
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.util.Date
 
@@ -22,6 +23,7 @@ data class Post(
     val isOwnPost: Boolean = false,
     val commentCount: Int,
     val imageUrl: String? = null,
+    val imageUri: Uri? = null,
     val createdAt: Date,
     val type: PostType
 )

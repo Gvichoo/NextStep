@@ -3,27 +3,24 @@ package com.tbacademy.nextstep.presentation.screen.main.milestone.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
-import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.ItemMilestoneBinding
 import com.tbacademy.nextstep.presentation.model.MilestonePresentation
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 class MilestonesAdapter(
     private val onMarkAsDoneClick: (MilestonePresentation) -> Unit,
     private val targetDate: Long?,
-    private val onPostClick: (milestoneId : String,text : String,goalId : String) -> Unit
+    private val onPostClick: (milestoneId: String, text: String) -> Unit
 ) : ListAdapter<MilestonePresentation, MilestonesAdapter.MilestoneViewHolder>(MilestoneDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MilestoneViewHolder {
-        val binding = ItemMilestoneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMilestoneBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MilestoneViewHolder(binding)
     }
 
@@ -33,7 +30,6 @@ class MilestonesAdapter(
 
     inner class MilestoneViewHolder(private val binding: ItemMilestoneBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
 
 
         fun bind(milestone: MilestonePresentation) {
@@ -80,7 +76,7 @@ class MilestonesAdapter(
                 }
 
                 btnPost.setOnClickListener {
-                    onPostClick(milestone.id.toString(), milestone.text,milestone.goalId)
+                    onPostClick(milestone.id.toString(), milestone.text)
                 }
             }
         }
@@ -88,11 +84,17 @@ class MilestonesAdapter(
 
 
     class MilestoneDiffCallback : DiffUtil.ItemCallback<MilestonePresentation>() {
-        override fun areItemsTheSame(oldItem: MilestonePresentation, newItem: MilestonePresentation): Boolean {
+        override fun areItemsTheSame(
+            oldItem: MilestonePresentation,
+            newItem: MilestonePresentation
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MilestonePresentation, newItem: MilestonePresentation): Boolean {
+        override fun areContentsTheSame(
+            oldItem: MilestonePresentation,
+            newItem: MilestonePresentation
+        ): Boolean {
             return oldItem == newItem
         }
     }
