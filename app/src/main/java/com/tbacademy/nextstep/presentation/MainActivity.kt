@@ -1,11 +1,14 @@
 package com.tbacademy.nextstep.presentation
 
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -13,12 +16,15 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.tbacademy.nextstep.R
+import com.tbacademy.nextstep.data.broadcast_reciever.BatteryReceiver
 import com.tbacademy.nextstep.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var batteryReceiver: BatteryReceiver
+
 
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
 
@@ -48,10 +54,23 @@ class MainActivity : AppCompatActivity() {
         insetsController.isAppearanceLightStatusBars = !isDarkMode
 
         setUpNotificationPermission()
+
+
+        setUpBatteryReceiver()
         setContentView(binding.root)
+    }
 
+    private fun setUpBatteryReceiver(){
+        batteryReceiver = BatteryReceiver {
+            switchToDarkTheme()
+        }
 
+        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        registerReceiver(batteryReceiver, filter)
+    }
 
+    private fun switchToDarkTheme() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun setUpNotificationPermission(){
@@ -67,7 +86,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -85,6 +103,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(batteryReceiver)
     }
 
 }

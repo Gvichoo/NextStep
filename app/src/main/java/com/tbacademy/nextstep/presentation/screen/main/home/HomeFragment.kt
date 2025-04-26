@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentHomeBinding
@@ -68,6 +69,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                         goalId = goalId
                     )
                 )
+            },
+            onPostTypeTextViewClicked = { goalId ->
+                homeViewModel.onEvent(
+                    event = HomeEvent.OpenGoalFragment(
+                        goalId = goalId
+                    )
+                )
             }
         )
     }
@@ -110,6 +118,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is HomeEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
                 is HomeEffect.NavigateToUserSearch -> navigateToSearch()
                 is HomeEffect.NavigateToMilestone -> navigateToMilestone(goalId = effect.goalId)
+                is HomeEffect.NavigateToGoal -> navigateToGoal(goalId = effect.goalId)
             }
         }
     }
@@ -149,6 +158,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun navigateToProfile(userId: String?) {
         val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
             userId = userId
+        )
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    }
+
+    private fun navigateToGoal(goalId: String){
+        val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
+            goalId = goalId,
+            goalTitle = null
         )
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }

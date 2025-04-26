@@ -6,4 +6,5 @@ sealed interface HomeEffect {
     data class NavigateToUserProfile(val userId: String): HomeEffect
     data object NavigateToUserSearch: HomeEffect
     data class NavigateToMilestone(val goalId : String) : HomeEffect
+    data class NavigateToGoal(val goalId : String) : HomeEffect
 }

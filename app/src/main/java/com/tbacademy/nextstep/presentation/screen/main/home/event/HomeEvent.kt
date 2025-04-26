@@ -15,6 +15,5 @@ sealed interface HomeEvent {
     data class UserSelected(val userId: String) : HomeEvent
     data class FeedStateSelected(val feedState: FeedState) : HomeEvent
     data class OpenMilestone(val goalId: String) : HomeEvent
-
-
+    data class OpenGoalFragment(val goalId: String) : HomeEvent
 }
