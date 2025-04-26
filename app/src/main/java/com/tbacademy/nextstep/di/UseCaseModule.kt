@@ -50,8 +50,10 @@ import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase
-import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromLocalStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreferencesStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreferencesStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCase
@@ -138,7 +140,11 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-    fun bindClearValueFromLocalStorageUseCase(impl: ClearValueFromLocalStorageUseCaseImpl): ClearValueFromPreferencesStorageUseCase
+    fun bindClearPreferencesStorage(impl: ClearPreferencesStorageUseCaseImpl): ClearPreferencesStorageUseCase
+
+    @Singleton
+    @Binds
+    fun bindClearValueFromPreferencesStorageUseCase(impl: ClearValueFromPreferencesStorageUseCaseImpl): ClearValueFromPreferencesStorageUseCase
 
     @Singleton
     @Binds

@@ -26,6 +26,12 @@ class PreferencesManagerImpl @Inject constructor(
         return datastore.data.map { it[createDataStoreKey(key)] }
     }
 
+    override suspend fun <T> clearByKey(key: PreferenceKey<T>) {
+        datastore.edit { preference ->
+            preference.remove(key = createDataStoreKey(key = key))
+        }
+    }
+
     override suspend fun clear() {
         datastore.edit {
             it.clear()

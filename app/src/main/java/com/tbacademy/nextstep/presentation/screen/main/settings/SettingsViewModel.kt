@@ -2,11 +2,9 @@ package com.tbacademy.nextstep.presentation.screen.main.settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.google.api.ResourceProto.resource
 import com.tbacademy.nextstep.domain.core.onError
 import com.tbacademy.nextstep.domain.core.onSuccess
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
-import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
 import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
