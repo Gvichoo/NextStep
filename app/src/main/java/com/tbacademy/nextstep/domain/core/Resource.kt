@@ -20,6 +20,19 @@ fun <T> Flow<Resource<T>>.handleResource(): Flow<Resource<T>> {
     }
 }
 
+fun <T> Flow<Resource<T>>.handleSuccess(onSuccess: suspend () -> Unit): Flow<Resource<T>> {
+    return this.map { resource ->
+        when (resource) {
+            is Resource.Loading -> Resource.Loading(resource.loading)
+            is Resource.Error -> Resource.Error(resource.error)
+            is Resource.Success -> {
+                onSuccess()
+                Resource.Success(resource.data)
+            }
+        }
+    }
+}
+
 fun <DTO, DOMAIN> Flow<Resource<DTO>>.mapResource(mapper: (DTO) -> DOMAIN): Flow<Resource<DOMAIN>> {
     return this.map { resource ->
         when (resource) {

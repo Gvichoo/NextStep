@@ -1,8 +1,12 @@
 package com.tbacademy.nextstep.presentation.screen.main.settings
 
-import androidx.lifecycle.ViewModel
+import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
+import com.google.api.ResourceProto.resource
+import com.tbacademy.nextstep.domain.core.onError
+import com.tbacademy.nextstep.domain.core.onSuccess
+import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
 import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
@@ -12,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val clearValueFromLocalStorageUseCase: ClearValueFromLocalStorageUseCase,
+    private val logoutUserUseCase: LogoutUserUseCase
 ) : BaseViewModel<Unit, SettingsEvent, SettingsEffect, Unit>(
     initialState = Unit,
     initialUiState = Unit
@@ -27,8 +31,16 @@ class SettingsViewModel @Inject constructor(
     // On Logout
     private fun logout() {
         viewModelScope.launch {
-            clearValueFromLocalStorageUseCase()
-            emitEffect(effect = SettingsEffect.NavigateToLogin)
+            logoutUserUseCase().collect { resource ->
+                resource.onSuccess {
+                    emitEffect(effect = SettingsEffect.NavigateToLogin)
+                }
+
+                resource.onError {
+                    Log.d("LOG_OUT_ERROR", "Error")
+                    emitEffect(effect = SettingsEffect.NavigateToLogin)
+                }
+            }
         }
     }
 }
