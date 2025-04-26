@@ -2,7 +2,9 @@ package com.tbacademy.nextstep.presentation.extension
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
+import com.google.android.material.snackbar.Snackbar
 
 fun EditText.getString(): String {
     return this.text.toString().trim()
@@ -19,4 +21,8 @@ fun EditText.onTextChanged(action: (String) -> Unit) {
             action(s.toString())
         }
     })
+}
+
+fun View.showSnackbar(messageRes: Int, duration: Int = Snackbar.LENGTH_SHORT) {
+    Snackbar.make(this, context.getString(messageRes), duration).show()
 }

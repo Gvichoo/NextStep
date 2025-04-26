@@ -30,6 +30,8 @@ import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -148,6 +150,10 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindGetPostUseCase(impl: GetPostUseCaseImpl): GetPostUseCase
+
+    @Singleton
+    @Binds
     fun bindGetGoalPostsUseCase(impl: GetGoalPostsUseCaseImpl): GetGoalPostsUseCase
 
     @Singleton
@@ -245,7 +251,7 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
-  
+
     @Singleton
     @Binds
     fun bindCreateMilestonePostUseCase(impl: CreateMilestonePostUseCaseImpl): CreateMilestonePostUseCase

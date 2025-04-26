@@ -18,13 +18,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/pbPost"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:translationZ="2dp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_md" />
+
     <include
         android:id="@+id/layoutPost"
         layout="@layout/item_goal_post"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_md"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

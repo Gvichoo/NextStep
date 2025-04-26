@@ -30,21 +30,25 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAction"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/distance_xs"
-        android:text="Reacted to your post"
+        android:text="@string/reacted_to_your_post"
         app:layout_constraintBottom_toBottomOf="@id/tvAuthor"
         app:layout_constraintStart_toEndOf="@id/tvAuthor" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivReactionIcon"
+        android:id="@+id/ivNotificationIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="@dimen/distance_xs"
+        android:scaleType="centerInside"
+        android:padding="4dp"
+        android:background="@drawable/bg_reaction_fire"
         android:src="@drawable/ic_reaction_fire_24px"
-        app:layout_constraintBottom_toBottomOf="@id/tvAction"
-        app:layout_constraintStart_toEndOf="@id/tvAction" />
+        app:layout_constraintBottom_toBottomOf="@id/ivProfile"
+        app:layout_constraintEnd_toEndOf="@id/ivProfile" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDate"

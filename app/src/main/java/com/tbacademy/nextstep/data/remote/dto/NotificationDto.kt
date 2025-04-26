@@ -16,5 +16,7 @@ data class NotificationDto(
 )
 
 enum class NotificationTypeDto {
-    POST_REACTED
+    POST_REACTED,
+    POST_COMMENTED,
+    USER_FOLLOWED
 }

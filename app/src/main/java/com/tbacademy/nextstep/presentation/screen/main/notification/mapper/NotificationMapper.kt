@@ -24,4 +24,6 @@ fun Notification.toPresentation(): NotificationPresentation {
 
 fun NotificationType.toPresentation(): NotificationTypePresentation = when (this) {
     NotificationType.POST_REACTED -> NotificationTypePresentation.POST_REACTED
+    NotificationType.POST_COMMENTED -> NotificationTypePresentation.POST_COMMENTED
+    NotificationType.USER_FOLLOWED -> NotificationTypePresentation.USER_FOLLOWED
 }

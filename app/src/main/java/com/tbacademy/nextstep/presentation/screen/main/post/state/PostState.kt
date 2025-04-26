@@ -5,5 +5,6 @@ import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentati
 data class PostState(
     val post: PostPresentation? = null,
     val isLoading: Boolean = false,
-    val errorMessageRes: Int? = null
+    val errorMessageRes: Int? = null,
+    val commentRequested: Boolean = false,
 )
