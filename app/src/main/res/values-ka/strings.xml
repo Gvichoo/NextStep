@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NextStep</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_fields_are_required">უნდა შეავსო ყველა ველი!</string>
+    <string name="please_enter_a_valid_email_address">შეიყვანე ვალიდური იმეილი!</string>
+    <string name="password_must_be_at_least_8_characters">პაროლი უნდა შეიცავდეს მინიმუმ 8 სიმბოლოს!</string>
+    <string name="login_failed">შესვლა წარუმატებელია</string>
+    <string name="passwords_do_not_match">პაროლები არ ემთხვევა!</string>
+    <string name="registration_failed">რეგისტრაცია წარუმატებელია</string>
+    <string name="no_email_found">მსგავსი იმეილი ვერ მოიძებნა</string>
+    <string name="language_changed_to">Language changed to %1$s</string>
+    <string name="email">იმეილი</string>
+    <string name="password">პაროლი</string>
+    <string name="remember_me">დაიმახსოვრე სესია</string>
+    <string name="log_in">შესვლა</string>
+    <string name="don_t_have_an_account">არ გაქვს ექაუნთი?</string>
+    <string name="sign_up">დარეგისტრირდი</string>
+    <string name="sign_up_underline"><u>Sign up</u></string>
+    <string name="continue_with_google">შედი Google-ის ექაუნთთ</string>
+    <string name="repeat_password">გაიმეორე პაროლი</string>
+    <string name="register">რეგისტრაცია</string>
+    <string name="i_already_have_an_account_underline"><u>მე უკვე მაქვს ეს ექაუნთი</u></string>
+    <string name="username">ზედმეტსახელი</string>
+    <string name="field_is_empty">ველი ცარეიელია!</string>
+    <string name="nickname_must_be_no_longer_than_20_characters">ზედმეტსახელი არ უნდა აღემატებოდეს 20 სიმბოლოს</string>
+    <string name="nickname_can_only_contain_letters_numbers_and_underscores">ზედმეტსახელი უნდა შეიცავდეს მხოლოდ ასოებს,ციფრებსა და ქვედა ხაზებს</string>
+    <string name="password_should_be_at_least_8_characters">პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან!</string>
+    <string name="password_must_contain_at_least_one_letter_and_one_digit">პაროლი უნდა შეიცავდეს მინიმუმ ერთ ციფრს!</string>
+    <string name="invalid_email_format">არავალიდური იმეილი!</string>
+    <string name="username_must_be_at_least_4_characters">ზედმეტსახელი უნდა შეიცავდეს მინიმუმ 4 სიმბოლოს</string>
+    <string name="password_visibility_icon">password visibility icon</string>
+
+    <string name="error_network">დაფიქსირდა ინტერნეტ კავშირის პრობლემა,გთოხ შეამოწმო ინტერნეტთან წვდომა.</string>
+    <string name="error_timeout">მოთხოვნის დრო გასულია.გთოვ ცადო ახლიდან.</string>
+
+    <string name="error_unauthorized">შენ არ გაგივლია ავტორიზაცია რომ ისარგებლო ამით.გთხოვ შედი.</string>
+    <string name="error_forbidden">შენ არ გაქვს ნებართვა რომ ისარგებლო ამ რესურსით.</string>
+    <string name="error_conflict">დაფიქსირდა პრობლემა მოთხოვნისას.გთხოვ ცადო ახლიდან.</string>
+    <string name="error_not_found">მოთხოვნილი რესურსი ვერ მოიძებნა. გთხოვ ცადო ახლიდან.</string>
+    <string name="error_server">ჩვენ განვიცდით ტექნიკურ პრობლემას. გთხოვ ცადო ახლიდან.</string>
+    <string name="error_service_unavailable">სერვისი არაა ხელმისაწვდომი. გთხოვ ცადო ახლიდან.</string>
+    <string name="error_unknown">დაფიქსირდა უცნობი პრობლემა. გთხოვ ცადო ახლიდან.</string>
+    <string name="error_custom_message">An error occurred: %1$s</string>
+    <string name="error_user_not_found">მომხმარებელი არ არსებობს. Please check your credentials.</string>
+    <string name="error_invalid_credentials">არავალიდური უფლებამოსილებები.  გთხოვ ცადო ახლიდან.</string>
+    <string name="error_user_already_exists">მომხმარებელი უკვე არსებობს. გთხოვ ცადო სხვა იმეილი.</string>
+    <string name="invalid_format">არავალიდური ფორმატი</string>
+
+    <string name="default_web_client_id">542027497505-bia3eg08098is83l6nih4dimgn6ohj3k.apps.googleusercontent.com</string>
+    <string name="paul_sheldon_goal">After a devastating car crash in the Colorado mountains, I’ve found myself isolated with no choice but to resurrect a character I already said goodbye to — Misery Chastain. My number one fan insists this book be written… or else.</string>
+    <string name="fire">Fire</string>
+    <string name="heart">Heart</string>
+    <string name="cookie">Cookie</string>
+    <string name="cheer">Cheer</string>
+    <string name="well_done">Well Done!</string>
+    <string name="react">React</string>
+    <string name="dissapointed">Dissapointed</string>
+    <string name="follow">+ Follow</string>
+    <string name="followed">✅ Followed</string>
+
+
+    <string name="goal_will_be_uploaded_in_background">Goal will be uploaded in the background when connection is available</string>
+    <string name="camera">კამერა</string>
+    <string name="gallery">გალერეა</string>
+    <string name="select_image">არჩეული სურათი</string>
+
+    <string name="no_milestones_message">ეტაპები არაა ხელმისაწვდომი</string>
+    <string name="cooked">დაქუქულია</string>
+    <string name="reacted_to_your_post">გამოხატა რეაქცია შენს პოსტზე</string>
+    <string name="commented_on_your_post">დააკომენტარა შენს პოსტზე</string>
+    <string name="started_following_you">დაგაფოლოვა</string>
+</resources>
