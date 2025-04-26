@@ -150,4 +150,6 @@
     <color name="active">#90CAF9</color>
     <color name="completed">#A5D6A7</color>
     <color name="failed">#EF9A9A</color>
+
+    <color name="commentIconBlue">#90CAF9</color>
 </resources>

@@ -2,11 +2,9 @@ package com.tbacademy.nextstep.presentation.screen.authentication.login
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.data.dataStore.PreferenceKey.KEY_REMEMBER_ME
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.usecase.login.LoginUseCase
-import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateEmailUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateNecessaryFieldUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
@@ -17,9 +15,7 @@ import com.tbacademy.nextstep.presentation.screen.authentication.login.event.Log
 import com.tbacademy.nextstep.presentation.screen.authentication.login.state.LoginState
 import com.tbacademy.nextstep.presentation.screen.authentication.login.state.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +23,6 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val validateEmailUseCase: ValidateEmailUseCaseImpl,
     private val validateNecessaryFieldUseCase: ValidateNecessaryFieldUseCase,
-    private val saveValueToLocalStorageUseCase: SaveValueToLocalStorageUseCase,
 
     ) : BaseViewModel<LoginState, LoginEvent, LoginEffect, LoginUiState>(
     initialState = LoginState(),
@@ -70,10 +65,6 @@ class LoginViewModel @Inject constructor(
     // On Remember Me Update
     private fun onRememberMeChanged(rememberMe: Boolean) {
         updateUiState { this.copy(rememberMe = rememberMe) }
-
-        viewModelScope.launch {
-            saveValueToLocalStorageUseCase(KEY_REMEMBER_ME, rememberMe)
-        }
     }
 
     // On Submit
@@ -124,9 +115,9 @@ class LoginViewModel @Inject constructor(
         return errors.all { it == null }
     }
 
-    private fun loginUser(email: String, password: String,rememberMe: Boolean) {
+    private fun loginUser(email: String, password: String, rememberMe: Boolean) {
         viewModelScope.launch {
-            loginUseCase(email, password)
+            loginUseCase(email = email, password = password, rememberMe = rememberMe)
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
@@ -139,9 +130,6 @@ class LoginViewModel @Inject constructor(
                         }
 
                         is Resource.Success -> {
-                            withContext(NonCancellable){
-                                saveValueToLocalStorageUseCase(KEY_REMEMBER_ME,rememberMe)
-                            }
                             updateState { copy(isSuccess = true) }
                             emitEffect(LoginEffect.NavToMainFragment)
                         }

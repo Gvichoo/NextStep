@@ -4,6 +4,8 @@ import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCase
+import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
@@ -18,6 +20,8 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
+import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.ListenForUnreadNotificationsUseCase
@@ -30,6 +34,8 @@ import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCase
+import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
@@ -44,12 +50,14 @@ import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
 import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCase
-import com.tbacademy.nextstep.domain.usecase.userSession.ClearValueFromLocalStorageUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCase
-import com.tbacademy.nextstep.domain.usecase.userSession.ReadValueFromLocalStorageUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCase
-import com.tbacademy.nextstep.domain.usecase.userSession.SaveValueToLocalStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreferencesStorageUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreferencesStorageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCase
+import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCaseImpl
 
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidatorImpl
@@ -58,6 +66,10 @@ import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_session.GetUserSessionUseCase
+import com.tbacademy.nextstep.domain.usecase.user_session.GetUserSessionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user_session.UpdateUserSessionUseCase
+import com.tbacademy.nextstep.domain.usecase.user_session.UpdateUserSessionUseCaseImpl
 
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
@@ -112,15 +124,27 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
-    fun bindGetValueFromLocalStorageUseCase(impl: ReadValueFromLocalStorageUseCaseImpl): ReadValueFromLocalStorageUseCase
+    fun bindCheckUserLoggedInUseCase(impl: CheckUserLoggedInUseCaseImpl): CheckUserLoggedInUseCase
 
     @Singleton
     @Binds
-    fun bindSaveValueToLocalStorageUseCase(impl: SaveValueToLocalStorageUseCaseImpl): SaveValueToLocalStorageUseCase
+    fun UpdateUserSessionUseCase(impl: UpdateUserSessionUseCaseImpl): UpdateUserSessionUseCase
 
     @Singleton
     @Binds
-    fun bindClearValueFromLocalStorageUseCase(impl: ClearValueFromLocalStorageUseCaseImpl): ClearValueFromLocalStorageUseCase
+    fun bindGetValueFromLocalStorageUseCase(impl: ReadValueFromPreferencesStorageUseCaseImpl): ReadValueFromPreferencesStorageUseCase
+
+    @Singleton
+    @Binds
+    fun bindSaveValueToLocalStorageUseCase(impl: SaveValueToPreferencesStorageUseCaseImpl): SaveValueToPreferencesStorageUseCase
+
+    @Singleton
+    @Binds
+    fun bindClearPreferencesStorage(impl: ClearPreferencesStorageUseCaseImpl): ClearPreferencesStorageUseCase
+
+    @Singleton
+    @Binds
+    fun bindClearValueFromPreferencesStorageUseCase(impl: ClearValueFromPreferencesStorageUseCaseImpl): ClearValueFromPreferencesStorageUseCase
 
     @Singleton
     @Binds
@@ -145,6 +169,10 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
+
+    @Singleton
+    @Binds
+    fun bindGetPostUseCase(impl: GetPostUseCaseImpl): GetPostUseCase
 
     @Singleton
     @Binds
@@ -204,6 +232,14 @@ interface UseCaseModule {
 
     @Singleton
     @Binds
+    fun bindGetUserSessionUseCase(impl: GetUserSessionUseCaseImpl): GetUserSessionUseCase
+
+    @Singleton
+    @Binds
+    fun bingLogoutUserUseCase(impl: LogoutUserUseCaseImpl): LogoutUserUseCase
+
+    @Singleton
+    @Binds
     fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
 
     @Singleton
@@ -245,7 +281,7 @@ interface UseCaseModule {
     @Singleton
     @Binds
     fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
-  
+
     @Singleton
     @Binds
     fun bindCreateMilestonePostUseCase(impl: CreateMilestonePostUseCaseImpl): CreateMilestonePostUseCase

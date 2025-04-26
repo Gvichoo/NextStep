@@ -16,5 +16,7 @@ data class Notification(
 )
 
 enum class NotificationType {
-    POST_REACTED
+    POST_REACTED,
+    POST_COMMENTED,
+    USER_FOLLOWED
 }

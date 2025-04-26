@@ -11,7 +11,7 @@ import com.tbacademy.nextstep.data.repository.post.PostRepositoryImpl
 import com.tbacademy.nextstep.data.repository.reaction.ReactionRepositoryImpl
 import com.tbacademy.nextstep.data.repository.register.RegisterRepositoryImpl
 import com.tbacademy.nextstep.data.repository.user.UserRepositoryImpl
-import com.tbacademy.nextstep.data.repository.userSession.UserSessionManagerRepositoryImpl
+import com.tbacademy.nextstep.data.repository.userSession.PreferencesManagerImpl
 import com.tbacademy.nextstep.data.repository.user_follow.UserFollowRepositoryImpl
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
@@ -24,7 +24,7 @@ import com.tbacademy.nextstep.domain.repository.post.PostRepository
 import com.tbacademy.nextstep.domain.repository.reaction.ReactionRepository
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
 import com.tbacademy.nextstep.domain.repository.user.UserRepository
-import com.tbacademy.nextstep.domain.repository.userSession.UserSessionManagerRepository
+import com.tbacademy.nextstep.domain.manager.preferences.PreferencesManager
 import com.tbacademy.nextstep.domain.repository.user_follow.UserFollowRepository
 import dagger.Binds
 import dagger.Module
@@ -46,7 +46,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindUserSessionManagerRepository(impl: UserSessionManagerRepositoryImpl): UserSessionManagerRepository
+    abstract fun bindUserSessionManagerRepository(impl: PreferencesManagerImpl): PreferencesManager
 
     @Binds
     @Singleton

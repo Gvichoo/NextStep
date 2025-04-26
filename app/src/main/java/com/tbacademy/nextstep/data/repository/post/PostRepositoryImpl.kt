@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.repository.post
 
+import android.content.res.Resources.NotFoundException
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -173,14 +174,24 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPost(postId: String): Flow<Resource<Post>> {
-    TODO()
-    //        return handleResponse.safeApiCall {
-//
-//        }
+    override fun getPost(postId: String): Flow<Resource<Post>> {
+        return handleResponse.safeApiCall {
+            Log.d("POST_REPOSITORY", "POST ID: $postId")
+            val snapshot = firestore
+                .collection(POSTS_COLLECTION_PATH)
+                .document(postId)
+                .get()
+                .await()
+
+            Log.d("POST_REPOSITORY", "POST Snapshot: $snapshot")
+
+
+            val postDto = snapshot.toObject(PostDto::class.java)
+                ?: throw NotFoundException()
+
+            postDto.copy(id = snapshot.id).toDomain()
+        }
     }
-
-
 
     private suspend fun getFollowedGoals(userId: String): Set<String> {
         val snapshot = firestore.collection("goal_follows")

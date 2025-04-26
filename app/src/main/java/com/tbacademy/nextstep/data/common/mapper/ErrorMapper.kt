@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.data.common.mapper
 
+import android.content.res.Resources.NotFoundException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -10,6 +11,7 @@ import java.io.IOException
 
 fun Throwable.toApiError(): ApiError = when (this) {
     is IOException -> ApiError.Network
+    is NotFoundException -> ApiError.NotFound
     is HttpException -> this.toApiError()
     is IllegalStateException -> ApiError.Custom(message ?: "Illegal state")
     is FirebaseAuthInvalidUserException -> ApiError.UserNotFound
