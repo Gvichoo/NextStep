@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".presentation.screen.main.settings.SettingsFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composeView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log Out"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_marginTop="16dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

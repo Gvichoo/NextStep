@@ -13,4 +13,8 @@ class AuthManagerImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : AuthManager {
     override fun getCurrentUserId(): String? = firebaseAuth.currentUser?.uid
+
+    override fun isUserLoggedIn(): Boolean {
+        return firebaseAuth.currentUser != null
+    }
 }

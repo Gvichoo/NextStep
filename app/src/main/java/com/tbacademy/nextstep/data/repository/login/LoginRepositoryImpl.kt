@@ -2,6 +2,7 @@ package com.tbacademy.nextstep.data.repository.login
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tbacademy.nextstep.data.common.mapper.toApiError
+import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
+    private val handleResponse: HandleResponse
 ) : LoginRepository {
     override fun login(email: String, password: String): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(true))
@@ -26,5 +28,11 @@ class LoginRepositoryImpl @Inject constructor(
             emit(Resource.Loading(false))
         }
         emit(Resource.Loading(false))
+    }
+
+    override fun logout(): Flow<Resource<Unit>> {
+        return handleResponse.safeApiCall {
+            firebaseAuth.signOut()
+        }
     }
 }
