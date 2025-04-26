@@ -107,9 +107,6 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.11.0")
 
 
-    //Animations
-    implementation ("com.airbnb.android:lottie:6.3.0")
-
     //Compose
     val composeBom = platform("androidx.compose:compose-bom:2025.02.00")
     implementation(composeBom)

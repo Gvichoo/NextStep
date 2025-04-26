@@ -44,4 +44,5 @@ class PreferencesManagerImpl @Inject constructor(
             is PreferenceKey.BooleanKey -> booleanPreferencesKey(key.keyName)
         } as Preferences.Key<T>
     }
+
 }

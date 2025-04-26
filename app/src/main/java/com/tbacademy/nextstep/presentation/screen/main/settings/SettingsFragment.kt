@@ -1,5 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.settings
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.tbacademy.nextstep.R
@@ -8,6 +10,7 @@ import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
+import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +20,14 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     override fun start() {
         binding.composeView.setContent {
-            SettingsScreen()
+            val state by settingsViewModel.state.collectAsState()
+
+            SettingsScreen(
+                state = state,
+                onChangeLanguage = { languageCode ->
+                    settingsViewModel.onEvent(SettingsEvent.ChangeLanguage(languageCode))
+                }
+            )
         }
     }
 
