@@ -8,6 +8,8 @@ plugins {
     id("com.google.gms.google-services")
     // Navigation safe args
     alias(libs.plugins.androidx.navigation.safeargs.kotlin)
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -43,6 +45,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        compose = true
     }
 }
 
@@ -100,4 +103,13 @@ dependencies {
 
     //Gson
     implementation ("com.google.code.gson:gson:2.11.0")
+
+    //Compose
+    val composeBom = platform("androidx.compose:compose-bom:2025.02.00")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
 }
