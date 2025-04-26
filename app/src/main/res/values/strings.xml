@@ -67,5 +67,8 @@
 
     <string name="no_milestones_message">No milestones available</string>
     <string name="cooked">Cooked</string>
+    <string name="reacted_to_your_post">Reacted to your post</string>
+    <string name="commented_on_your_post">Commented on your post</string>
+    <string name="started_following_you">started following you</string>
 
 </resources>

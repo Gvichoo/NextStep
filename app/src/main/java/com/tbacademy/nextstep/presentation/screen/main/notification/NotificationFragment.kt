@@ -23,8 +23,11 @@ class NotificationFragment :
 
     private val notificationAdapter by lazy {
         NotificationAdapter(
-            reactionNotificationClicked = { postId ->
-                onReactNotificationSelected(postId = postId)
+            reactionNotificationClicked = { postId, isComment ->
+                onReactNotificationSelected(postId = postId, isComment = isComment)
+            },
+            followNotificationClicked = { userId ->
+                notificationViewModel.onEvent(event = NotificationEvent.FollowNotificationSelected(userId = userId))
             }
         )
     }
@@ -61,7 +64,11 @@ class NotificationFragment :
         collect(flow = notificationViewModel.effects) { effect ->
             when (effect) {
                 is NotificationEffect.ShowErrorMessage -> binding.root.showSnackbar(effect.errorMessageRes)
-                is NotificationEffect.NavigateToPost -> navigateToPost(postId = effect.postId)
+                is NotificationEffect.NavigateToPost -> navigateToPost(
+                    postId = effect.postId,
+                    showComments = effect.isComment
+                )
+                is NotificationEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
             }
         }
     }
@@ -72,15 +79,28 @@ class NotificationFragment :
         }
     }
 
-    private fun navigateToPost(postId: String) {
+    private fun navigateToPost(postId: String, showComments: Boolean) {
         val action = MainFragmentDirections.actionMainFragmentToPostFragment(
-            postId = postId
+            postId = postId,
+            showComments = showComments
         )
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
 
-    private fun onReactNotificationSelected(postId: String) {
-        notificationViewModel.onEvent(event = NotificationEvent.ReactNotificationSelected(postId = postId))
+    private fun navigateToProfile(userId: String) {
+        val action = MainFragmentDirections.actionMainFragmentToProfileFragment(
+            userId = userId
+        )
+        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    }
+
+    private fun onReactNotificationSelected(postId: String, isComment: Boolean) {
+        notificationViewModel.onEvent(
+            event = NotificationEvent.PostNotificationSelected(
+                postId = postId,
+                isComment = isComment
+            )
+        )
     }
 
     private fun setUpNotificationAdapter() {

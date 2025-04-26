@@ -1,7 +1,10 @@
 package com.tbacademy.nextstep.presentation.screen.main.post
 
+import android.os.Bundle
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentPostBinding
@@ -10,6 +13,7 @@ import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
 import com.tbacademy.nextstep.presentation.extension.showSnackbar
+import com.tbacademy.nextstep.presentation.screen.main.home.comment.CommentsSheetFragment
 import com.tbacademy.nextstep.presentation.screen.main.home.extension.topReactions
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
 import com.tbacademy.nextstep.presentation.screen.main.post.effect.PostEffect
@@ -23,11 +27,17 @@ class PostFragment : BaseFragment<FragmentPostBinding>(FragmentPostBinding::infl
     private val postViewModel: PostViewModel by viewModels()
 
     override fun start() {
-        postViewModel.onEvent(event = PostEvent.GetPost(postId = safeArgs.postId))
+        postViewModel.onEvent(
+            event = PostEvent.GetPost(
+                postId = safeArgs.postId,
+                openComments = safeArgs.showComments
+            )
+        )
     }
 
     override fun listeners() {
-
+        setCommentsListener()
+        setBackBtnListener()
     }
 
     override fun observers() {
@@ -53,9 +63,32 @@ class PostFragment : BaseFragment<FragmentPostBinding>(FragmentPostBinding::infl
 
     private fun observeEffect() {
         collect(flow = postViewModel.effects) { effect ->
-            when(effect) {
+            when (effect) {
                 is PostEffect.ShowErrorMessage -> binding.root.showSnackbar(messageRes = effect.errorMessageRes)
+                is PostEffect.OpenCommentsBottomSheet -> openCommentsBottomSheet(postId = effect.postId)
+                is PostEffect.NavigateBack -> findNavController().navigateUp()
             }
+        }
+    }
+
+    private fun openCommentsBottomSheet(postId: String) {
+        val commentsSheet = CommentsSheetFragment()
+        commentsSheet.arguments = Bundle().apply {
+            putString("postId", postId)
+            putBoolean("typeActive", false)
+        }
+        commentsSheet.show(childFragmentManager, "CommentsSheet")
+    }
+
+    private fun setCommentsListener() {
+        binding.layoutPost.tvComments.setOnClickListener {
+            postViewModel.onEvent(event = PostEvent.CommentsRequested(postId = safeArgs.postId))
+        }
+    }
+
+    private fun setBackBtnListener() {
+        binding.btnBack.setOnClickListener {
+            postViewModel.onEvent(event = PostEvent.ReturnRequested)
         }
     }
 

@@ -22,4 +22,6 @@ fun NotificationDto.toDomain(): Notification {
 
 fun NotificationTypeDto.toDomain(): NotificationType = when (this) {
     NotificationTypeDto.POST_REACTED -> NotificationType.POST_REACTED
+    NotificationTypeDto.POST_COMMENTED -> NotificationType.POST_COMMENTED
+    NotificationTypeDto.USER_FOLLOWED -> NotificationType.USER_FOLLOWED
 }
