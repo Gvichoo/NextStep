@@ -1,10 +1,15 @@
 package com.tbacademy.nextstep.presentation.screen.main.goal
 
 import android.os.Bundle
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentGoalBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
@@ -12,6 +17,7 @@ import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.screen.main.goal.effect.GoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.goal.event.GoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.CommentsSheetFragment
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,12 +35,13 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
     override fun start() {
         getPosts(goalId = args.goalId)
-        binding.tvGoalTitle.text = args.goalTitle
+        goalViewModel.onEvent(event = GoalEvent.CheckGoalAuthor(isOwnGoal = args.isOwnGoal))
 
         setAdapter()
     }
 
     override fun listeners() {
+        setCompleteBtnListener()
     }
 
     override fun observers() {
@@ -48,16 +55,31 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
             binding.apply {
                 pbPosts.isVisible = state.isLoading
+                btnComplete.isVisible = state.isOwnGoal
+                tvGoalTitle.text = state.goalTitle
+                if (state.isGoalCompleteBottomSheetVisible) {
+                    showCompleteGoalBottomSheet()
+                }
             }
         }
     }
 
     private fun observeEffect() {
         collect(flow = goalViewModel.effects) { effect ->
-            when(effect) {
+            when (effect) {
                 is GoalEffect.OpenComments -> openCommentsBottomSheet(postId = effect.postId)
+                is GoalEffect.NavigateToCreateGoal -> navigateToCreateGoal(goalTitle = effect.goalTitle)
             }
         }
+    }
+
+    private fun navigateToCreateGoal(goalTitle: String) {
+        val action = GoalFragmentDirections.actionGoalFragmentToCompleteGoalFragment(
+            goalId = args.goalId,
+            // ☣️☢️ To be looked AGAIN
+            goalTitle = goalTitle
+        )
+        findNavController().navigate(action)
     }
 
     private fun setAdapter() {
@@ -67,6 +89,42 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
     private fun getPosts(goalId: String) {
         goalViewModel.onEvent(event = GoalEvent.FetchGoalPosts(goalId = goalId))
+    }
+
+    private fun setCompleteBtnListener() {
+        binding.btnComplete.setOnClickListener {
+            goalViewModel.onEvent(event = GoalEvent.OpenCompleteGoalSheet)
+        }
+    }
+
+    private var bottomSheetDialog: BottomSheetDialog? = null
+
+    private fun showCompleteGoalBottomSheet() {
+        if (bottomSheetDialog?.isShowing == true) {
+            return
+        }
+
+        val parent = FrameLayout(requireContext())
+
+        val view = layoutInflater.inflate(R.layout.dialog_proceed_complition, parent, false)
+
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog?.setContentView(view)
+
+        view.findViewById<TextView>(R.id.optionYes).setOnClickListener {
+            goalViewModel.onEvent(event = GoalEvent.ProceedWithGoalCompletion)
+            bottomSheetDialog?.dismiss()
+        }
+
+        view.findViewById<TextView>(R.id.optionNo).setOnClickListener {
+            bottomSheetDialog?.dismiss()
+        }
+
+        bottomSheetDialog?.setOnDismissListener {
+            goalViewModel.onEvent(GoalEvent.CloseCompleteGoalSheet)
+        }
+
+        bottomSheetDialog?.show()
     }
 
     private fun openCommentsBottomSheet(postId: String) {

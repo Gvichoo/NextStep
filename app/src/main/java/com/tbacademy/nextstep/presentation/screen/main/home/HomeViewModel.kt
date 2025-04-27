@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.FeedStateSelected -> handleFeedStateChanged(event.feedState)
             is HomeEvent.StartSearch -> onStartSearch()
             is HomeEvent.OpenMilestone -> onMilestoneSelected(goalId = event.goalId)
-            is HomeEvent.OpenGoalFragment -> onPostTypeSelected(goalId = event.goalId)
+            is HomeEvent.OpenGoalFragment -> onPostTypeSelected(goalId = event.goalId, isOwnGoal = event.isOwnGoal)
         }
     }
 
@@ -97,9 +97,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun onPostTypeSelected(goalId: String) {
+    private fun onPostTypeSelected(goalId: String, isOwnGoal: Boolean) {
         viewModelScope.launch {
-            emitEffect(HomeEffect.NavigateToGoal(goalId = goalId))
+            emitEffect(HomeEffect.NavigateToGoal(goalId = goalId, isOwnGoal = isOwnGoal))
         }
     }
 
