@@ -118,5 +118,20 @@ dependencies {
     //Module
     implementation(project(":core"))
 
+    //Unit Test
+    // Required -- JUnit 4 framework
+    testImplementation ("junit:junit:4.13.2")
+    // Optional -- Robolectric environment
+    testImplementation ("androidx.test:core:1.6.1")
+    // Optional -- Mockito framework
+    testImplementation ("org.mockito:mockito-core:5.10.0")
+    // Optional -- mockito-kotlin
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:5.3.0")
+    // Optional -- Mockk framework
+    testImplementation ("io.mockk:mockk:5.3.0")
+    // Mockk for mocking
+    testImplementation("io.mockk:mockk:1.13.10")
+
+
 
 }
