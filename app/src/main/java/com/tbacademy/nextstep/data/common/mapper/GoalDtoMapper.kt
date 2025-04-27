@@ -34,6 +34,7 @@ fun GoalDto.toDomain(): Goal {
         authorId = authorId,
         description = description,
         targetDate = targetDate.seconds * 1000,
+        goalStatus = goalStatus.toDomain(),
         metricUnit = metricUnit,
         metricTarget = metricTarget,
         createdAt = createdAt,
@@ -58,6 +59,7 @@ fun GoalDto.toDomainWithComputedStatus(currentTime: Long): Goal {
         authorUsername = authorUsername,
         targetDate = targetDate.toDate().time,
         metricUnit = metricUnit,
+        goalStatus = status,
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
@@ -73,6 +75,11 @@ fun MilestoneItem.toDto(): MilestoneItemDto {
     )
 }
 
+fun GoalStatusDto.toDomain(): GoalStatus = when (this) {
+    GoalStatusDto.ACTIVE    -> GoalStatus.ACTIVE
+    GoalStatusDto.COMPLETED -> GoalStatus.COMPLETED
+    GoalStatusDto.FAILED    -> GoalStatus.FAILED
+}
 
 
 

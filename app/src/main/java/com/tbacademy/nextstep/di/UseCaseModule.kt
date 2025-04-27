@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.di
 
-import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
-import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCase
@@ -10,6 +10,8 @@ import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.CompleteGoalUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.CompleteGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
@@ -20,6 +22,8 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalStatusUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalStatusUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
@@ -59,8 +63,8 @@ import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreference
 import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCaseImpl
 
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidatorImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCaseImpl
 
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
@@ -102,187 +106,154 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 interface UseCaseModule {
-    @Singleton
-    @Binds
-    fun bindValidateEmailUseCase(validateEmailUseCase: ValidateEmailUseCaseImpl): ValidateEmailUseCase
 
-    @Singleton
-    @Binds
-    fun bindValidatePasswordUseCase(validatePasswordUseCase: ValidatePasswordUseCaseImpl): ValidatePasswordUseCase
+    // --- Validation UseCases ---
+    @Singleton @Binds
+    fun bindValidateEmailUseCase(impl: ValidateEmailUseCaseImpl): ValidateEmailUseCase
 
-    @Singleton
-    @Binds
-    fun bindValidateRepeatedPasswordUseCase(validateRepeatedPasswordUseCase: ValidateRepeatedPasswordUseCaseImpl): ValidateRepeatedPasswordUseCase
+    @Singleton @Binds
+    fun bindValidatePasswordUseCase(impl: ValidatePasswordUseCaseImpl): ValidatePasswordUseCase
 
-    @Singleton
-    @Binds
-    fun bindValidateUsernameUseCase(validateUsernameUseCase: ValidateUsernameUseCaseImpl): ValidateUsernameUseCase
+    @Singleton @Binds
+    fun bindValidateRepeatedPasswordUseCase(impl: ValidateRepeatedPasswordUseCaseImpl): ValidateRepeatedPasswordUseCase
 
-    @Singleton
-    @Binds
-    fun bindNecessaryFieldUseCase(validateNecessaryFieldUseCase: ValidateNecessaryFieldUseCaseImpl): ValidateNecessaryFieldUseCase
+    @Singleton @Binds
+    fun bindValidateUsernameUseCase(impl: ValidateUsernameUseCaseImpl): ValidateUsernameUseCase
 
-    @Singleton
-    @Binds
-    fun bindCheckUserLoggedInUseCase(impl: CheckUserLoggedInUseCaseImpl): CheckUserLoggedInUseCase
+    @Singleton @Binds
+    fun bindNecessaryFieldUseCase(impl: ValidateNecessaryFieldUseCaseImpl): ValidateNecessaryFieldUseCase
 
-    @Singleton
-    @Binds
-    fun UpdateUserSessionUseCase(impl: UpdateUserSessionUseCaseImpl): UpdateUserSessionUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetValueFromLocalStorageUseCase(impl: ReadValueFromPreferencesStorageUseCaseImpl): ReadValueFromPreferencesStorageUseCase
-
-    @Singleton
-    @Binds
-    fun bindSaveValueToLocalStorageUseCase(impl: SaveValueToPreferencesStorageUseCaseImpl): SaveValueToPreferencesStorageUseCase
-
-    @Singleton
-    @Binds
-    fun bindClearPreferencesStorage(impl: ClearPreferencesStorageUseCaseImpl): ClearPreferencesStorageUseCase
-
-    @Singleton
-    @Binds
-    fun bindClearValueFromPreferencesStorageUseCase(impl: ClearValueFromPreferencesStorageUseCaseImpl): ClearValueFromPreferencesStorageUseCase
-
-    @Singleton
-    @Binds
-    fun bindCreateGoalUseCase(impl: CreateGoalUseCaseImpl): CreateGoalUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetUserGoalsUseCase(impl: GetUserGoalsUseCaseImpl): GetUserGoalsUseCase
-
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateAddGoalTitleUseCase(impl: ValidateAddGoalTitleUseCaseImpl): ValidateAddGoalTitleUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateAddGoalDescriptionUseCase(impl: ValidateAddGoalDescriptionUseCaseImpl): ValidateAddGoalDescriptionUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateAddGoalDateUseCase(impl: ValidateAddGoalDateUseCaseImpl): ValidateAddGoalDateUseCase
 
-    @Singleton
-    @Binds
-    fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetPostUseCase(impl: GetPostUseCaseImpl): GetPostUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetGoalPostsUseCase(impl: GetGoalPostsUseCaseImpl): GetGoalPostsUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetFollowedPostsUseCase(impl: GetFollowedPostsUseCaseImpl): GetFollowedPostsUseCase
-
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateMetricTargetUseCase(impl: ValidateMetricTargetUseCaseImpl): ValidateMetricTargetUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateMetricUnitUseCase(impl: ValidateMetricUnitUseCaseImpl): ValidateMetricUnitUseCase
 
-    @Singleton
-    @Binds
-    fun bindCreateReactionUseCale(impl: CreateReactionUseCaseImpl): CreateReactionUseCase
-
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindValidateMilestoneUseCase(impl: ValidateMilestoneUseCaseImpl): ValidateMilestoneUseCase
 
-    @Singleton
-    @Binds
-    fun bindDeleteReactionUseCase(impl: DeleteReactionUseCaseImpl): DeleteReactionUseCase
+    @Singleton @Binds
+    fun bindImageValidator(impl: ValidateImageUseCaseImpl): ValidateImageUseCase
 
-    @Singleton
-    @Binds
-    fun bindUpdateReactionUseCase(impl: UpdateReactionUseCaseImpl): UpdateReactionUseCase
+    // --- Session and Auth UseCases ---
+    @Singleton @Binds
+    fun bindCheckUserLoggedInUseCase(impl: CheckUserLoggedInUseCaseImpl): CheckUserLoggedInUseCase
 
-    @Singleton
-    @Binds
-    fun bindCreateCommentUseCase(impl: CreateCommentUseCaseImpl): CreateCommentUseCase
+    @Singleton @Binds
+    fun UpdateUserSessionUseCase(impl: UpdateUserSessionUseCaseImpl): UpdateUserSessionUseCase
 
-    @Singleton
-    @Binds
-    fun bindGetCommentsUseCase(impl: GetCommentsUseCaseImpl): GetCommentsUseCase
-
-    @Singleton
-    @Binds
-    fun bindGetUserInfoUseCase(impl: GetUserInfoUseCaseImpl): GetUserInfoUseCase
-
-    @Singleton
-    @Binds
-    fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
-
-    @Singleton
-    @Binds
-    fun bindUpdateUserImageUseCase(impl: UpdateUserImageUseCaseImpl): UpdateUserImageUseCase
-
-    @Singleton
-    @Binds
-    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
-
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindGetUserSessionUseCase(impl: GetUserSessionUseCaseImpl): GetUserSessionUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bingLogoutUserUseCase(impl: LogoutUserUseCaseImpl): LogoutUserUseCase
 
-    @Singleton
-    @Binds
-    fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
+    @Singleton @Binds
+    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
 
-    @Singleton
-    @Binds
-    fun bindDeleteGoalFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
+    // --- Preferences Storage UseCases ---
+    @Singleton @Binds
+    fun bindGetValueFromLocalStorageUseCase(impl: ReadValueFromPreferencesStorageUseCaseImpl): ReadValueFromPreferencesStorageUseCase
 
-    @Singleton
-    @Binds
-    fun bindCreateUserFollowUseCase(impl: CreateUserFollowUseCaseImpl): CreateUserFollowUseCase
+    @Singleton @Binds
+    fun bindSaveValueToLocalStorageUseCase(impl: SaveValueToPreferencesStorageUseCaseImpl): SaveValueToPreferencesStorageUseCase
 
-    @Singleton
-    @Binds
-    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+    @Singleton @Binds
+    fun bindClearPreferencesStorage(impl: ClearPreferencesStorageUseCaseImpl): ClearPreferencesStorageUseCase
 
-//    @Singleton
-//    @Binds
-//    fun checkIsUserFollowedUseCase(impl: CheckIsUerFollowedUseCaseImpl): CheckIsUserFollowedUseCase
+    @Singleton @Binds
+    fun bindClearValueFromPreferencesStorageUseCase(impl: ClearValueFromPreferencesStorageUseCaseImpl): ClearValueFromPreferencesStorageUseCase
 
-    @Singleton
-    @Binds
-    fun bindImageValidator(impl: ImageValidatorImpl): ImageValidator
+    // --- Goal UseCases ---
+    @Singleton @Binds
+    fun bindCreateGoalUseCase(impl: CreateGoalUseCaseImpl): CreateGoalUseCase
 
-    @Singleton
-    @Binds
-    fun bindGetMilestoneUseCase(impl: GetMilestoneUseCaseImpl): GetMilestoneUseCase
+    @Singleton @Binds
+    fun bindGetUserGoalsUseCase(impl: GetUserGoalsUseCaseImpl): GetUserGoalsUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindUpdateGoalUseCase(impl: UpdateGoalUseCaseImpl): UpdateGoalUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
+    fun bindUpdateGoalStatusUseCase(impl: UpdateGoalStatusUseCaseImpl): UpdateGoalStatusUseCase
+
+    @Singleton @Binds
+    fun bindCreateGoalFollowUseCase(impl: CreateGoalFollowUseCaseImpl): CreateGoalFollowUseCase
+
+    @Singleton @Binds
+    fun bindDeleteGoalFollowUseCase(impl: DeleteGoalFollowUseCaseImpl): DeleteGoalFollowUseCase
+
+    @Singleton @Binds
+    fun bindGetMilestoneUseCase(impl: GetMilestoneUseCaseImpl): GetMilestoneUseCase
+
+    @Singleton @Binds
+    fun bindCompleteGoalUseCase(impl: CompleteGoalUseCaseImpl): CompleteGoalUseCase
+
+    // --- Post UseCases ---
+    @Singleton @Binds
+    fun bindGetPostsUseCase(impl: GetPostsUseCaseImpl): GetPostsUseCase
+
+    @Singleton @Binds
+    fun bindGetPostUseCase(impl: GetPostUseCaseImpl): GetPostUseCase
+
+    @Singleton @Binds
+    fun bindGetGoalPostsUseCase(impl: GetGoalPostsUseCaseImpl): GetGoalPostsUseCase
+
+    @Singleton @Binds
+    fun bindGetFollowedPostsUseCase(impl: GetFollowedPostsUseCaseImpl): GetFollowedPostsUseCase
+
+    @Singleton @Binds
+    fun bindCreateMilestonePostUseCase(impl: CreatePostUseCaseImpl): CreatePostUseCase
+
+    // --- Reaction UseCases ---
+    @Singleton @Binds
+    fun bindCreateReactionUseCale(impl: CreateReactionUseCaseImpl): CreateReactionUseCase
+
+    @Singleton @Binds
+    fun bindDeleteReactionUseCase(impl: DeleteReactionUseCaseImpl): DeleteReactionUseCase
+
+    @Singleton @Binds
+    fun bindUpdateReactionUseCase(impl: UpdateReactionUseCaseImpl): UpdateReactionUseCase
+
+    // --- Comment UseCases ---
+    @Singleton @Binds
+    fun bindCreateCommentUseCase(impl: CreateCommentUseCaseImpl): CreateCommentUseCase
+
+    @Singleton @Binds
+    fun bindGetCommentsUseCase(impl: GetCommentsUseCaseImpl): GetCommentsUseCase
+
+    // --- User UseCases ---
+    @Singleton @Binds
+    fun bindGetUserInfoUseCase(impl: GetUserInfoUseCaseImpl): GetUserInfoUseCase
+
+    @Singleton @Binds
+    fun bindSearchUsersUseCase(impl: SearchUsersUseCaseImpl): SearchUsersUseCase
+
+    @Singleton @Binds
+    fun bindUpdateUserImageUseCase(impl: UpdateUserImageUseCaseImpl): UpdateUserImageUseCase
+
+    @Singleton @Binds
+    fun bindCreateUserFollowUseCase(impl: CreateUserFollowUseCaseImpl): CreateUserFollowUseCase
+
+    @Singleton @Binds
+    fun bindDeleteUserFollowUseCase(impl: DeleteUserFollowUseCaseImpl): DeleteUserFollowUseCase
+
+    // --- Notification UseCases ---
+    @Singleton @Binds
     fun bindGetUserNotificationsUseCase(impl: GetUserNotificationsUseCaseImpl): GetUserNotificationsUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindListenForUnreadNotificationsUseCase(impl: ListenForUnreadNotificationsUseCaseImpl): ListenForUnreadNotificationsUseCase
 
-    @Singleton
-    @Binds
+    @Singleton @Binds
     fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
-
-    @Singleton
-    @Binds
-    fun bindCreateMilestonePostUseCase(impl: CreatePostUseCaseImpl): CreatePostUseCase
 }

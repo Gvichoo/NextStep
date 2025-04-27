@@ -14,6 +14,7 @@ import com.tbacademy.nextstep.data.remote.dto.GoalDto
 import com.tbacademy.nextstep.domain.core.ApiError
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.Goal
+import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
@@ -123,7 +124,12 @@ class GoalRepositoryImpl @Inject constructor(
         }
     }
 
-
+    override fun updateGoalStatus(goalStatus: GoalStatus, goalId: String): Flow<Resource<Unit>> {
+        return handleResponse.safeApiCall {
+            val goalRef = firestore.collection("goals").document(goalId)
+            goalRef.update("goalStatus", goalStatus).await()
+        }
+    }
 
 
     override fun getUserGoals(userId: String): Flow<Resource<List<Goal>>> {

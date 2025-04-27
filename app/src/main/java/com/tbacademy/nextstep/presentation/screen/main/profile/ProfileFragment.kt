@@ -20,6 +20,7 @@ import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
+import com.tbacademy.nextstep.presentation.extension.showSnackbar
 import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
@@ -71,7 +72,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         collectLatest(flow = profileViewModel.effects) { effect ->
             when (effect) {
                 is ProfileEffect.NavigateBack -> findNavController().navigateUp()
-                is ProfileEffect.ShowErrorMessage -> {}
+                is ProfileEffect.ShowErrorMessage -> binding.root.showSnackbar(messageRes = effect.errorRes)
                 is ProfileEffect.ShowUpdateImageDialog -> showImagePickerDialog()
                 is ProfileEffect.LaunchCameraPicker -> checkCameraPermissionAndLaunch()
                 is ProfileEffect.LaunchMediaPicker -> launchImagePicker()

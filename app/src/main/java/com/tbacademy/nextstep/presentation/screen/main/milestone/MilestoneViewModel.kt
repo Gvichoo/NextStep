@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
@@ -56,7 +56,6 @@ class MilestoneViewModel @Inject constructor(
             )
         }
     }
-
 
     private fun markMilestoneAsDone(goalId: String, milestoneId: Int) {
         viewModelScope.launch {

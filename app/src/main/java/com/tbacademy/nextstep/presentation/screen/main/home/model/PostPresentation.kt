@@ -28,5 +28,6 @@ data class PostPresentation(
 
 enum class PostType {
     GOAL,
-    MILESTONE
+    MILESTONE,
+    GOAL_COMPLETE
 }

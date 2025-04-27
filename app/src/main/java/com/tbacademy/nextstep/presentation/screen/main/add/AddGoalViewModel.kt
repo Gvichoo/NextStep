@@ -14,7 +14,7 @@ import com.google.gson.Gson
 import com.tbacademy.nextstep.data.worker.UploadGoalWorker
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.model.Goal
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
@@ -42,7 +42,7 @@ class AddGoalViewModel @Inject constructor(
     private val validateMetricTargetUseCase: ValidateMetricTargetUseCase,
     private val validateMetricUnitUseCase: ValidateMetricUnitUseCase,
     private val validateMilestoneUseCase: ValidateMilestoneUseCase,
-    private val validateImage : ImageValidator,
+    private val validateImage : ValidateImageUseCase,
     private val application: Application
 
 ) : BaseViewModel<AddGoalState, AddGoalEvent, AddGoalEffect, AddGoalUiState>(

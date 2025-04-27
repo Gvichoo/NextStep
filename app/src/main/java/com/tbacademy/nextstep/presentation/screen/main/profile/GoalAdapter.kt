@@ -1,6 +1,5 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -31,7 +30,6 @@ class GoalAdapter(
             binding.apply {
                 tvGoalTitle.text = goal.title
                 tvGoalStatus.text = goal.goalStatus.toString()
-                Log.d("GOALADAPTER", "${goal.goalStatus} ${goal.goalStatus.statusColorRes}")
                 tvGoalStatus.setTextColor(ContextCompat.getColor(itemView.context, goal.goalStatus.statusColorRes))
                 ivGoal.loadProfilePictureGlide(url = goal.imageUrl)
 

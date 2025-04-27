@@ -7,6 +7,9 @@ data class CompleteGoalState(
     val isSuccess: Boolean = false,
     val formBeenSubmitted: Boolean = false,
 
+    val goalId: String? = null,
+    val goalTitle: String? = null,
+
     val descriptionErrorMessage: Int? = null,
     val imageErrorMessage: Int? = null,
 

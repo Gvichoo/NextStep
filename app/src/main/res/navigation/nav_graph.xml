@@ -169,6 +169,11 @@
         <argument
             android:name="goalTitle"
             app:argType="string" />
+        <action
+            android:id="@+id/action_completeGoalFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>
