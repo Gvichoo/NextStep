@@ -3,8 +3,8 @@ package com.tbacademy.nextstep.presentation.screen.main.postMilestone
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.InputValidationResult
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.InputValidationResult
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.usecase.post.CreatePostUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase

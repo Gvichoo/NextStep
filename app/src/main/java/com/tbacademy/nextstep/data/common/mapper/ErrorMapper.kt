@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.internal.api.FirebaseNoSignedInUserException
-import com.tbacademy.nextstep.domain.core.ApiError
+import com.tbacademy.core.ApiError
 import retrofit2.HttpException
 import java.io.IOException
 

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Query
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.NotificationDto
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.model.Notification
 import com.tbacademy.nextstep.domain.repository.notification.NotificationRepository

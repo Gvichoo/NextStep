@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.validation.authorization
 
-import com.tbacademy.nextstep.domain.core.InputValidationError
-import com.tbacademy.nextstep.domain.core.InputValidationResult
+import com.tbacademy.core.InputValidationError
+import com.tbacademy.core.InputValidationResult
 import java.util.regex.Pattern
 import javax.inject.Inject
 

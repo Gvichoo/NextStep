@@ -2,8 +2,8 @@ package com.tbacademy.nextstep.presentation.screen.main.settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.onError
-import com.tbacademy.nextstep.domain.core.onSuccess
+import com.tbacademy.core.onError
+import com.tbacademy.core.onSuccess
 import com.tbacademy.nextstep.domain.manager.preferences.AppPreferenceKeys
 import com.tbacademy.nextstep.domain.manager.preferences.PreferenceKey
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase

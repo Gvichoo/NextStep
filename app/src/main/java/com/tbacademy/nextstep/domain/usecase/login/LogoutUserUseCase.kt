@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.login
 
-import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.core.handleSuccess
+import com.tbacademy.core.Resource
+import com.tbacademy.core.handleSuccess
 import com.tbacademy.nextstep.domain.manager.preferences.AppPreferenceKeys
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase

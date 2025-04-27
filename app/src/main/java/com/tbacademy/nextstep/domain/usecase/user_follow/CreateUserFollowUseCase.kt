@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.user_follow
 
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.model.UserFollow
 import com.tbacademy.nextstep.domain.repository.user_follow.UserFollowRepository
 import kotlinx.coroutines.flow.Flow

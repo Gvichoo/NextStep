@@ -1,4 +1,4 @@
-package com.tbacademy.nextstep.domain.core
+package com.tbacademy.core
 
 sealed interface InputValidationError {
     // General

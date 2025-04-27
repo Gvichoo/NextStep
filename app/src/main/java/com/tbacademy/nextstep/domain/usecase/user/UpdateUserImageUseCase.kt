@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.user
 
 import android.net.Uri
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.repository.user.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

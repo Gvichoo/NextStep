@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.validation.addGoal
 
-import com.tbacademy.nextstep.domain.core.InputValidationError
-import com.tbacademy.nextstep.domain.core.InputValidationResult
+import com.tbacademy.core.InputValidationError
+import com.tbacademy.core.InputValidationResult
 import javax.inject.Inject
 
 interface ValidateMetricTargetUseCase {
@@ -13,7 +13,8 @@ class ValidateMetricTargetUseCaseImpl @Inject constructor() : ValidateMetricTarg
         return when {
             metricTarget.isBlank() -> InputValidationResult.Failure(InputValidationError.Empty)
 
-            !metricTarget.matches(Regex("\\d+")) -> InputValidationResult.Failure(InputValidationError.Invalid)
+            !metricTarget.matches(Regex("\\d+")) -> InputValidationResult.Failure(
+                InputValidationError.Invalid)
 
             else -> {
                 val value = metricTarget.toInt()
