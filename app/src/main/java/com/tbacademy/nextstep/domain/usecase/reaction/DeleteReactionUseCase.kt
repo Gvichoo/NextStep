@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.reaction
 
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.repository.reaction.ReactionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -2,7 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.goal
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase

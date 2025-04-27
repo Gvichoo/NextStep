@@ -2,7 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.notification
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
 import com.tbacademy.nextstep.domain.usecase.notification.MarkAllNotificationsAsReadUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel

@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.auth
 
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
 import kotlinx.coroutines.flow.Flow

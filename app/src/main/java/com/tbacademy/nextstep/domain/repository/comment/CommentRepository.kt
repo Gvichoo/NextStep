@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.repository.comment
 
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.model.Comment
 import kotlinx.coroutines.flow.Flow
 

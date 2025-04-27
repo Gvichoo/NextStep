@@ -3,9 +3,9 @@ package com.tbacademy.nextstep.presentation.screen.main.profile
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.ApiError
-import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.core.onSuccess
+import com.tbacademy.core.ApiError
+import com.tbacademy.core.Resource
+import com.tbacademy.core.onSuccess
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase

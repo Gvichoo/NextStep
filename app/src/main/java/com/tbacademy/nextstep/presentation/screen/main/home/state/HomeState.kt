@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.state
 
-import com.tbacademy.nextstep.domain.core.ApiError
+import com.tbacademy.core.ApiError
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
 
 data class HomeState(

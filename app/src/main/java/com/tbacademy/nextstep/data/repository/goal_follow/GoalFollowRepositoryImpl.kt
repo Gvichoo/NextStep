@@ -5,7 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalFollowDto
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.model.GoalFollow
 import com.tbacademy.nextstep.domain.repository.goal_follow.GoalFollowRepository
 import kotlinx.coroutines.flow.Flow

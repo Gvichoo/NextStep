@@ -2,8 +2,8 @@ package com.tbacademy.nextstep.presentation.screen.main.home
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.core.onError
+import com.tbacademy.core.Resource
+import com.tbacademy.core.onError
 import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetFollowedPostsUseCase

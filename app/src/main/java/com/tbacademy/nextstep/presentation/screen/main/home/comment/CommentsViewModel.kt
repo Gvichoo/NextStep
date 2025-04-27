@@ -2,8 +2,8 @@ package com.tbacademy.nextstep.presentation.screen.main.home.comment
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.nextstep.domain.core.ApiError
-import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.core.ApiError
+import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.model.Comment
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
