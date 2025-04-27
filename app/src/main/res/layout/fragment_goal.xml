@@ -36,19 +36,17 @@
         app:layout_constraintTop_toTopOf="@id/rvPosts" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:visibility="gone"
         android:id="@+id/btnComplete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/pd_screen_horizontal"
-        android:layout_marginBottom="64dp"
-        android:backgroundTint="@color/md_theme_tertiaryContainer"
+        android:layout_marginEnd="@dimen/distance_sm"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/md_theme_primary"
         android:contentDescription="@string/done_icon"
         android:src="@drawable/ic_task_done"
-        app:fabSize="normal"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="26dp"
-        app:tint="@color/md_theme_primary" />
+        app:tint="@color/md_theme_surface" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

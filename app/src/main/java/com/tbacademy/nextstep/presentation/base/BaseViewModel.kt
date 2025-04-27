@@ -1,10 +1,12 @@
 package com.tbacademy.nextstep.presentation.base
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<STATE, EVENT, EFFECT, UI_STATE>(
     initialState: STATE,
@@ -32,5 +34,11 @@ abstract class BaseViewModel<STATE, EVENT, EFFECT, UI_STATE>(
 
     protected fun updateUiState(editor: UI_STATE.() -> UI_STATE) {
         _uiState.value = editor(_uiState.value)
+    }
+}
+
+fun <STATE, EVENT, EFFECT, UI_STATE> BaseViewModel<STATE, EVENT, EFFECT, UI_STATE>.launchEffect(effect: EFFECT) {
+    viewModelScope.launch {
+        emitEffect(effect)
     }
 }

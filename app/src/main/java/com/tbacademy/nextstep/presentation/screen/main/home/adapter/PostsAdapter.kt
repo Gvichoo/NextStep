@@ -69,7 +69,7 @@ class PostsAdapter(
     private val followClicked: (postId: String) -> Unit,
     private val userClicked: (userId: String) -> Unit,
     private val onMilestoneClicked: (goalId: String) -> Unit,
-    private val onPostTypeTextViewClicked: (goalId: String) -> Unit
+    private val onPostTypeTextViewClicked: (goalId: String, isOwnPost: Boolean) -> Unit
 ) : ListAdapter<PostPresentation, PostsAdapter.PostViewHolder>(PostsDiffUtil()) {
 
     companion object {
@@ -179,7 +179,7 @@ class PostsAdapter(
                 }
 
                 tvPostType.setOnClickListener {
-                    onPostTypeTextViewClicked(post.goalId)
+                    onPostTypeTextViewClicked(post.goalId, post.isOwnPost)
                 }
             }
         }

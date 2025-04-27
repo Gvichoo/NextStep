@@ -70,10 +70,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     )
                 )
             },
-            onPostTypeTextViewClicked = { goalId ->
+            onPostTypeTextViewClicked = { goalId, isOwnPost ->
                 homeViewModel.onEvent(
                     event = HomeEvent.OpenGoalFragment(
-                        goalId = goalId
+                        goalId = goalId,
+                        isOwnGoal = isOwnPost
                     )
                 )
             }
@@ -99,7 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     private fun observeState() {
         collectLatest(flow = homeViewModel.state) { state ->
-                postsAdapter.submitList(state.posts)
+            postsAdapter.submitList(state.posts)
             binding.pbPosts.isVisible = state.isLoading && state.posts.isNullOrEmpty()
 
             Log.d("HOME_STATE", "$state")
@@ -118,7 +119,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is HomeEffect.NavigateToUserProfile -> navigateToProfile(userId = effect.userId)
                 is HomeEffect.NavigateToUserSearch -> navigateToSearch()
                 is HomeEffect.NavigateToMilestone -> navigateToMilestone(goalId = effect.goalId)
-                is HomeEffect.NavigateToGoal -> navigateToGoal(goalId = effect.goalId)
+                is HomeEffect.NavigateToGoal -> navigateToGoal(
+                    goalId = effect.goalId,
+                    isOwnGoal = effect.isOwnGoal
+                )
             }
         }
     }
@@ -162,15 +166,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
 
-    private fun navigateToGoal(goalId: String){
+    private fun navigateToGoal(goalId: String, isOwnGoal: Boolean) {
         val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
             goalId = goalId,
-            goalTitle = null
+            goalTitle = null,
+            isOwnGoal = isOwnGoal
         )
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
 
-    private fun navigateToMilestone(goalId : String){
+    private fun navigateToMilestone(goalId: String) {
         val action = MainFragmentDirections.actionMainFragmentToMilestoneFragment(
             goalId = goalId
         )

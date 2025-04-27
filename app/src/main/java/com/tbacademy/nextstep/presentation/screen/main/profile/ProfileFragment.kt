@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -133,7 +134,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         if (ownGoal) {
             val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
                 goalId = goalId,
-                goalTitle = goalTitle
+                goalTitle = goalTitle,
+                isOwnGoal = true
             )
             requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
         } else {
@@ -218,7 +220,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun showImagePickerDialog() {
         val options = arrayOf(getString(R.string.camera), getString(R.string.gallery))
-        android.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.select_image))
             .setItems(options) { _, which ->
                 when (which) {
