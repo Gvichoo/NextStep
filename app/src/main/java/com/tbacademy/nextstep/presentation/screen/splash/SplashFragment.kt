@@ -84,7 +84,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
 
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        val newContext = context.createConfigurationContext(config)
+
+        if (context is android.app.Activity) {
+            context.applyOverrideConfiguration(config)
+        }
     }
 
 }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.presentation.common.compose.components.title.ScreenTitle
 import com.tbacademy.nextstep.presentation.screen.main.settings.component.SettingsField
 import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
@@ -42,12 +43,12 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             // Title
-            ScreenTitle(text = "Settings")
+            ScreenTitle(text = stringResource(R.string.settings))
 
             Spacer(modifier = Modifier.height(32.dp))
 
             SettingsField(
-                title = "App Theme",
+                title = stringResource(R.string.app_theme),
                 options = state.appThemeOptions,
                 selectedOption = state.selectedTheme,
                 expanded = state.isThemeDropdownExpanded,
@@ -63,7 +64,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             SettingsField(
-                title = "Language",
+                title = stringResource(R.string.language),
                 options = state.appLanguageOptions,
                 selectedOption = state.selectedLanguage,
                 expanded = state.isLanguageDropdownExpanded,
@@ -86,7 +87,7 @@ fun SettingsScreen(
                     .padding(vertical = 16.dp)
             ) {
                 Text(
-                    text = "Log Out",
+                    text = stringResource(R.string.log_out),
                     style = MaterialTheme.typography.labelLarge
                 )
             }
