@@ -72,5 +72,13 @@
     <string name="started_following_you">started following you</string>
     <string name="done_icon">Done Icon</string>
     <string name="proceed_with_goal_completion">Proceed with goal completion?</string>
+    <string name="return_button">Return Button</string>
+    <string name="complete_goal">Complete Goal! 🎯</string>
+    <string name="description">Description</string>
+    <string name="image">Image</string>
+    <string name="cancel">Cancel</string>
+    <string name="created_new_goal">Created new goal</string>
+    <string name="achieved_new_milestone">Achieved new milestone</string>
+    <string name="completed_goal">Completed Goal!</string>
 
 </resources>

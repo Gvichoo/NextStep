@@ -8,26 +8,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavArgs
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
 import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.databinding.FragmentPostMilestoneBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.extension.collectLatest
+import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
 import com.tbacademy.nextstep.presentation.extension.onTextChanged
-import com.tbacademy.nextstep.presentation.screen.main.milestone.MilestoneFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
-import com.tbacademy.nextstep.presentation.screen.main.user_search.event.UserSearchEvent
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
 @AndroidEntryPoint
-class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(FragmentPostMilestoneBinding::inflate) {
+class PostMilestoneFragment :
+    BaseFragment<FragmentPostMilestoneBinding>(FragmentPostMilestoneBinding::inflate) {
 
     private val postMilestoneViwModel: PostMilestoneViewModel by viewModels()
 
@@ -54,6 +52,7 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
         setSubmitBtnListener()
         setBackBtnListener()
     }
+
     private fun setSubmitBtnListener() {
         binding.btnPost.setOnClickListener {
             postMilestoneViwModel.onEvent(PostMilestoneEvent.Submit(goalId = args.goalId))
@@ -75,15 +74,16 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
                 tlMilestoneDescription.error = state.descriptionErrorMessage?.let { getString(it) }
 
                 btnPost.isEnabled = state.isPostButtonEnable
+                btnCancelImage.isVisible = state.imageUri != null
 
                 state.imageUri?.let { uri ->
-                    Glide.with(requireContext())
-                        .load(uri)
-                        .into(image)
+                    image.loadImagesGlide(uri = uri)
                 }
 
 
-                tlImage.error = if (state.imageUri != null) null else state.imageErrorMessage?.let { getString(it) }
+                tlImage.error = if (state.imageUri != null) null else state.imageErrorMessage?.let {
+                    getString(it)
+                }
             }
         }
     }
@@ -104,7 +104,7 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
         }
     }
 
-    private fun navigateToPosts(){
+    private fun navigateToPosts() {
         val action = PostMilestoneFragmentDirections.actionPostMilestoneFragmentToMainFragment()
         requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
     }
@@ -135,7 +135,6 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
                     cameraImageUri?.let { uri ->
                         binding.image.setImageURI(uri)
                         postMilestoneViwModel.onEvent(PostMilestoneEvent.ImageSelected(uri)) // append uri to list
-                        binding.btnCancelImage.isEnabled = true
                     }
                 }
             }
@@ -148,9 +147,9 @@ class PostMilestoneFragment : BaseFragment<FragmentPostMilestoneBinding>(Fragmen
     }
 
     private fun showImagePickerDialog() {
-        val options = arrayOf("Camera", "Gallery")
+        val options = arrayOf(getString(R.string.camera), getString(R.string.gallery))
         android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Select Image")
+            .setTitle(R.string.select_image)
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> checkCameraPermissionAndLaunch()

@@ -8,4 +8,5 @@ sealed interface CompleteGoalEffect {
     data object LaunchCameraPicker : CompleteGoalEffect
 
     data object NavigateBack: CompleteGoalEffect
+    data object NavigateToGoalCompleted: CompleteGoalEffect
 }

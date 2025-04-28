@@ -5,12 +5,14 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.core.InputValidationResult
 import com.tbacademy.core.Resource
+import com.tbacademy.nextstep.domain.core.InputValidationResult
+import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.model.PostType
 import com.tbacademy.nextstep.domain.usecase.post.CreatePostUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ImageValidator
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.state.PostMilestoneState
@@ -21,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostMilestoneViewModel @Inject constructor(
     private val validateDescriptionUseCase: ValidateAddGoalDescriptionUseCase,
-    private val validateImage: ImageValidator,
+    private val validateImageUseCase: ValidateImageUseCase,
     private val createPostUseCase: CreatePostUseCase
 
 ) : BaseViewModel<PostMilestoneState, PostMilestoneEvent, PostMilestoneEffect, Unit>(
@@ -32,9 +34,9 @@ class PostMilestoneViewModel @Inject constructor(
         when (event) {
             is PostMilestoneEvent.DescriptionChanged -> onDescriptionChanged(event.description)
 
-            PostMilestoneEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
+            is PostMilestoneEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
             is PostMilestoneEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
-            PostMilestoneEvent.PickImageClicked -> viewModelScope.launch {
+            is PostMilestoneEvent.PickImageClicked -> viewModelScope.launch {
                 emitEffect(
                     PostMilestoneEffect.LaunchMediaPicker
                 )
@@ -42,7 +44,7 @@ class PostMilestoneViewModel @Inject constructor(
 
             is PostMilestoneEvent.Submit -> submitMilestonePostForm(goalId = event.goalId)
             is PostMilestoneEvent.SetTitle -> updateState { copy(title = event.title) }
-            PostMilestoneEvent.NavigateBack -> onBackRequest()
+            is PostMilestoneEvent.NavigateBack -> onBackRequest()
         }
     }
 
@@ -123,7 +125,7 @@ class PostMilestoneViewModel @Inject constructor(
         val descriptionValidationForm =
             validateDescriptionUseCase(description = description).getErrorMessageResId()
 
-        val imageValidationError = validateImage(imageUri?.toString()).getErrorMessageResId()
+        val imageValidationError = validateImageUseCase(imageUri?.toString()).getErrorMessageResId()
         // Update states of errors
         updateState {
             copy(

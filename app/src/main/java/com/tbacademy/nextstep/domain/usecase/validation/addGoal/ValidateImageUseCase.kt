@@ -4,11 +4,11 @@ import com.tbacademy.core.InputValidationError
 import com.tbacademy.core.InputValidationResult
 import javax.inject.Inject
 
-interface ImageValidator {
+interface ValidateImageUseCase {
     operator fun invoke(imageUri: String?): InputValidationResult
 }
 
-class ImageValidatorImpl @Inject constructor() : ImageValidator {
+class ValidateImageUseCaseImpl @Inject constructor() : ValidateImageUseCase {
     override fun invoke(imageUri: String?): InputValidationResult {
         return when {
             imageUri.isNullOrEmpty() -> InputValidationResult.Failure(error = InputValidationError.Empty)

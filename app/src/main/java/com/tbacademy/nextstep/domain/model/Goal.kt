@@ -13,6 +13,7 @@ data class Goal(
     val metricTarget: String? = null,
     val metricUnit: String? = null,
     val targetDate: Long,
+    val goalStatus: GoalStatus = GoalStatus.ACTIVE,
     val createdAt: Long = System.currentTimeMillis(),
     val imageUri: Uri? = null,
     val imageUrl: String? = null,

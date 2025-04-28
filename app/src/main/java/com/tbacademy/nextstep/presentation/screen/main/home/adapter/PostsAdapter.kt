@@ -25,9 +25,8 @@ import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.REACTION_COUNT_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.extension.topReactions
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionOption
+import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePresentation
 
 class PostsDiffUtil : DiffUtil.ItemCallback<PostPresentation>() {
     override fun areItemsTheSame(oldItem: PostPresentation, newItem: PostPresentation): Boolean {
@@ -169,14 +168,8 @@ class PostsAdapter(
                     onMilestoneClicked(post.goalId)
                 }
 
-                if (post.type == PostType.MILESTONE) {
-                    tvPostType.visibility = View.VISIBLE
-                    btnSeeMilestones.visibility = View.GONE
-                    tvPostType.text = "Milestone"
-                } else if (post.type == PostType.GOAL) {
-                    tvPostType.visibility = View.VISIBLE
-                    tvPostType.text = "Goal"
-                }
+                tvPostType.visibility = View.VISIBLE
+                tvPostType.text = itemView.context.getString(post.type.messageRes)
 
                 tvPostType.setOnClickListener {
                     onPostTypeTextViewClicked(post.goalId, post.isOwnPost)

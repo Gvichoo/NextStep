@@ -20,6 +20,7 @@ import com.tbacademy.nextstep.databinding.FragmentProfileBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
+import com.tbacademy.nextstep.presentation.extension.showSnackbar
 import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
@@ -31,11 +32,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private val goalAdapter by lazy {
         GoalAdapter(
-            goalClicked = { goalId, goalTitle ->
+            goalClicked = { goalId, goalTitle, isActive ->
                 profileViewModel.onEvent(
                     ProfileEvent.GoalSelected(
                         goalId = goalId,
-                        goalTitle = goalTitle
+                        goalTitle = goalTitle,
+                        isActive = isActive
                     )
                 )
             }
@@ -71,14 +73,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         collectLatest(flow = profileViewModel.effects) { effect ->
             when (effect) {
                 is ProfileEffect.NavigateBack -> findNavController().navigateUp()
-                is ProfileEffect.ShowErrorMessage -> {}
+                is ProfileEffect.ShowErrorMessage -> binding.root.showSnackbar(messageRes = effect.errorRes)
                 is ProfileEffect.ShowUpdateImageDialog -> showImagePickerDialog()
                 is ProfileEffect.LaunchCameraPicker -> checkCameraPermissionAndLaunch()
                 is ProfileEffect.LaunchMediaPicker -> launchImagePicker()
                 is ProfileEffect.NavigateToGoalScreen -> navigateToGoalScreen(
                     goalId = effect.goalId,
                     goalTitle = effect.goalTitle,
-                    ownGoal = effect.ownGoal
+                    ownGoal = effect.ownGoal,
+                    isActive = effect.isActive
                 )
             }
         }
@@ -130,12 +133,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
-    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean) {
+    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean, isActive: Boolean) {
         if (ownGoal) {
             val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
                 goalId = goalId,
                 goalTitle = goalTitle,
-                isOwnGoal = true
+                isOwnGoal = true,
+                goalActive = isActive
             )
             requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
         } else {

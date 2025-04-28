@@ -1,4 +1,4 @@
-package com.tbacademy.nextstep.domain.usecase
+package com.tbacademy.nextstep.domain.usecase.goal
 
 import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository

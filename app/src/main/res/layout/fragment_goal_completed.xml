@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/pd_screen_horizontal">
+
+    <!-- Lottie Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieSuccess"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:lottie_rawRes="@raw/success_animation"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvGoalCompleted"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Goal Completed Text -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGoalCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Goal Completed\nWe are proud of you champ!"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/md_theme_onBackground"
+        android:alpha="0"
+        app:layout_constraintTop_toBottomOf="@id/lottieSuccess"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnContinue"
+        android:layout_marginTop="@dimen/distance_sm"
+        app:layout_constraintTop_toBottomOf="@id/tvGoalCompleted"
+        android:alpha="0"
+        android:text="Continue 💪"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

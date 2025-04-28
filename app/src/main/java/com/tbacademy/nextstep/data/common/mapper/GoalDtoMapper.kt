@@ -8,7 +8,6 @@ import com.tbacademy.nextstep.data.remote.dto.GoalStatusDto
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.sql.Date
 
 fun Goal.toDto(): GoalDto {
@@ -23,7 +22,6 @@ fun Goal.toDto(): GoalDto {
         createdAt = createdAt,
         imageUrl = imageUrl,
         milestone = milestone?.map { it.toDto() },
-        type = PostType.GOAL
     )
 }
 
@@ -34,6 +32,7 @@ fun GoalDto.toDomain(): Goal {
         authorId = authorId,
         description = description,
         targetDate = targetDate.seconds * 1000,
+        goalStatus = goalStatus.toDomain(),
         metricUnit = metricUnit,
         metricTarget = metricTarget,
         createdAt = createdAt,
@@ -58,6 +57,7 @@ fun GoalDto.toDomainWithComputedStatus(currentTime: Long): Goal {
         authorUsername = authorUsername,
         targetDate = targetDate.toDate().time,
         metricUnit = metricUnit,
+        goalStatus = status,
         metricTarget = metricTarget,
         createdAt = createdAt,
         imageUrl = imageUrl,
@@ -73,6 +73,11 @@ fun MilestoneItem.toDto(): MilestoneItemDto {
     )
 }
 
+fun GoalStatusDto.toDomain(): GoalStatus = when (this) {
+    GoalStatusDto.ACTIVE    -> GoalStatus.ACTIVE
+    GoalStatusDto.COMPLETED -> GoalStatus.COMPLETED
+    GoalStatusDto.FAILED    -> GoalStatus.FAILED
+}
 
 
 

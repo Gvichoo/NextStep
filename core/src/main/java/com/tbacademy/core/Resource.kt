@@ -1,6 +1,8 @@
 package com.tbacademy.core
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 
 
@@ -57,4 +59,11 @@ inline fun <T> Resource<T>.onSuccess(action: (T) -> Unit): Resource<T> {
         action(data)
     }
     return this
+}
+
+suspend fun <T> Flow<Resource<T>>.firstSuccessOrError(): Resource<T> {
+    return this
+        .filter { it !is Resource.Loading }
+        .firstOrNull()
+        ?: Resource.Error(ApiError.Unknown("Flow Error"))
 }

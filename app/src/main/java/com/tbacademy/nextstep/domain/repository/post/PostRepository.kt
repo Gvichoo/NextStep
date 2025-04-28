@@ -3,7 +3,7 @@ package com.tbacademy.nextstep.domain.repository.post
 import android.net.Uri
 import com.tbacademy.core.Resource
 import com.tbacademy.nextstep.domain.model.Post
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
+import com.tbacademy.nextstep.domain.model.PostType
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
