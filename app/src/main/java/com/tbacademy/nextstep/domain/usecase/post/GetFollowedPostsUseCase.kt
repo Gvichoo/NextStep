@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.post
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Post
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
 import kotlinx.coroutines.flow.Flow

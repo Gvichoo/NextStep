@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.login
 
-import com.tbacademy.core.Resource
-import com.tbacademy.core.handleSuccess
+import com.tbacademy.core.model.Resource
+import com.tbacademy.core.model.handleSuccess
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import com.tbacademy.nextstep.domain.usecase.user_session.UpdateUserSessionUseCase
 import kotlinx.coroutines.flow.Flow

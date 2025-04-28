@@ -7,7 +7,7 @@ import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.CommentDto
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Comment
 import com.tbacademy.nextstep.domain.repository.comment.CommentRepository
 import kotlinx.coroutines.flow.Flow

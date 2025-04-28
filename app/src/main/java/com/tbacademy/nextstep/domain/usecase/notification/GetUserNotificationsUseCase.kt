@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.notification
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Notification
 import com.tbacademy.nextstep.domain.repository.notification.NotificationRepository
 import kotlinx.coroutines.flow.Flow

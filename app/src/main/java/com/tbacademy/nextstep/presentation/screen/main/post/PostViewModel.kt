@@ -1,8 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.main.post
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes

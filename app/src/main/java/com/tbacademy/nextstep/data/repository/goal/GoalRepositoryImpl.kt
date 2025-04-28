@@ -11,8 +11,8 @@ import com.tbacademy.nextstep.data.common.mapper.toDomainWithComputedStatus
 import com.tbacademy.nextstep.data.common.mapper.toDto
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
-import com.tbacademy.core.ApiError
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.error.ApiError
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository

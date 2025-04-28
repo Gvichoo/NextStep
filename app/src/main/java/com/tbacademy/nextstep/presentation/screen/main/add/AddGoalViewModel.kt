@@ -12,7 +12,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.google.gson.Gson
 import com.tbacademy.nextstep.data.worker.UploadGoalWorker
-import com.tbacademy.core.InputValidationResult
+import com.tbacademy.core.model.error.InputValidationResult
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase

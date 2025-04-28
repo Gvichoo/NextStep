@@ -3,7 +3,7 @@ package com.tbacademy.nextstep.data.repository.login
 import com.google.firebase.auth.FirebaseAuth
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.repository.login.LoginRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

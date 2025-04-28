@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.domain.usecase.post
 
 import android.net.Uri
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.PostType
 import com.tbacademy.nextstep.domain.repository.post.PostRepository
 import kotlinx.coroutines.flow.Flow

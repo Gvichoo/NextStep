@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.goal
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.register
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.repository.register.RegisterRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

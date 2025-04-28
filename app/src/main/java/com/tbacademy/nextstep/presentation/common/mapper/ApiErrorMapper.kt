@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.presentation.common.mapper
 
 import com.tbacademy.nextstep.R
-import com.tbacademy.core.ApiError
+import com.tbacademy.core.model.error.ApiError
 
 fun ApiError.toMessageRes(): Int {
     return when (this) {

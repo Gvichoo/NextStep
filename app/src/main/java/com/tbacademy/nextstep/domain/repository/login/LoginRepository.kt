@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.repository.login
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {

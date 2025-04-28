@@ -17,9 +17,8 @@ import androidx.work.workDataOf
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.tbacademy.nextstep.R
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Goal
-import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.presentation.MainActivity
 import com.tbacademy.nextstep.presentation.model.MilestoneItem
