@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.tbacademy.core.Resource
-import com.tbacademy.nextstep.domain.usecase.UpdateGoalUseCase
-import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
