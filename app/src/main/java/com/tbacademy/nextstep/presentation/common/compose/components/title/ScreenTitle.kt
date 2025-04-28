@@ -1,4 +1,4 @@
-package com.tbacademy.nextstep.presentation.components.title
+package com.tbacademy.nextstep.presentation.common.compose.components.title
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,12 +18,13 @@ fun ScreenTitle(
         text = text,
         style = MaterialTheme.typography.headlineMedium,
         textAlign = TextAlign.Start,
+        color = MaterialTheme.colorScheme.onBackground,
         modifier = modifier
-            .padding(start = 24.dp, top = 24.dp)
+            .padding(top = 24.dp)
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, apiLevel = 34)
 @Composable
 private fun ScreenTitlePreview() {
     ScreenTitle(text = "Settings")

@@ -1,12 +1,14 @@
 package com.tbacademy.nextstep.presentation.screen.main.settings.state
 
-import com.tbacademy.core.model.settings.AppLanguage
-import com.tbacademy.core.model.settings.AppTheme
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppLanguagePresentation
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppThemePresentation
 
 data class SettingsState(
-    val selectedTheme: AppTheme = AppTheme.SYSTEM,
+    val appThemeOptions: List<AppThemePresentation> = AppThemePresentation.entries,
+    val appLanguageOptions: List<AppLanguagePresentation> = AppLanguagePresentation.entries,
+    val selectedTheme: AppThemePresentation = AppThemePresentation.SYSTEM,
+    val selectedLanguage: AppLanguagePresentation = AppLanguagePresentation.SYSTEM,
     val isThemeDropdownExpanded: Boolean = false,
-    val selectedLanguage: AppLanguage = AppLanguage.SYSTEM,
     val isLanguageDropdownExpanded: Boolean = false,
     val isLoading: Boolean = false
 )

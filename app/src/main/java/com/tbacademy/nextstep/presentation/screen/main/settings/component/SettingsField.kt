@@ -8,16 +8,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tbacademy.nextstep.presentation.components.dropdown.Dropdown
+import com.tbacademy.nextstep.presentation.common.compose.components.dropdown.Dropdown
 
 @Composable
-fun SettingsField(
+fun <T> SettingsField(
     title: String,
-    options: List<String>,
-    selectedOption: String,
+    options: List<T>,
+    selectedOption: T,
     expanded: Boolean,
     onExpandToggle: () -> Unit,
-    onOptionSelected: (String) -> Unit,
+    onOptionSelected: (T) -> Unit,
+    optionLabel: @Composable (T) -> String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -28,7 +29,8 @@ fun SettingsField(
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp)
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
 
         Dropdown(
@@ -37,7 +39,8 @@ fun SettingsField(
             selectedOption = selectedOption,
             expanded = expanded,
             onExpandToggle = onExpandToggle,
-            onOptionSelected = onOptionSelected
+            onOptionSelected = onOptionSelected,
+            optionLabel = optionLabel
         )
     }
 }

@@ -80,5 +80,11 @@
     <string name="created_new_goal">Created new goal</string>
     <string name="achieved_new_milestone">Achieved new milestone</string>
     <string name="completed_goal">Completed Goal!</string>
+    <string name="system">System</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="en">EN</string>
+    <string name="english">English</string>
+    <string name="georgian">Georgian</string>
 
 </resources>
