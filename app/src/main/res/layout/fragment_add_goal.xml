@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_md"
-            android:text="Create Goal"
+            android:text="@string/create_goal"
             android:textSize="@dimen/title_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
             android:layout_marginTop="@dimen/distance_md"
-            android:hint="goal"
+            android:hint="@string/goal"
             app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
             android:layout_marginTop="@dimen/distance_md"
-            android:hint="Description"
+            android:hint="@string/description"
             app:layout_constraintTop_toBottomOf="@id/tlGoalTitle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
             android:layout_marginTop="@dimen/distance_md"
-            android:hint="Target date"
+            android:hint="@string/target_date"
             app:layout_constraintTop_toBottomOf="@id/tlGoalDescription">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
             android:layout_marginTop="@dimen/distance_md"
-            android:hint="Image"
+            android:hint="@string/imagee"
             app:layout_constraintTop_toBottomOf="@+id/tlTargetDate"
             >
 
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/distance_sm"
             android:layout_marginTop="@dimen/distance_sm"
-            android:text="Add Image"
+            android:text="@string/add_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tlImage" />
 
@@ -114,63 +114,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/distance_sm"
             android:enabled="false"
-            android:text="Cancel"
+            android:text="@string/cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btnSelectImage" />
 
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switchMetricBased"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/distance_md"
-            android:text="Make this a measurable goal?"
-            app:layout_constraintStart_toStartOf="@id/tlTargetDate"
-            app:layout_constraintTop_toBottomOf="@id/btnSelectImage" />
-
-        <LinearLayout
-            android:id="@+id/metricInputContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
-            android:layout_marginTop="@dimen/distance_md"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/switchMetricBased">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlMetricTarget"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Target value">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMetricTarget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Space
-                android:layout_width="8dp"
-                android:layout_height="wrap_content" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tlMetricUnit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Unit (e.g. kg, km)">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etMetricUnit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
 
 
         <androidx.appcompat.widget.SwitchCompat
@@ -178,9 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_md"
-            android:text="Do you want to ad milestones?"
+            android:text="@string/do_you_want_to_add_milestones"
             app:layout_constraintStart_toStartOf="@id/tlTargetDate"
-            app:layout_constraintTop_toBottomOf="@id/metricInputContainer" />
+            app:layout_constraintTop_toBottomOf="@id/btnSelectImage" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
@@ -205,13 +152,13 @@
                 android:id="@+id/addMileStoneEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add" />
+                android:text="@string/add" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/minusMileStoneEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Minus" />
+                android:text="@string/minus" />
 
         </LinearLayout>
 
@@ -222,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_md"
             android:paddingVertical="@dimen/btn_vertical_padding"
-            android:text="Create Goal 🎯"
+            android:text="@string/create_goall"
             android:textAllCaps="false"
             android:textSize="@dimen/body_regular"
             app:layout_constraintEnd_toEndOf="@id/tlGoalTitle"

@@ -66,7 +66,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     override fun listeners() {
         setInputListeners()
         setSubmitBtnListener()
-        setSwitchListener()
         setDeleteImageButtonListener()
         setSelectImageButtonListener()
         setAddMilestoneButtonClickListener()
@@ -93,8 +92,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                 tlGoalTitle.error = state.goalTitleErrorMessage?.let { getString(it) }
                 tlGoalDescription.error = state.goalDescriptionErrorMessage?.let { getString(it) }
                 tlTargetDate.error = state.goalDateErrorMessage?.let { getString(it) }
-                tlMetricUnit.error = state.goalMetricUnitErrorMessage?.let { getString(it) }
-                tlMetricTarget.error = state.goalMetricTargetErrorMessage?.let { getString(it) }
 
 
                 btnCreateGoal.isEnabled = state.isCreateGoalEnabled
@@ -106,7 +103,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private fun observeUiState() {
         collect(flow = addGoalViewModel.uiState) { uiState ->
             binding.apply {
-                metricInputContainer.isVisible = uiState.isMetricEnabled
 
                 recycler.isVisible = uiState.isMileStoneEnabled
                 btnForAddAndMinusMileStoneEts.isVisible = uiState.isMileStoneEnabled
@@ -281,28 +277,12 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         setTitleInputListener()
         setDescriptionInputListener()
         setDateInputListener()
-        setMetricTargetInputListener()
-        setMetricUnitInputListener()
     }
 
 
     private fun setMilestoneSwitchListener() {
         binding.switchMileStones.setOnCheckedChangeListener { _, isChecked ->
             addGoalViewModel.onEvent(AddGoalEvent.MileStoneToggle(isChecked))
-        }
-    }
-
-
-    private fun setMetricTargetInputListener() {
-        binding.etMetricTarget.onTextChanged { metricTarget ->
-            addGoalViewModel.onEvent(AddGoalEvent.GoalMetricTargetChanged(metricTarget = metricTarget))
-        }
-    }
-
-
-    private fun setMetricUnitInputListener() {
-        binding.etMetricUnit.onTextChanged { metricUnit ->
-            addGoalViewModel.onEvent(AddGoalEvent.GoalMetricUnitChanged(metricUnit = metricUnit))
         }
     }
 
@@ -358,11 +338,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
         }
     }
 
-    private fun setSwitchListener() {
-        binding.switchMetricBased.setOnCheckedChangeListener { _, isChecked ->
-            addGoalViewModel.onEvent(AddGoalEvent.MetricToggle(isChecked))
-        }
-    }
 
 
     private fun navToHomeFragment() {
@@ -404,12 +379,10 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             etGoalTitle.isEnabled = isEnabled
             etGoalDescription.isEnabled = isEnabled
             etTargetDate.isEnabled = isEnabled
-            etMetricTarget.isEnabled = isEnabled
-            etMetricUnit.isEnabled = isEnabled
-            switchMetricBased.isEnabled = isEnabled
             switchMileStones.isEnabled = isEnabled
             btnSelectImage.isEnabled = isEnabled
             btnCancelImage.isEnabled = isEnabled
+            recycler.isEnabled = isEnabled
         }
     }
 

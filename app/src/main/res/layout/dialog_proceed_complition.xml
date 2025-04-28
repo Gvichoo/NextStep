@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Sure! 🎯"
+        android:text="@string/sure"
         android:textSize="18sp" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Nope, still grinding 💪"
+        android:text="@string/nope_still_grinding"
         android:textSize="18sp" />
 
 </LinearLayout>

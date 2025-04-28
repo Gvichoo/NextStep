@@ -23,7 +23,7 @@ fun MilestoneItem.toPresentation(): MilestonePresentation {
         achievedAt = achievedAt,
         targetDate = targetDate,
         isAuthor = isAuthor,
-        authorId = authorId
+        authorId = authorId,
     )
 }
 
@@ -34,7 +34,8 @@ fun MilestonePresentation.toMilestoneItem() = MilestoneItem(
     achievedAt = achievedAt,
     errorMessage = null,
     isAuthor = isAuthor,
-    authorId = authorId
+    authorId = authorId,
+    targetDate = targetDate
 )
 
 fun List<MilestoneItem>.toPresentationList(): List<MilestonePresentation> {

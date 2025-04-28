@@ -39,14 +39,14 @@
                     style="@style/Widget.MyApp.Button.Segmented"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Global" />
+                    android:text="@string/global" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnFollowed"
                     style="@style/Widget.MyApp.Button.Segmented"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Following" />
+                    android:text="@string/following" />
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <!-- Search Button -->
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingHorizontal="@dimen/pd_screen_horizontal"
+        android:paddingHorizontal="20dp"
         android:paddingBottom="@dimen/distance_md"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_post" />

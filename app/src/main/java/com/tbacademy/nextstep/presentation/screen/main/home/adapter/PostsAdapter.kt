@@ -91,7 +91,6 @@ class PostsAdapter(
             ReactionPickerAdapter(
                 reactions = REACTION_OPTIONS,
                 onReactionSelected = { reaction ->
-                    Log.d("REACTION_SELECTED", "$reaction")
                     currentPost?.let { updateUserReaction(it.id, reaction) }
                 }
             )
