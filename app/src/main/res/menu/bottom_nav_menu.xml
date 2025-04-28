@@ -5,30 +5,30 @@
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/baseline_man_24"
-        android:title="Profile" />
+        android:title="@string/profile" />
 
     <item
         android:id="@+id/nav_Add"
         android:icon="@drawable/baseline_add_24"
-        android:title="Add"
+        android:title="@string/add"
 
         />
 
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home" />
+        android:title="@string/home" />
 
     <item
         android:id="@+id/nav_Notification"
         android:icon="@drawable/baseline_notifications_24"
-        android:title="Notification" />
+        android:title="@string/notification" />
 
 
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/baseline_settings_24"
-        android:title="Settings" />
+        android:title="@string/settings" />
 
 
 </menu>

@@ -1,8 +1,7 @@
 package com.tbacademy.nextstep.presentation.screen.splash
 
-import android.content.Context
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tbacademy.nextstep.databinding.FragmentSplashBinding
@@ -47,15 +46,14 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
         }
     }
 
-
     private fun observeState() {
         collectLatest(flow = splashViewModel.state) { state ->
             if (state.isReady) {
                 // Apply Theme
-                applySystemTheme(state.theme)
+                applySystemTheme(theme = state.theme)
 
                 // Apply Language
-                applyLanguage(requireContext(), state.language)
+                applyLanguage(language = state.language)
             }
         }
     }
@@ -73,22 +71,26 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             }
         }
     }
-    private fun applyLanguage(context: Context, language: AppLanguagePresentation) {
-        val locale = when (language) {
-            AppLanguagePresentation.SYSTEM -> Locale.getDefault() // use system
-            AppLanguagePresentation.EN -> Locale("en")
-            AppLanguagePresentation.KA -> Locale("ka")
+
+    private fun applyLanguage(language: AppLanguagePresentation) {
+        val languageTag = when (language) {
+            AppLanguagePresentation.SYSTEM -> ""
+            AppLanguagePresentation.EN     -> "en"
+            AppLanguagePresentation.KA     -> "ka"
         }
 
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
-
-        val newContext = context.createConfigurationContext(config)
-
-        if (context is android.app.Activity) {
-            context.applyOverrideConfiguration(config)
+        if (languageTag.isNotBlank()) {
+            Locale.setDefault(Locale.forLanguageTag(languageTag))
         }
+
+        val locales = if (languageTag.isBlank()) {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(languageTag)
+        }
+
+        AppCompatDelegate.setApplicationLocales(locales)
+
+        requireActivity().recreate()
     }
-
 }

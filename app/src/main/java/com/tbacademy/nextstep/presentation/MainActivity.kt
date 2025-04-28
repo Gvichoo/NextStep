@@ -15,7 +15,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.data.broadcast_reciever.BatteryReceiver
 import com.tbacademy.nextstep.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var batteryReceiver: BatteryReceiver
-
 
     private val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
 

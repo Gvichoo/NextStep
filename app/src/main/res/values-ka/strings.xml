@@ -91,4 +91,10 @@
     <string name="app_theme">აპლიკაციის თემა</string>
     <string name="language">ენა</string>
     <string name="log_out">გამოსვლა</string>
+
+    <string name="profile">პროფილი</string>
+    <string name="add">დამატება</string>
+    <string name="home">სახლი</string>
+    <string name="notification">შეტყობინება</string>
+
 </resources>

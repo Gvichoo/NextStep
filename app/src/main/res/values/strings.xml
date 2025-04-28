@@ -90,5 +90,9 @@
     <string name="app_theme">App Theme</string>
     <string name="language">Language</string>
     <string name="log_out">Log Out</string>
+    <string name="profile">Profile</string>
+    <string name="add">Add</string>
+    <string name="home">Home</string>
+    <string name="notification">Notification</string>
 
 </resources>

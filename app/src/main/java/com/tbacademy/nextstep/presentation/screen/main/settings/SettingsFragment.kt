@@ -1,11 +1,10 @@
 package com.tbacademy.nextstep.presentation.screen.main.settings
 
-import android.content.Context
-import android.content.res.Configuration
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.tbacademy.nextstep.R
@@ -53,9 +52,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
                     applySystemTheme(theme = effect.theme)
                     requireActivity().recreate()
                 }
+
                 is SettingsEffect.ApplyLanguage -> {
-                    applyLanguage(context = requireContext(), effect.language)
-                    requireActivity().recreate()
+                    applyLanguage(effect.language)
                 }
             }
         }
@@ -66,30 +65,37 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
             AppThemePresentation.SYSTEM -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
+
             AppThemePresentation.LIGHT -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
+
             AppThemePresentation.DARK -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
         }
     }
-    private fun applyLanguage(context: Context, language: AppLanguagePresentation) {
-        val locale = when (language) {
-            AppLanguagePresentation.SYSTEM -> Locale.getDefault() // use system
-            AppLanguagePresentation.EN -> Locale("en")
-            AppLanguagePresentation.KA -> Locale("ka")
+
+    private fun applyLanguage(language: AppLanguagePresentation) {
+        val languageTag = when (language) {
+            AppLanguagePresentation.SYSTEM -> ""
+            AppLanguagePresentation.EN     -> "en"
+            AppLanguagePresentation.KA     -> "ka"
         }
 
-        Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
-
-        val newContext = context.createConfigurationContext(config)
-
-        if (context is android.app.Activity) {
-            context.applyOverrideConfiguration(config)
+        if (languageTag.isNotBlank()) {
+            Locale.setDefault(Locale.forLanguageTag(languageTag))
         }
+
+        val locales = if (languageTag.isBlank()) {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(languageTag)
+        }
+
+        AppCompatDelegate.setApplicationLocales(locales)
+
+        requireActivity().recreate()
     }
 
 
