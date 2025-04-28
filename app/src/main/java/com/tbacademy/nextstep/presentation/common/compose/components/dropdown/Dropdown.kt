@@ -1,7 +1,9 @@
 package com.tbacademy.nextstep.presentation.common.compose.components.dropdown
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -80,18 +82,26 @@ fun <T> Dropdown(
             if (expanded) {
                 Spacer(modifier = Modifier.height(8.dp))
                 options.forEach { option ->
-                    Text(
-                        text = optionLabel(option),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                                shape = MaterialTheme.shapes.small
+                            )
                             .clickable {
                                 onOptionSelected(option)
                                 onExpandToggle()
                             }
                             .padding(horizontal = 16.dp, vertical = 12.dp)
-                    )
+                    ) {
+                        Text(
+                            text = optionLabel(option),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
             }
         }
@@ -108,7 +118,7 @@ private fun DropdownPreview() {
         title = "Select Theme",
         options = listOf("System", "Light", "Dark"),
         selectedOption = selectedOption,
-        expanded = expanded,
+        expanded = true,
         onExpandToggle = { expanded = !expanded },
         onOptionSelected = { selectedOption = it },
         optionLabel = { it }

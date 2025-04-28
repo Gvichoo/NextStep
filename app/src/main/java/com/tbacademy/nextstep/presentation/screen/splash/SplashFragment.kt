@@ -1,12 +1,19 @@
 package com.tbacademy.nextstep.presentation.screen.splash
 
+import android.content.Context
+import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.tbacademy.nextstep.databinding.FragmentSplashBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
+import com.tbacademy.nextstep.presentation.extension.collectLatest
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppLanguagePresentation
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppThemePresentation
 import com.tbacademy.nextstep.presentation.screen.splash.effect.SplashEffect
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 //Bla Bla Splash
 @AndroidEntryPoint
@@ -18,6 +25,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
     override fun listeners() {}
 
     override fun observers() {
+        observeState()
         observeEffect()
     }
 
@@ -38,4 +46,45 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(FragmentSplashBinding
             }
         }
     }
+
+
+    private fun observeState() {
+        collectLatest(flow = splashViewModel.state) { state ->
+            if (state.isReady) {
+                // Apply Theme
+                applySystemTheme(state.theme)
+
+                // Apply Language
+                applyLanguage(requireContext(), state.language)
+            }
+        }
+    }
+
+    private fun applySystemTheme(theme: AppThemePresentation) {
+        when (theme) {
+            AppThemePresentation.SYSTEM -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            AppThemePresentation.LIGHT -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            AppThemePresentation.DARK -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
+    }
+    private fun applyLanguage(context: Context, language: AppLanguagePresentation) {
+        val locale = when (language) {
+            AppLanguagePresentation.SYSTEM -> Locale.getDefault() // use system
+            AppLanguagePresentation.EN -> Locale("en")
+            AppLanguagePresentation.KA -> Locale("ka")
+        }
+
+        Locale.setDefault(locale)
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+    }
+
 }

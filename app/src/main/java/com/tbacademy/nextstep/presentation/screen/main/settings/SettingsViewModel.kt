@@ -65,6 +65,7 @@ class SettingsViewModel @Inject constructor(
             updateState {
                 copy(selectedLanguage = language, isLanguageDropdownExpanded = false)
             }
+            emitEffect(SettingsEffect.ApplyLanguage(language))
         }
     }
 
