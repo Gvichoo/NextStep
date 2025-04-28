@@ -3,16 +3,14 @@ package com.tbacademy.nextstep.presentation.screen.main.goal
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.Resource
-import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
-import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.base.launchEffect
 import com.tbacademy.nextstep.presentation.screen.main.goal.effect.GoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.goal.event.GoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.goal.state.GoalState
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostTypePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -54,7 +52,7 @@ class GoalViewModel @Inject constructor(
 
     private fun onProceedWithGoalCompletion() {
         state.value.goalTitle?.let {
-            launchEffect(effect = GoalEffect.NavigateToCreateGoal(goalTitle = it))
+            launchEffect(effect = GoalEffect.NavigateToCompleteGoal(goalTitle = it))
         }
     }
 
@@ -72,7 +70,7 @@ class GoalViewModel @Inject constructor(
                         val posts = resource.data.map { it.toPresentation() }
 
                         updateState {
-                            copy(posts = posts, goalTitle = posts.firstOrNull { it.type == PostType.GOAL }?.title)
+                            copy(posts = posts, goalTitle = posts.firstOrNull { it.type == PostTypePresentation.GOAL }?.title)
                         }
                     }
                 }

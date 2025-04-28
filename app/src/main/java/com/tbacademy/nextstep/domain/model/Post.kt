@@ -1,7 +1,6 @@
 package com.tbacademy.nextstep.domain.model
 
 import android.net.Uri
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import java.util.Date
 
 data class Post(
@@ -27,3 +26,9 @@ data class Post(
     val createdAt: Date,
     val type: PostType
 )
+
+enum class PostType {
+    GOAL,
+    MILESTONE,
+    GOAL_COMPLETE
+}

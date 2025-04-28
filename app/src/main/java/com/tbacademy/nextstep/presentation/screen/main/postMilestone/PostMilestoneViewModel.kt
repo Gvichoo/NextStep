@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.nextstep.domain.core.InputValidationResult
 import com.tbacademy.nextstep.domain.core.Resource
+import com.tbacademy.nextstep.domain.model.PostType
 import com.tbacademy.nextstep.domain.usecase.post.CreatePostUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.effect.PostMilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.event.PostMilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.postMilestone.state.PostMilestoneState

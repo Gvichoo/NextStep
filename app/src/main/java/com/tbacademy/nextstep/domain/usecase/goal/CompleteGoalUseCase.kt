@@ -3,8 +3,8 @@ package com.tbacademy.nextstep.domain.usecase.goal
 import android.net.Uri
 import com.tbacademy.nextstep.domain.core.Resource
 import com.tbacademy.nextstep.domain.model.GoalStatus
+import com.tbacademy.nextstep.domain.model.PostType
 import com.tbacademy.nextstep.domain.usecase.post.CreatePostUseCase
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat

@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tbacademy.nextstep.R
@@ -83,7 +82,7 @@ class CompleteGoalFragment :
                 is CompleteGoalEffect.LaunchMediaPicker -> launchImagePicker()
                 is CompleteGoalEffect.LaunchCameraPicker -> checkCameraPermissionAndLaunch()
                 is CompleteGoalEffect.ShowUpdateImageDialog -> showImagePickerDialog()
-                is CompleteGoalEffect.NavigateToHome -> navigateToPosts()
+                is CompleteGoalEffect.NavigateToGoalCompleted -> navigateToGoalCompleted()
             }
         }
     }
@@ -115,9 +114,9 @@ class CompleteGoalFragment :
         }
     }
 
-    private fun navigateToPosts() {
-        val action = CompleteGoalFragmentDirections.actionCompleteGoalFragmentToMainFragment()
-        requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
+    private fun navigateToGoalCompleted() {
+        val action = CompleteGoalFragmentDirections.actionCompleteGoalFragmentToGoalCompletedFragment()
+        findNavController().navigate(action)
     }
 
     private fun initMediaPickerLauncher() {

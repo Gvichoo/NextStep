@@ -103,6 +103,9 @@ dependencies {
     implementation (libs.androidx.hilt.work.v110)
     kapt (libs.androidx.hilt.compiler)
 
+    // Lotti
+    implementation(libs.lottie)
+
     //Gson
     implementation ("com.google.code.gson:gson:2.11.0")
 

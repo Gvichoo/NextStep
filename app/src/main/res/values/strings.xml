@@ -77,5 +77,8 @@
     <string name="description">Description</string>
     <string name="image">Image</string>
     <string name="cancel">Cancel</string>
+    <string name="created_new_goal">Created new goal</string>
+    <string name="achieved_new_milestone">Achieved new milestone</string>
+    <string name="completed_goal">Completed Goal!</string>
 
 </resources>

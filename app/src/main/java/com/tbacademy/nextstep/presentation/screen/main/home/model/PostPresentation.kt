@@ -22,12 +22,11 @@ data class PostPresentation(
     val isUserFollowing: Boolean = false,
     val isOwnPost: Boolean,
     val isReactionsPopUpVisible: Boolean = false,
-    val type: PostType
+    val type: PostTypePresentation
 )
 
-
-enum class PostType {
-    GOAL,
-    MILESTONE,
-    GOAL_COMPLETE
+enum class PostTypePresentation(val messageRes: Int) {
+    GOAL(messageRes = R.string.created_new_goal),
+    MILESTONE(messageRes = R.string.achieved_new_milestone),
+    GOAL_COMPLETE(messageRes = R.string.completed_goal)
 }

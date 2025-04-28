@@ -32,11 +32,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private val goalAdapter by lazy {
         GoalAdapter(
-            goalClicked = { goalId, goalTitle ->
+            goalClicked = { goalId, goalTitle, isActive ->
                 profileViewModel.onEvent(
                     ProfileEvent.GoalSelected(
                         goalId = goalId,
-                        goalTitle = goalTitle
+                        goalTitle = goalTitle,
+                        isActive = isActive
                     )
                 )
             }
@@ -79,7 +80,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 is ProfileEffect.NavigateToGoalScreen -> navigateToGoalScreen(
                     goalId = effect.goalId,
                     goalTitle = effect.goalTitle,
-                    ownGoal = effect.ownGoal
+                    ownGoal = effect.ownGoal,
+                    isActive = effect.isActive
                 )
             }
         }
@@ -131,12 +133,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
-    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean) {
+    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean, isActive: Boolean) {
         if (ownGoal) {
             val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
                 goalId = goalId,
                 goalTitle = goalTitle,
-                isOwnGoal = true
+                isOwnGoal = true,
+                goalActive = isActive
             )
             requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
         } else {

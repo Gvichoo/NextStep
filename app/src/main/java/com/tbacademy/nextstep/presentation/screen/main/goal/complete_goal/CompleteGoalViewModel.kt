@@ -129,7 +129,7 @@ class CompleteGoalViewModel @Inject constructor(
                     is Resource.Error -> launchEffect(effect = CompleteGoalEffect.ShowErrorMessage(errorRes = resource.error.toMessageRes()))
 
                     is Resource.Success -> {
-                        emitEffect(effect = CompleteGoalEffect.NavigateToHome)
+                        launchEffect(effect = CompleteGoalEffect.NavigateToGoalCompleted)
                     }
                     is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
                 }

@@ -17,7 +17,6 @@ import com.tbacademy.nextstep.presentation.extension.collectLatest
 import com.tbacademy.nextstep.presentation.screen.main.goal.effect.GoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.goal.event.GoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.CommentsSheetFragment
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +54,7 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
             binding.apply {
                 pbPosts.isVisible = state.isLoading
-                btnComplete.isVisible = state.isOwnGoal
+                btnComplete.isVisible = state.isOwnGoal && args.goalActive
                 tvGoalTitle.text = state.goalTitle
                 if (state.isGoalCompleteBottomSheetVisible) {
                     showCompleteGoalBottomSheet()
@@ -68,12 +67,12 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
         collect(flow = goalViewModel.effects) { effect ->
             when (effect) {
                 is GoalEffect.OpenComments -> openCommentsBottomSheet(postId = effect.postId)
-                is GoalEffect.NavigateToCreateGoal -> navigateToCreateGoal(goalTitle = effect.goalTitle)
+                is GoalEffect.NavigateToCompleteGoal -> navigateToCompleteGoal(goalTitle = effect.goalTitle)
             }
         }
     }
 
-    private fun navigateToCreateGoal(goalTitle: String) {
+    private fun navigateToCompleteGoal(goalTitle: String) {
         val action = GoalFragmentDirections.actionGoalFragmentToCompleteGoalFragment(
             goalId = args.goalId,
             // ☣️☢️ To be looked AGAIN

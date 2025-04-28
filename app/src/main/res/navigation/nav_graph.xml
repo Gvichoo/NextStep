@@ -70,6 +70,10 @@
         <action
             android:id="@+id/action_mainFragment_to_postFragment"
             app:destination="@id/postFragment" />
+        <argument
+            android:name="celebrate"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -114,6 +118,10 @@
         <action
             android:id="@+id/action_goalFragment_to_completeGoalFragment"
             app:destination="@id/completeGoalFragment" />
+        <argument
+            android:name="goalActive"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -170,9 +178,20 @@
             android:name="goalTitle"
             app:argType="string" />
         <action
-            android:id="@+id/action_completeGoalFragment_to_mainFragment"
+            android:id="@+id/action_completeGoalFragment_to_goalCompletedFragment"
+            app:destination="@id/goalCompletedFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/goalCompletedFragment"
+        android:name="com.tbacademy.nextstep.presentation.screen.main.goal.goal_completed.GoalCompletedFragment"
+        android:label="fragment_goal_completed"
+        tools:layout="@layout/fragment_goal_completed" >
+        <action
+            android:id="@+id/action_goalCompletedFragment_to_mainFragment"
             app:destination="@id/mainFragment"
-            app:popUpTo="@id/mainFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>
 

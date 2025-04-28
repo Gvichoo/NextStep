@@ -79,11 +79,14 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivPostImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/distance_sm"
         android:scaleType="centerCrop"
         android:src="@color/md_theme_tertiary"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:shapeAppearanceOverlay="@style/RoundedImageShape" />
 

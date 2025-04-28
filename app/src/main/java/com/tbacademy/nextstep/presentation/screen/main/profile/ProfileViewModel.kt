@@ -49,7 +49,8 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.ImageSelected -> updateUserImage(imageUri = event.imageUri)
             is ProfileEvent.GoalSelected -> onGoalSelected(
                 goalId = event.goalId,
-                goalTitle = event.goalTitle
+                goalTitle = event.goalTitle,
+                isActive = event.isActive
             )
         }
     }
@@ -86,12 +87,13 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun onGoalSelected(goalId: String, goalTitle: String) {
+    private fun onGoalSelected(goalId: String, goalTitle: String, isActive: Boolean) {
         launchEffect(
             effect = ProfileEffect.NavigateToGoalScreen(
                 goalId = goalId,
                 goalTitle = goalTitle,
-                ownGoal = state.value.withBottomNav
+                ownGoal = state.value.withBottomNav,
+                isActive = isActive
             )
         )
     }

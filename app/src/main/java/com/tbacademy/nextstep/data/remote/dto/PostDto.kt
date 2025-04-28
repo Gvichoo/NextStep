@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.data.remote.dto
 
 import com.google.firebase.Timestamp
-import com.tbacademy.nextstep.presentation.screen.main.home.model.PostType
+import com.tbacademy.nextstep.domain.model.PostType
 import java.util.Date
 
 data class PostDto(
