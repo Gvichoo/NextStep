@@ -70,4 +70,31 @@
     <string name="reacted_to_your_post">გამოხატა რეაქცია შენს პოსტზე</string>
     <string name="commented_on_your_post">დააკომენტარა შენს პოსტზე</string>
     <string name="started_following_you">დაგაფოლოვა</string>
+
+    <string name="done_icon">შესრულების სიმბოლო</string>
+    <string name="proceed_with_goal_completion">განვაგრძოთ მიზნის დასრულება??</string>
+    <string name="return_button">დაბრუნების ღილაკი</string>
+    <string name="complete_goal">დაასრულე მიზანი! 🎯</string>
+    <string name="description">აღწერა</string>
+    <string name="image">სურათი</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="created_new_goal">შექმნა ახალი მიზანი</string>
+    <string name="achieved_new_milestone">საფეხური მიღწეულია</string>
+    <string name="completed_goal">შეასრულა მიზანი!</string>
+    <string name="system">სისტემა</string>
+    <string name="light">ნათელი</string>
+    <string name="dark">მუქი</string>
+    <string name="en">ინგ</string>
+    <string name="english">ინგლისური</string>
+    <string name="georgian">ქართული</string>
+    <string name="settings">პარამეტრები</string>
+    <string name="app_theme">აპლიკაციის თემა</string>
+    <string name="language">ენა</string>
+    <string name="log_out">გამოსვლა</string>
+
+    <string name="profile">პროფილი</string>
+    <string name="add">დამატება</string>
+    <string name="home">სახლი</string>
+    <string name="notification">შეტყობინება</string>
+
 </resources>

@@ -11,6 +11,8 @@ import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesS
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
 import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppLanguagePresentation
+import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppThemePresentation
 import com.tbacademy.nextstep.presentation.screen.main.settings.state.SettingsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,13 +29,7 @@ class SettingsViewModel @Inject constructor(
 ) {
 
     init {
-        // Read saved language when ViewModel is created
-        viewModelScope.launch {
-            readValueUseCase(AppPreferenceKeys.LANGUAGE_KEY).collect { language ->
-                // If language is null, default to "en"
-                val currentLanguage = language ?: "en"
-            }
-        }
+        restoreLocalSettings()
     }
 
     override fun onEvent(event: SettingsEvent) {
@@ -47,15 +43,32 @@ class SettingsViewModel @Inject constructor(
                 copy(isLanguageDropdownExpanded = !isLanguageDropdownExpanded)
             }
 
-            is SettingsEvent.ThemeSelected -> updateState {
-                copy(selectedTheme = event.theme, isThemeDropdownExpanded = false)
-            }
+            is SettingsEvent.ThemeSelected -> selectTheme(theme = event.theme)
 
-            is SettingsEvent.LanguageSelected -> updateState {
-                copy(selectedLanguage = event.language, isLanguageDropdownExpanded = false)
-            }
+            is SettingsEvent.LanguageSelected -> selectLanguage(language = event.language)
         }
     }
+
+    private fun selectTheme(theme: AppThemePresentation) {
+        viewModelScope.launch {
+            saveValueUseCase(AppPreferenceKeys.KEY_THEME_MODE, theme.name) // Save enum name
+            updateState {
+                copy(selectedTheme = theme, isThemeDropdownExpanded = false)
+            }
+            emitEffect(SettingsEffect.ApplyTheme(theme))
+        }
+    }
+
+    private fun selectLanguage(language: AppLanguagePresentation) {
+        viewModelScope.launch {
+            saveValueUseCase(AppPreferenceKeys.LANGUAGE_KEY, language.name) // Save enum name
+            updateState {
+                copy(selectedLanguage = language, isLanguageDropdownExpanded = false)
+            }
+            emitEffect(SettingsEffect.ApplyLanguage(language))
+        }
+    }
+
 
     // On Logout
     private fun logout() {
@@ -73,13 +86,25 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    private fun changeLanguage(languageCode: String) {
+    private fun restoreLocalSettings() {
         viewModelScope.launch {
-            // Save the new language to preferences using the use case
-            saveValueUseCase(AppPreferenceKeys.LANGUAGE_KEY, languageCode)
+            readValueUseCase(AppPreferenceKeys.LANGUAGE_KEY).collect { savedLanguage ->
+                val language = savedLanguage?.let { saved ->
+                    AppLanguagePresentation.valueOf(saved)
+                } ?: AppLanguagePresentation.SYSTEM
 
-            // Update the UI state with the new language
+                updateState { copy(selectedLanguage = language) }
+            }
+        }
+
+        viewModelScope.launch {
+            readValueUseCase(AppPreferenceKeys.KEY_THEME_MODE).collect { savedTheme ->
+                val theme = savedTheme?.let { saved ->
+                    AppThemePresentation.valueOf(saved)
+                } ?: AppThemePresentation.SYSTEM
+
+                updateState { copy(selectedTheme = theme) }
+            }
         }
     }
-
 }
