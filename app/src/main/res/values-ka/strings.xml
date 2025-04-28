@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NextStep</string>
+    <string name="app_name">შემდეგი საფეხური</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all_fields_are_required">უნდა შეავსო ყველა ველი!</string>
     <string name="please_enter_a_valid_email_address">შეიყვანე ვალიდური იმეილი!</string>
@@ -71,16 +71,7 @@
     <string name="commented_on_your_post">დააკომენტარა შენს პოსტზე</string>
     <string name="started_following_you">დაგაფოლოვა</string>
 
-    <string name="done_icon">შესრულების სიმბოლო</string>
-    <string name="proceed_with_goal_completion">განვაგრძოთ მიზნის დასრულება??</string>
-    <string name="return_button">დაბრუნების ღილაკი</string>
-    <string name="complete_goal">დაასრულე მიზანი! 🎯</string>
-    <string name="description">აღწერა</string>
-    <string name="image">სურათი</string>
-    <string name="cancel">გაუქმება</string>
-    <string name="created_new_goal">შექმნა ახალი მიზანი</string>
-    <string name="achieved_new_milestone">საფეხური მიღწეულია</string>
-    <string name="completed_goal">შეასრულა მიზანი!</string>
+
     <string name="system">სისტემა</string>
     <string name="light">ნათელი</string>
     <string name="dark">მუქი</string>
@@ -93,8 +84,81 @@
     <string name="log_out">გამოსვლა</string>
 
     <string name="profile">პროფილი</string>
-    <string name="add">დამატება</string>
     <string name="home">სახლი</string>
     <string name="notification">შეტყობინება</string>
 
+
+    <string name="done_icon">გამზადებული აიქონი</string>
+    <string name="proceed_with_goal_completion">Proceed with goal completion?</string>
+    <string name="return_button">dabrunebis Rilaki</string>
+    <string name="complete_goal">დაასრულო მიზანი! 🎯</string>
+    <string name="description">აღწერა</string>
+    <string name="image">ფოტო</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="created_new_goal">ახალი მიზანი</string>
+    <string name="achieved_new_milestone">შევასრულე ახალი ეტაპები</string>
+    <string name="completed_goal">მიზანი შესრულებულია!</string>
+    <string name="sure">დათანხმება! 🎯</string>
+    <string name="nope_still_grinding">არა, კვლავ ვმუშაობ 💪</string>
+
+    <string name="goal">მიზანი</string>
+    <string name="create_goal">მიზნის შექმნა</string>
+    <string name="target_date">სამიზნე თარიღი</string>
+    <string name="imagee">სურათი</string>
+    <string name="add_image">ფოტოს დამატება</string>
+    <string name="do_you_want_to_add_metric">გინდა დაამატო მეტრიკა?</string>
+    <string name="target_value">სამიზნე ღირებულება</string>
+    <string name="unit_e_g_kg_km">შეიყვანე ( kg, km და ა.შ.)</string>
+    <string name="do_you_want_to_add_milestones">გინდა რომ დაამატო ეტაპები?</string>
+    <string name="minus">გამოკლება</string>
+    <string name="create_goall">მიზნის ატვირთვა 🎯</string>
+
+    <string name="no_comments_yet">კომენტარები არ არსებობს...</string>
+    <string name="add_a_comment">კომენტარის დამატება...</string>
+
+    <string name="complete_goall">მიზნის დასრულება</string>
+    <string name="goal_title">მიზნის სათაური</string>
+    <string name="add">დამატება</string>
+    <string name="goal_completed_nwe_are_proud_of_you_champ">მიზანი შესრულებულია\შენით ვამაყობთ!</string>
+    <string name="continuee">გაგრძელება 💪</string>
+
+    <string name="global">მსოფლიო</string>
+    <string name="following">გამოწერილი</string>
+
+    <string name="milestones">ეტაპები</string>
+
+    <string name="notifications">შეტყობინებები</string>
+
+    <string name="post_milestone">დაპოსტე ეტაპი 🎯</string>
+
+    <string name="goals">მიზნები:</string>
+    <string name="followw">+ გამოწერა</string>
+
+    <string name="checking_session">მოწმდება სესია</string>
+
+    <string name="search_users">მოძებნე მომხმარებელი...</string>
+
+    <string name="comments">კომენტარები:</string>
+
+    <string name="acihved">შესრულებულია</string>
+    <string name="mark_as_done">დასრულებულად მონიშვნა</string>
+    <string name="post">დაპოსტვა</string>
+
+    <string name="today_23_15">დღეს 23:15</string>
+
+    <string name="milestone">ეტაპი</string>
+
+    <string name="follow_goal">+ მიზნის გამოწერა</string>
+    <string name="commentss">კომენტარები:</string>
+    <string name="reactt">რექქცია</string>
+    <string name="commentt">კომენტარი</string>
+
+    <string name="active">აქტიური</string>
+
+    <string name="done">შესრულებულია</string>
+    <string name="failed">წარუმატებელია</string>
+
+    <string name="settings_title">პარამეტრები</string>
+    <string name="switch_to_english">გადასვლა ინგლისურზე</string>
+    <string name="switch_to_georgian">გადასვლა ქართულზე</string>
 </resources>

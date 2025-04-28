@@ -54,7 +54,7 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Today 23:15"
+        android:text="@string/today_23_15"
         app:layout_constraintBottom_toBottomOf="@id/ivProfile"
         app:layout_constraintStart_toStartOf="@id/tvAuthor" />
 

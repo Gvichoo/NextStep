@@ -1,9 +1,13 @@
 package com.tbacademy.nextstep.presentation.screen.authentication.login
 
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.tbacademy.nextstep.R
+import com.tbacademy.nextstep.databinding.DialogForgotBinding
 import com.tbacademy.nextstep.databinding.FragmentLoginBinding
 import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
@@ -28,11 +32,54 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         setInputListeners()
     }
 
+
+
     override fun observers() {
         observeState()
         observeUiState()
         observeEffect()
+
+        setForgotPasswordListener()
     }
+
+    private fun setForgotPasswordListener() {
+        binding.btnResetPassword.setOnClickListener {
+            showForgotPasswordDialog()
+        }
+    }
+
+    private fun showForgotPasswordDialog() {
+        val dialogBinding = DialogForgotBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.btnReset.setOnClickListener {
+            val email = dialogBinding.etEmailForgot.text.toString().trim()
+            if (email.isNotEmpty()) {
+                sendPasswordResetEmail(email)
+                dialog.dismiss()
+            } else {
+                dialogBinding.tlEmail.error = "Email cannot be empty"
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun sendPasswordResetEmail(email: String) {
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Snackbar.make(requireView(), "Reset email sent. Check your inbox!", Snackbar.LENGTH_SHORT).show()
+                } else {
+                    Snackbar.make(requireView(), "Failed to send reset email.", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+
 
     private fun observeState() {
         collect(flow = loginViewModel.state) { state ->

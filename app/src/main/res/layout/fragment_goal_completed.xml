@@ -25,7 +25,7 @@
         android:id="@+id/tvGoalCompleted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Goal Completed\nWe are proud of you champ!"
+        android:text="@string/goal_completed_nwe_are_proud_of_you_champ"
         android:textSize="24sp"
         android:textAlignment="center"
         android:gravity="center"
@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/distance_sm"
         app:layout_constraintTop_toBottomOf="@id/tvGoalCompleted"
         android:alpha="0"
-        android:text="Continue 💪"
+        android:text="@string/continuee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

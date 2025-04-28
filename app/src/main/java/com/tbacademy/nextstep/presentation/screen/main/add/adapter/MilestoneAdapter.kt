@@ -29,13 +29,21 @@ class MilestoneAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(milestone: MilestoneItem) {
+            binding.etMilestone.apply {
+                if (text.toString() != milestone.text) {
+                    setText(milestone.text)
+                    setSelection(milestone.text.length)
+                }
 
-            binding.etMilestone.setText(milestone.text)
-            binding.etMilestone.setSelection(milestone.text.length)
-
-            binding.etMilestone.onTextChanged { newText ->
-                onTextChanged(adapterPosition, newText)
+                onTextChanged { newText ->
+                    milestone.text = newText  // update item locally
+                    // No need to call submitList() here
+                    if (milestone.errorMessage != null) {
+                        binding.tlMilestone.error = null
+                    }
+                }
             }
+
             binding.tlMilestone.apply {
                 error = milestone.errorMessage?.let { context.getString(it) }
             }

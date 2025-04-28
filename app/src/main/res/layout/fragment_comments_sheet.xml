@@ -22,7 +22,7 @@
         android:id="@+id/tvNoComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No comments yet..."
+        android:text="@string/no_comments_yet"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/ivNoComments"
         app:layout_constraintStart_toStartOf="@id/ivNoComments"
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="Add a comment..."
+            android:hint="@string/add_a_comment"
             android:imeOptions="actionSend"
             android:inputType="text"
             android:maxLines="1" />

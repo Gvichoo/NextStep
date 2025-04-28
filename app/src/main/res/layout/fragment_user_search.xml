@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:hint="Search users..."
+            android:hint="@string/search_users"
             android:inputType="text"
             android:maxLines="1"
             android:scrollHorizontally="false" />

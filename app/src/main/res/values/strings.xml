@@ -91,8 +91,70 @@
     <string name="language">Language</string>
     <string name="log_out">Log Out</string>
     <string name="profile">Profile</string>
-    <string name="add">Add</string>
     <string name="home">Home</string>
     <string name="notification">Notification</string>
+    <string name="sure">Sure! 🎯</string>
+    <string name="nope_still_grinding">Nope, still grinding 💪</string>
+    <string name="goal">goal</string>
+    <string name="create_goal">Create Goal</string>
+    <string name="target_date">Target date</string>
+    <string name="imagee">Image</string>
+    <string name="add_image">Add Image</string>
+    <string name="do_you_want_to_add_metric">Do you want to add metric?</string>
+    <string name="target_value">Target value</string>
+    <string name="unit_e_g_kg_km">Unit (e.g. kg, km)</string>
+    <string name="do_you_want_to_add_milestones">Do you want to add milestones?</string>
+    <string name="minus">Minus</string>
+    <string name="create_goall">Create Goal 🎯</string>
+    <string name="add">Add</string>
+
+    <string name="no_comments_yet">No comments yet...</string>
+    <string name="add_a_comment">gitAdd a comment...</string>
+
+    <string name="complete_goall">Complete Goal</string>
+    <string name="goal_title">Goal Title</string>
+
+    <string name="goal_completed_nwe_are_proud_of_you_champ">Goal Completed\nWe are proud of you champ!</string>
+    <string name="continuee">Continue 💪</string>
+
+    <string name="global">Global</string>
+    <string name="following">Following</string>
+
+    <string name="milestones">Milestones</string>
+
+    <string name="notifications">Notifications</string>
+
+    <string name="post_milestone">Post Milestone 🎯</string>
+
+    <string name="goals">Goals:</string>
+    <string name="followw">+ Follow</string>
+
+    <string name="checking_session">Checking Session</string>
+
+    <string name="search_users">Search users...</string>
+
+    <string name="comments">Comments:</string>
+
+    <string name="acihved">acihved</string>
+    <string name="mark_as_done">Mark as Done</string>
+    <string name="post">post</string>
+
+    <string name="today_23_15">Today 23:15</string>
+
+    <string name="milestone">Milestone</string>
+
+    <string name="follow_goal">+ Follow Goal</string>
+    <string name="commentss">Comments:</string>
+    <string name="reactt">React</string>
+    <string name="commentt">Comment</string>
+
+    <string name="active">ACTIVE</string>
+
+    <string name="done">Done</string>
+    <string name="failed">Failed</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="switch_to_english">Switch to English</string>
+    <string name="switch_to_georgian">Switch to Georgian</string>
 
 </resources>

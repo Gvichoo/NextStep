@@ -9,14 +9,7 @@
     android:elevation="4dp"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvPostType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfile"
@@ -32,7 +25,7 @@
         android:id="@+id/btn_follow"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="+ Follow Goal"
+        android:text="@string/follow_goal"
         app:layout_constraintBottom_toBottomOf="@id/ivProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivProfile" />
@@ -41,12 +34,17 @@
         android:id="@+id/btnSeeMilestones"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="105dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:text="M"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="22sp"
+        android:textColor="@color/md_theme_error_mediumContrast"
+        android:backgroundTint="@android:color/transparent"
+        app:strokeWidth="0dp"
+        app:cornerRadius="20dp"
+        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintTop_toBottomOf="@id/btn_follow"
+        app:layout_constraintEnd_toEndOf="@id/btn_follow" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAuthor"
@@ -70,7 +68,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_sm"
+        android:layout_marginTop="@dimen/distance_md"
         android:text="Write new misery novel"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -90,6 +88,16 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:shapeAppearanceOverlay="@style/RoundedImageShape" />
 
+    <TextView
+        android:id="@+id/tvPostType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
@@ -97,7 +105,7 @@
         android:layout_marginTop="@dimen/distance_sm"
         android:text="@string/paul_sheldon_goal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+        app:layout_constraintTop_toBottomOf="@id/tvPostType" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flowReactions"
@@ -152,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/distance_xs"
-        android:text="Comments:"
+        android:text="@string/commentss"
         app:layout_constraintBottom_toBottomOf="@id/ivReaction1"
         app:layout_constraintEnd_toStartOf="@id/tvCommentsCount" />
 
@@ -199,7 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="React"
+            android:text="@string/reactt"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -249,7 +257,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Comment"
+            android:text="@string/commentt"
             android:textSize="12sp" />
     </LinearLayout>
 

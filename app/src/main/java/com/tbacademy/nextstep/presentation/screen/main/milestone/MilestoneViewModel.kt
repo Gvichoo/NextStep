@@ -18,6 +18,7 @@ import com.tbacademy.nextstep.presentation.screen.main.milestone.state.Milestone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -81,7 +82,8 @@ class MilestoneViewModel @Inject constructor(
                                     it.copy(
                                         achieved = true,
                                         achievedAt = Timestamp.now(),
-                                        isPostVisible = true // Ensure this remains true after marking as done
+                                        isPostVisible = true,
+                                        // Ensure this remains true after marking as done
                                     )
                                 } else it
                             }
@@ -150,13 +152,16 @@ class MilestoneViewModel @Inject constructor(
 
                         val milestones = resource.data.milestone ?: emptyList()
                         val authorId = resource.data.authorId // Get the authorId from the goal data
+                        val targetDateDate = Date(resource.data.targetDate) // Convert Long to Date
+                        val targetDate = Timestamp(targetDateDate)
 
                         // Map the milestones to include authorId and isAuthor flag
                         val presentations = milestones.map { milestone ->
                             milestone.toPresentation().copy(
                                 authorId = authorId, // Ensure authorId is correctly passed
-                                isAuthor = (currentUserId == authorId)
+                                isAuthor = (currentUserId == authorId),
                                 // Compare authorId with milestone authorId
+                                targetDate = targetDate
                             )
                         }
 
