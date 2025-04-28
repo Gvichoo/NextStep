@@ -28,7 +28,6 @@ class MilestoneFragment :
                 val goalId = args.goalId
                 milestoneViewModel.onEvent(MilestoneEvent.MarkMilestoneAsDone(goalId, milestone.id))
             },
-            targetDate = targetDate,
             onPostClick = { milestoneId, text, ->
                 milestoneViewModel.onEvent(
                     event = MilestoneEvent.OpenMilestone(

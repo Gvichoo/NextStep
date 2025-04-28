@@ -1,5 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.comment
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -47,6 +50,7 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
     ): View {
         _binding = FragmentCommentsSheetBinding.inflate(inflater, container, false)
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        // Find the root layout and EditText
         return binding.root
     }
 
@@ -58,6 +62,11 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
         listeners()
         observers()
         handleReceivedParams()
+    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        return dialog
     }
 
 

@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/distance_xs"
-        android:text="Comments:"
+        android:text="@string/comments"
         app:layout_constraintBottom_toBottomOf="@id/ivReaction1"
         app:layout_constraintEnd_toStartOf="@id/tvCommentsCount" />
 

@@ -1,84 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp">
 
-        <androidx.appcompat.widget.AppCompatTextView
+
+
+        <TextView
             android:id="@+id/tvNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1)"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/item_milestone1"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/tvMilestoneTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Milestone Title"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="2"
+            android:text="Complete first draft of chapter one"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvNumber"
             app:layout_constraintTop_toTopOf="@id/tvNumber" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAchievedAt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="04/23/2025"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:visibility="gone"
+        <ImageView
+            android:id="@+id/ivCalendarIcon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/item_milestone3"
             app:layout_constraintStart_toStartOf="@id/tvMilestoneTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvMilestoneTitle" />
+            app:layout_constraintTop_toBottomOf="@id/tvMilestoneTitle"
+            app:tint="@color/md_theme_onSurfaceVariant" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/status"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvAchievedAt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="4dp"
-            android:text="acihved"
-            android:textColor="@color/black"
+            android:layout_marginStart="6dp"
+            android:fontFamily="sans-serif"
+            android:text="April 23, 2025"
+            android:textColor="@color/md_theme_onSurfaceVariant"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivCalendarIcon"
+            app:layout_constraintStart_toEndOf="@id/ivCalendarIcon"
+            app:layout_constraintTop_toTopOf="@id/ivCalendarIcon" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/acihved"
+            android:textColor="@color/md_theme_onTertiaryContainer"
             android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/tvAchievedAt"
-            app:layout_constraintTop_toBottomOf="@id/tvMilestoneTitle" />
+            app:chipBackgroundColor="@color/md_theme_tertiaryContainer"
+            app:chipMinHeight="28dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvAchievedAt"
+            app:layout_constraintStart_toEndOf="@id/tvAchievedAt"
+            app:layout_constraintTop_toTopOf="@id/tvAchievedAt" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:alpha="0.1"
+            android:background="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAchievedAt" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMarkAsDone"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="Mark as Done"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/mark_as_done"
+            android:textAllCaps="false"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/icon_mark_sa_done"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:layout_constraintEnd_toStartOf="@id/btnPost"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvAchievedAt"
-            app:layout_constraintWidth_percent="0.4" />
-
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:strokeColor="@color/md_theme_primary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="post it bro"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/md_theme_primary"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/post"
+            android:textAllCaps="false"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/icon_post"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btnMarkAsDone" />
+            app:layout_constraintStart_toEndOf="@id/btnMarkAsDone"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            android:layout_marginTop="16dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

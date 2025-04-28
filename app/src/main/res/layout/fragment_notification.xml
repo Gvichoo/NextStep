@@ -9,7 +9,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvHeader"
-        android:text="Notifications"
+        android:text="@string/notifications"
         android:textStyle="bold"
         android:layout_marginTop="@dimen/distance_md"
         android:textSize="36sp"
