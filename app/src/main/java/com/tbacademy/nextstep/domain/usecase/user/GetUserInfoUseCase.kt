@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.usecase.user
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.User
 import com.tbacademy.nextstep.domain.repository.user.UserRepository
 import kotlinx.coroutines.flow.Flow

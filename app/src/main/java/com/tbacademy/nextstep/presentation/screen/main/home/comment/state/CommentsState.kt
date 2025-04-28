@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.comment.state
 
-import com.tbacademy.core.ApiError
+import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.model.CommentPresentation
 
 data class CommentsState(

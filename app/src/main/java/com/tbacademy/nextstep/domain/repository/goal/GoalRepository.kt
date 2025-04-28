@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.repository.goal
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.presentation.model.MilestoneItem

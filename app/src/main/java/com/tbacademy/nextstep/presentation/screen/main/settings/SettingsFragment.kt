@@ -10,7 +10,6 @@ import com.tbacademy.nextstep.presentation.base.BaseFragment
 import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
-import com.tbacademy.nextstep.presentation.screen.main.settings.event.SettingsEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,9 +23,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
             SettingsScreen(
                 state = state,
-                onChangeLanguage = { languageCode ->
-                    settingsViewModel.onEvent(SettingsEvent.ChangeLanguage(languageCode))
-                }
+                onEvent = { settingsViewModel.onEvent(it) }
             )
         }
     }
@@ -43,6 +40,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         collect(flow = settingsViewModel.effects) { effect ->
             when (effect) {
                 is SettingsEffect.NavigateToLogin -> navigateToLogin()
+                is SettingsEffect.ShowErrorMessage -> {}
+                SettingsEffect.ShowSuccessMessage -> {}
             }
         }
     }

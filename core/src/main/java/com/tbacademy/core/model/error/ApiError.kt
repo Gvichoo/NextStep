@@ -1,4 +1,4 @@
-package com.tbacademy.core
+package com.tbacademy.core.model.error
 
 sealed interface ApiError {
     data object Network : ApiError

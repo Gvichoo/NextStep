@@ -1,4 +1,4 @@
-package com.tbacademy.core
+package com.tbacademy.core.model.error
 
 sealed interface InputValidationResult {
     data object Success : InputValidationResult

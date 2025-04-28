@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.screen.main.home.comment.effect
 
-import com.tbacademy.core.ApiError
+import com.tbacademy.core.model.error.ApiError
 
 sealed interface CommentsEffect {
     data object StartTyping: CommentsEffect

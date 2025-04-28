@@ -2,7 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.core.onSuccess
+import com.tbacademy.core.model.onSuccess
 import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCase
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
 import com.tbacademy.nextstep.domain.usecase.user_session.GetUserSessionUseCase

@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.presentation.extension
 
-import com.tbacademy.core.InputValidationResult
+import com.tbacademy.core.model.error.InputValidationResult
 import com.tbacademy.nextstep.presentation.common.mapper.toErrorMessageRes
 
 fun InputValidationResult.getErrorMessageResId(): Int? {

@@ -1,8 +1,8 @@
 package com.tbacademy.nextstep.domain.usecase.validation.addGoal
 
 import com.tbacademy.nextstep.data.enumClass.MetricUnit
-import com.tbacademy.core.InputValidationError
-import com.tbacademy.core.InputValidationResult
+import com.tbacademy.core.model.error.InputValidationError
+import com.tbacademy.core.model.error.InputValidationResult
 import javax.inject.Inject
 
 interface ValidateMetricUnitUseCase {

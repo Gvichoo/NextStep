@@ -1,8 +1,8 @@
 package com.tbacademy.nextstep.data.httpHelper
 
 import com.tbacademy.nextstep.data.common.mapper.toApiError
-import com.tbacademy.core.ApiError
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.error.ApiError
+import com.tbacademy.core.model.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response

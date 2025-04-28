@@ -1,6 +1,6 @@
 package com.tbacademy.nextstep.domain.repository.notification
 
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Notification
 import kotlinx.coroutines.flow.Flow
 

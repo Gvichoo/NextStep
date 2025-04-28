@@ -2,8 +2,8 @@ package com.tbacademy.nextstep.presentation.screen.authentication.login
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.core.InputValidationResult
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.error.InputValidationResult
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.usecase.login.LoginUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateEmailUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateNecessaryFieldUseCase

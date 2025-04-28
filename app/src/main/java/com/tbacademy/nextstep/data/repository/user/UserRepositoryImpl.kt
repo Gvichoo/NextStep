@@ -8,7 +8,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.UserDto
-import com.tbacademy.core.Resource
+import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.User
 import com.tbacademy.nextstep.domain.repository.user.UserRepository
 import kotlinx.coroutines.flow.Flow

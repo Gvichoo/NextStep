@@ -1,7 +1,7 @@
 package com.tbacademy.nextstep.presentation.common.mapper
 
 import com.tbacademy.nextstep.R
-import com.tbacademy.core.InputValidationError
+import com.tbacademy.core.model.error.InputValidationError
 
 fun InputValidationError.toErrorMessageRes(): Int {
     return when (this) {
