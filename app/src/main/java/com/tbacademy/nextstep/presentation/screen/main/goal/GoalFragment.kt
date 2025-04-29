@@ -42,6 +42,8 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
     override fun listeners() {
         setCompleteBtnListener()
         setBackBtnListener()
+        setBackBtnListener()
+        setMilestonesBtnListener()
     }
 
     override fun observers() {
@@ -70,10 +72,19 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
             when (effect) {
                 is GoalEffect.OpenComments -> openCommentsBottomSheet(postId = effect.postId)
                 is GoalEffect.NavigateToCompleteGoal -> navigateToCompleteGoal(goalTitle = effect.goalTitle)
+                is GoalEffect.NavigateToMilestones -> navigateToMilestone(goalId = effect.goalId)
                 is GoalEffect.NavigateBack -> findNavController().navigateUp()
             }
         }
     }
+
+    private fun navigateToMilestone(goalId: String) {
+        val action = GoalFragmentDirections.actionGoalFragmentToMilestoneFragment(
+            goalId = goalId
+        )
+        findNavController().navigate(action)
+    }
+
 
     private fun navigateToCompleteGoal(goalTitle: String) {
         val action = GoalFragmentDirections.actionGoalFragmentToCompleteGoalFragment(
@@ -95,6 +106,12 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
     private fun setCompleteBtnListener() {
         binding.btnComplete.setOnClickListener {
             goalViewModel.onEvent(event = GoalEvent.OpenCompleteGoalSheet)
+        }
+    }
+
+    private fun setMilestonesBtnListener() {
+        binding.btnMilestones.setOnClickListener {
+            goalViewModel.onEvent(event = GoalEvent.MilestonesSelected(goalId = args.goalId))
         }
     }
 

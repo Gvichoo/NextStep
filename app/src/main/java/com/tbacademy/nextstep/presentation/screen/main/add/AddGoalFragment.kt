@@ -27,6 +27,7 @@ import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdap
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
+import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -112,9 +113,9 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private fun observeEffects() {
         collectLatest(flow = addGoalViewModel.effects) { effects ->
             when (effects) {
-                AddGoalEffect.NavToHomeFragment -> navToHomeFragment()
+                is AddGoalEffect.NavToHomeFragment -> navToHomeFragment()
                 is AddGoalEffect.ShowError -> showMessage(effects.message)
-                AddGoalEffect.LaunchMediaPicker -> launchImagePicker()
+                is AddGoalEffect.LaunchMediaPicker -> launchImagePicker()
             }
         }
     }

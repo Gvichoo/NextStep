@@ -7,5 +7,6 @@ sealed interface GoalEvent {
     data object OpenCompleteGoalSheet : GoalEvent
     data object CloseCompleteGoalSheet : GoalEvent
     data object ProceedWithGoalCompletion: GoalEvent
+    data class MilestonesSelected(val goalId: String): GoalEvent
     data object Return: GoalEvent
 }

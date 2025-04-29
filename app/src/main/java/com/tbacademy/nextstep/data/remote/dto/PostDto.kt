@@ -9,6 +9,7 @@ data class PostDto(
     val authorId: String = "",
     val goalId: String = "",
     val authorUsername: String = "",
+    val authorProfilePictureUrl: String = "",
     val title: String = "",
     val description: String = "",
     val reactionCount: Int = 0,

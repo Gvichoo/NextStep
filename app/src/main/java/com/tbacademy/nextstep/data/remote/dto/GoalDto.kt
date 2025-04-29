@@ -7,6 +7,7 @@ data class GoalDto(
     val id: String = "",
     val authorId: String = "",
     val authorUsername: String = "",
+    val authorProfilePictureUrl: String = "",
     val title: String = "",
     val description: String? = "",
     val metricTarget: String? = null,

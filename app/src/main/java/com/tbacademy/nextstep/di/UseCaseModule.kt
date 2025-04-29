@@ -1,7 +1,9 @@
 package com.tbacademy.nextstep.di
 
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdStringUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdStringUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCase
 import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.comment.CreateCommentUseCase
@@ -157,7 +159,10 @@ interface UseCaseModule {
     fun bingLogoutUserUseCase(impl: LogoutUserUseCaseImpl): LogoutUserUseCase
 
     @Singleton @Binds
-    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdUseCaseImpl): GetAuthUserIdUseCase
+    fun binGetAuthUserIdUseCase(impl: GetAuthUserIdFlowUseCaseImpl): GetAuthUserIdFlowUseCase
+
+    @Singleton @Binds
+    abstract fun bindGetAuthUserIdStringUseCase(impl: GetAuthUserIdStringUseCaseImpl): GetAuthUserIdStringUseCase
 
     // --- Preferences Storage UseCases ---
     @Singleton @Binds

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
@@ -27,6 +27,10 @@ class MilestoneViewModel @Inject constructor(
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase
 ) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect>(
     initialState = MilestoneState()
+    private val getAuthUserIdUseCase: GetAuthUserIdFlowUseCase
+) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect, MilestoneUiState>(
+    initialState = MilestoneState(),
+    initialUiState = MilestoneUiState()
 ) {
 
     override fun onEvent(event: MilestoneEvent) {

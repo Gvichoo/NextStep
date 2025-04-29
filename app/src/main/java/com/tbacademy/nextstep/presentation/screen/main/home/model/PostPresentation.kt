@@ -6,6 +6,7 @@ data class PostPresentation(
     val id: String,
     val authorId: String,
     val authorUsername: String? = null,
+    val authorProfilePictureUrl: String? = null,
     val goalId: String,
     val title: String,
     val description: String,

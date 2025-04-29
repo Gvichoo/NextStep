@@ -169,4 +169,8 @@
     <string name="faileddd">Failed</string>
     <string name="not_achieved_yet">Not Achieved Yet</string>
 
+    <string name="Active">Active</string>
+    <string name="Failed">Failed</string>
+    <string name="Complete">Complete</string>
+
 </resources>

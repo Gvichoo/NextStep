@@ -17,6 +17,7 @@ import com.tbacademy.nextstep.presentation.common.extension.animatePopIn
 import com.tbacademy.nextstep.presentation.common.extension.animatePopupIn
 import com.tbacademy.nextstep.presentation.common.extension.animateSelected
 import com.tbacademy.nextstep.presentation.extension.loadImagesGlide
+import com.tbacademy.nextstep.presentation.extension.loadProfilePictureGlide
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.COMMENT_COUNT_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.FOLLOW_STATUS_CHANGED_KEY
 import com.tbacademy.nextstep.presentation.screen.main.home.adapter.PostsAdapter.Companion.POPUP_VISIBILITY_CHANGED_KEY
@@ -109,6 +110,7 @@ class PostsAdapter(
                 tvDate.text = post.createdAt
                 tvReactionsCount.text = post.reactionCount.toString()
                 tvCommentsCount.text = post.commentCount.toString()
+                ivProfile.loadProfilePictureGlide(url = post.authorProfilePictureUrl)
 
                 setReactions(post = post)
 
