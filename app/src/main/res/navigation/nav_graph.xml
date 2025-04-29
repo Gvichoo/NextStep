@@ -126,6 +126,9 @@
             android:name="hasMilestones"
             app:argType="boolean"
             android:defaultValue="false" />
+        <action
+            android:id="@+id/action_goalFragment_to_milestoneFragment"
+            app:destination="@id/milestoneFragment" />
     </fragment>
 
     <fragment

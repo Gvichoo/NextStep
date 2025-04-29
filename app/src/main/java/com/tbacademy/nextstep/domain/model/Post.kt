@@ -6,7 +6,8 @@ import java.util.Date
 data class Post(
     val id: String,
     val authorId: String,
-    val authorUsername :String ,
+    val authorUsername : String ,
+    val authorProfilePictureUrl: String? = null,
     val goalId: String = "",
     val goalTitle: String = "",
     val title: String,

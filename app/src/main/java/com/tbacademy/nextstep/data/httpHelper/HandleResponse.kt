@@ -1,11 +1,12 @@
 package com.tbacademy.nextstep.data.httpHelper
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.tbacademy.nextstep.data.common.mapper.toApiError
-import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.core.model.Resource
+import com.tbacademy.core.model.error.ApiError
+import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -70,6 +71,7 @@ class HandleResponse @Inject constructor(
             val result = action(user.uid, snapshot)
             emit(Resource.Success(result))
         } catch (e: Exception) {
+            Log.d("ERRORGOAL", "$e")
             emit(Resource.Error(e.toApiError()))
         } finally {
             emit(Resource.Loading(false))

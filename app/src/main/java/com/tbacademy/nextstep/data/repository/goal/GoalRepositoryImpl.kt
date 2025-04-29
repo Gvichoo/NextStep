@@ -1,18 +1,17 @@
 package com.tbacademy.nextstep.data.repository.goal
 
 import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.tbacademy.core.model.Resource
+import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.nextstep.data.common.mapper.toApiError
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.common.mapper.toDomainWithComputedStatus
 import com.tbacademy.nextstep.data.common.mapper.toDto
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
 import com.tbacademy.nextstep.data.remote.dto.GoalDto
-import com.tbacademy.core.model.error.ApiError
-import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.model.Goal
 import com.tbacademy.nextstep.domain.model.GoalStatus
 import com.tbacademy.nextstep.domain.repository.goal.GoalRepository
@@ -23,66 +22,50 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class GoalRepositoryImpl @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val firebaseStorage: FirebaseStorage,
     private val handleResponse: HandleResponse
 ) : GoalRepository {
-    override fun createGoal(goal: Goal): Flow<Resource<Boolean>> = flow {
-        emit(Resource.Loading(loading = true))
-        try {
-            val currentUser = firebaseAuth.currentUser
-            val userSnapshot: DocumentSnapshot? =
-                currentUser?.let { firestore.collection("users").document(it.uid).get().await() }
-
-            if (userSnapshot == null) {
-                emit(Resource.Error(ApiError.Unauthorized))
-                emit(Resource.Loading(loading = false))
-                return@flow
-            }
-
+    override fun createGoal(goal: Goal): Flow<Resource<Boolean>> {
+        return handleResponse.withUserSnapshotFlow { userId, userSnapshot ->
             val imageUrl = goal.imageUri?.let { uri ->
                 val storageRef = firebaseStorage.reference.child(
-                    "goal_images/${currentUser.uid}/${System.currentTimeMillis()}"
+                    "goal_images/$userId/${System.currentTimeMillis()}"
                 )
                 storageRef.putFile(uri).await()
                 storageRef.downloadUrl.await().toString()
             }
 
-
-
-            val goalRef = firestore.collection("goals").document()
+            val goalRef = firestore.collection(COLLECTION_GOALS).document()
             val goalId = goalRef.id
-            val username: String? = userSnapshot.getString("username")
-
+            val username = userSnapshot.getString("username")
+            val profilePictureUrl = userSnapshot.getString("profilePictureUrl")
 
             if (username != null) {
-                val goalDto: GoalDto = goal.toDto().copy(
-                    authorId = currentUser.uid,
-                    authorUsername = username,
+                val goalDto = goal.toDto().copy(
                     id = goalId,
-                    imageUrl = imageUrl ?: "",
+                    authorId = userId,
+                    authorUsername = username,
+                    authorProfilePictureUrl = profilePictureUrl ?: "",
+                    imageUrl = imageUrl.orEmpty()
                 )
-                Log.d("UPLOAD_GOAL", "Goal to upload: $goalDto")
-                // Upload goal to Firestore
                 goalRef.set(goalDto).await()
-                emit(Resource.Success(data = true))
+                true
             } else {
-                emit(Resource.Error(ApiError.Unauthorized))
-                return@flow
+                Log.d("ERRORGOAL", "ERROR")
+                throw FirebaseAuthInvalidUserException(
+                    "ERROR_USER_NOT_FOUND",
+                    "User profile is incomplete."
+                )
             }
-        } catch (e: Exception) {
-            emit(Resource.Error(e.toApiError()))
-            Log.d("CREATE_GOAL", "GoalId: $e")
-        } finally {
-            emit(Resource.Loading(loading = false))
         }
+
     }
 
     override fun getGoalMilestones(goalId: String): Flow<Resource<Goal>> = flow {
         emit(Resource.Loading(true))
         try {
-            val snapshot = firestore.collection("goals")
+            val snapshot = firestore.collection(COLLECTION_GOALS)
                 .document(goalId)
                 .get()
                 .await()
@@ -109,7 +92,7 @@ class GoalRepositoryImpl @Inject constructor(
     ): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading(true))
         try {
-            val goalRef = firestore.collection("goals").document(goalId)
+            val goalRef = firestore.collection(COLLECTION_GOALS).document(goalId)
 
             // Update the milestones field
             goalRef.update("milestone", updatedGoalMilestones).await()
@@ -124,7 +107,7 @@ class GoalRepositoryImpl @Inject constructor(
 
     override fun updateGoalStatus(goalStatus: GoalStatus, goalId: String): Flow<Resource<Unit>> {
         return handleResponse.safeApiCall {
-            val goalRef = firestore.collection("goals").document(goalId)
+            val goalRef = firestore.collection(COLLECTION_GOALS).document(goalId)
             goalRef.update("goalStatus", goalStatus).await()
         }
     }
@@ -132,7 +115,7 @@ class GoalRepositoryImpl @Inject constructor(
 
     override fun getUserGoals(userId: String): Flow<Resource<List<Goal>>> {
         return handleResponse.safeApiCall {
-            val snapshot = firestore.collection("goals")
+            val snapshot = firestore.collection(COLLECTION_GOALS)
                 .whereEqualTo("authorId", userId)
                 .get()
                 .await()
@@ -147,5 +130,10 @@ class GoalRepositoryImpl @Inject constructor(
             goalList
         }
     }
+
+    private companion object {
+        const val COLLECTION_GOALS = "goals"
+    }
 }
+
 

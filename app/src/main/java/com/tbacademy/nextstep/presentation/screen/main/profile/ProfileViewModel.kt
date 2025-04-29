@@ -7,7 +7,8 @@ import com.tbacademy.core.model.Resource
 import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.core.model.onSuccess
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdStringUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
 import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
@@ -18,7 +19,9 @@ import com.tbacademy.nextstep.presentation.base.launchEffect
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
 import com.tbacademy.nextstep.presentation.screen.main.profile.effect.ProfileEffect
 import com.tbacademy.nextstep.presentation.screen.main.profile.event.ProfileEvent
+import com.tbacademy.nextstep.presentation.screen.main.profile.mapper.sortByGoalStatus
 import com.tbacademy.nextstep.presentation.screen.main.profile.mapper.toPresentation
+import com.tbacademy.nextstep.presentation.screen.main.profile.model.GoalPresentation
 import com.tbacademy.nextstep.presentation.screen.main.profile.state.ProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -28,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
+    private val getAuthUserIdUseCase: GetAuthUserIdFlowUseCase,
+    private val getAuthUserIdStringUseCase: GetAuthUserIdStringUseCase,
     private val authManager: AuthManager,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
@@ -65,8 +69,7 @@ class ProfileViewModel @Inject constructor(
             if (userId == null)
                 updateState { this.copy(withBottomNav = true) }
 
-            // ☢️ TO Be Fixed!!!
-            val uid: String? = userId ?: authManager.getCurrentUserId()
+            val uid: String? = userId ?: getAuthUserIdStringUseCase()
             if (uid == null) {
                 emitEffect(ProfileEffect.ShowErrorMessage(errorRes = ApiError.UserNotFound.toMessageRes()))
             } else {
@@ -88,7 +91,12 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun onGoalSelected(goalId: String, goalTitle: String, isActive: Boolean, hasMilestones: Boolean) {
+    private fun onGoalSelected(
+        goalId: String,
+        goalTitle: String,
+        isActive: Boolean,
+        hasMilestones: Boolean
+    ) {
         launchEffect(
             effect = ProfileEffect.NavigateToGoalScreen(
                 goalId = goalId,
@@ -150,9 +158,14 @@ class ProfileViewModel @Inject constructor(
             getUserGoalsUseCase(userId = userId).collectLatest { resource ->
                 Log.d("USER_GOAL_RESOURCE", "${resource}")
                 when (resource) {
-                    is Resource.Success -> updateState { this.copy(userGoals = resource.data.map { it.toPresentation() }) }
-                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
-                    is Resource.Error -> updateState { this.copy(errorRes = resource.error.toMessageRes()) }
+                    is Resource.Success -> {
+                        val goals: List<GoalPresentation> = resource.data.map { it.toPresentation() }
+                        updateState {
+                            copy(userGoals = goals.sortByGoalStatus())
+                        }
+                    }
+                    is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
+                    is Resource.Error -> updateState { copy(errorRes = resource.error.toMessageRes()) }
                 }
             }
         }
