@@ -14,7 +14,6 @@ import com.tbacademy.nextstep.presentation.extension.collect
 import com.tbacademy.nextstep.presentation.screen.main.main_screen.MainFragmentDirections
 import com.tbacademy.nextstep.presentation.screen.main.settings.effect.SettingsEffect
 import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppLanguagePresentation
-import com.tbacademy.nextstep.presentation.screen.main.settings.model.AppThemePresentation
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -48,30 +47,10 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
                 is SettingsEffect.NavigateToLogin -> navigateToLogin()
                 is SettingsEffect.ShowErrorMessage -> {}
                 is SettingsEffect.ShowSuccessMessage -> {}
-                is SettingsEffect.ApplyTheme -> {
-                    applySystemTheme(theme = effect.theme)
-                    requireActivity().recreate()
-                }
 
                 is SettingsEffect.ApplyLanguage -> {
                     applyLanguage(effect.language)
                 }
-            }
-        }
-    }
-
-    private fun applySystemTheme(theme: AppThemePresentation) {
-        when (theme) {
-            AppThemePresentation.SYSTEM -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-            }
-
-            AppThemePresentation.LIGHT -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-
-            AppThemePresentation.DARK -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             }
         }
     }

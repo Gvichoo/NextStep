@@ -1,7 +1,5 @@
 package com.tbacademy.nextstep.di
 
-import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
-import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.auth_manager.CheckUserLoggedInUseCase
@@ -12,10 +10,6 @@ import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCase
 import com.tbacademy.nextstep.domain.usecase.comment.GetCommentsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CompleteGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CompleteGoalUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
-import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.CreateGoalUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
@@ -24,6 +18,12 @@ import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalStatusUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalStatusUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
+import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.CreateGoalFollowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCase
+import com.tbacademy.nextstep.domain.usecase.goal_follow.DeleteGoalFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCase
 import com.tbacademy.nextstep.domain.usecase.login.LogoutUserUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.notification.GetUserNotificationsUseCase
@@ -42,18 +42,6 @@ import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCase
 import com.tbacademy.nextstep.domain.usecase.post.GetPostsUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
-import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
-import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
-import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
-import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
-import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
-import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.preferences.ClearPreferencesStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.ClearValueFromPreferencesStorageUseCase
@@ -62,10 +50,20 @@ import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreference
 import com.tbacademy.nextstep.domain.usecase.preferences.ReadValueFromPreferencesStorageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCase
 import com.tbacademy.nextstep.domain.usecase.preferences.SaveValueToPreferencesStorageUseCaseImpl
-
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCaseImpl
-
+import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCase
+import com.tbacademy.nextstep.domain.usecase.reaction.CreateReactionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCase
+import com.tbacademy.nextstep.domain.usecase.reaction.DeleteReactionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCase
+import com.tbacademy.nextstep.domain.usecase.reaction.UpdateReactionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.theme.AutoSwitchDarkThemeIfBatteryLowUseCase
+import com.tbacademy.nextstep.domain.usecase.theme.AutoSwitchDarkThemeIfBatteryLowUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
+import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCase
+import com.tbacademy.nextstep.domain.usecase.user.SearchUsersUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCase
+import com.tbacademy.nextstep.domain.usecase.user.UpdateUserImageUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCase
 import com.tbacademy.nextstep.domain.usecase.user_follow.CreateUserFollowUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user_follow.DeleteUserFollowUseCase
@@ -74,11 +72,20 @@ import com.tbacademy.nextstep.domain.usecase.user_session.GetUserSessionUseCase
 import com.tbacademy.nextstep.domain.usecase.user_session.GetUserSessionUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.user_session.UpdateUserSessionUseCase
 import com.tbacademy.nextstep.domain.usecase.user_session.UpdateUserSessionUseCaseImpl
-
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDateUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricTargetUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricTargetUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricUnitUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricUnitUseCaseImpl
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMilestoneUseCase
+import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMilestoneUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateEmailUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateEmailUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateNecessaryFieldUseCase
@@ -89,14 +96,6 @@ import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateRe
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateRepeatedPasswordUseCaseImpl
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateUsernameUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.authorization.ValidateUsernameUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalTitleUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricTargetUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricTargetUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricUnitUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMetricUnitUseCaseImpl
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMilestoneUseCase
-import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateMilestoneUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -256,4 +255,11 @@ interface UseCaseModule {
 
     @Singleton @Binds
     fun bindMarkAllNotificationsAsReadUseCase(impl: MarkAllNotificationsAsReadUseCaseImpl): MarkAllNotificationsAsReadUseCase
+
+    // Theme
+    @Binds
+    @Singleton
+    fun bindAutoSwitchDarkThemeIfBatteryLowUseCase(
+        impl: AutoSwitchDarkThemeIfBatteryLowUseCaseImpl
+    ): AutoSwitchDarkThemeIfBatteryLowUseCase
 }

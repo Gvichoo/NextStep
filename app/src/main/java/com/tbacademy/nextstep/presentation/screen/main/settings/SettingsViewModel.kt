@@ -55,7 +55,6 @@ class SettingsViewModel @Inject constructor(
             updateState {
                 copy(selectedTheme = theme, isThemeDropdownExpanded = false)
             }
-            emitEffect(SettingsEffect.ApplyTheme(theme))
         }
     }
 
