@@ -95,15 +95,19 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                 btnCreateGoal.isEnabled = state.isCreateGoalEnabled
                 recycler.isVisible = state.isMileStoneEnabled
                 btnForAddAndMinusMileStoneEts.isVisible = state.isMileStoneEnabled
+                viewSpace.isVisible = state.isMileStoneEnabled
                 myAdapter.submitList(state.milestones)
 
                 state.imageUri?.let { uri ->
                     Glide.with(requireContext())
                         .load(uri)
-                        .into(image)
+                        .into(ivPreview)
                 }
 
-                tlImage.error = if (state.imageUri != null) null else state.goalImageErrorMessage?.let { getString(it) }
+                tvImageError.isVisible = state.goalImageErrorMessage != null
+                state.goalImageErrorMessage?.let {
+                    tvImageError.text = getString(it)
+                }
             }
         }
     }
@@ -167,7 +171,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
             registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
                 if (success) {
                     cameraImageUri?.let { uri ->
-                        binding.image.setImageURI(uri)
+                        binding.ivPreview.setImageURI(uri)
                         addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(uri)) // append uri to list
                         binding.btnCancelImage.isEnabled = true
                     }
@@ -234,7 +238,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
                     addGoalViewModel.onEvent(AddGoalEvent.ImageSelected(it))
-                    binding.image.setImageURI(it)
+                    binding.ivPreview.setImageURI(it)
                     binding.btnCancelImage.isEnabled = true
                 }
             }
@@ -243,7 +247,7 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private fun setDeleteImageButtonListener() {
         binding.btnCancelImage.setOnClickListener {
             // Clear both UI and backend
-            binding.image.setImageDrawable(null)
+            binding.ivPreview.setImageDrawable(null)
             deleteCameraFile()  // Add this
             addGoalViewModel.onEvent(AddGoalEvent.ImageCleared)
             binding.btnCancelImage.isEnabled = false
