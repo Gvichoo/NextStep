@@ -7,6 +7,7 @@ data class LoginState(
     val errorMessage: String? = null,
 
     val emailErrorMessage: Int? = null,
+    val emailForResetPasswordErrorMessage : Int? = null,
     val passwordErrorMessage: Int? = null
 ) {
     val isLogInEnabled: Boolean
