@@ -22,7 +22,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private val loginViewModel: LoginViewModel by viewModels()
 
-
     override fun start() {}
 
     override fun listeners() {
@@ -31,8 +30,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         setRememberMeCheckboxListener()
         setInputListeners()
     }
-
-
 
     override fun observers() {
         observeState()
@@ -72,9 +69,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         FirebaseAuth.getInstance().sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Snackbar.make(requireView(), "Reset email sent. Check your inbox!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),
+                        getString(R.string.reset_email_sent_check_your_inbox), Snackbar.LENGTH_SHORT).show()
                 } else {
-                    Snackbar.make(requireView(), "Failed to send reset email.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireView(),
+                        getString(R.string.failed_to_send_reset_email), Snackbar.LENGTH_SHORT).show()
                 }
             }
     }

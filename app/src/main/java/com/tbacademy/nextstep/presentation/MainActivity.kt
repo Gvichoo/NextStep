@@ -15,6 +15,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.material.snackbar.Snackbar
+import com.tbacademy.nextstep.R
 import com.tbacademy.nextstep.data.broadcast_reciever.BatteryReceiver
 import com.tbacademy.nextstep.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,6 +62,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpBatteryReceiver(){
         batteryReceiver = BatteryReceiver {
+            Snackbar.make(binding.root,
+                getString(R.string.battery_low_switched_to_dark_mode), Snackbar.LENGTH_LONG).show()
             switchToDarkTheme()
         }
 

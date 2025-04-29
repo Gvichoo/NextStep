@@ -156,5 +156,8 @@
     <string name="settings_title">Settings</string>
     <string name="switch_to_english">Switch to English</string>
     <string name="switch_to_georgian">Switch to Georgian</string>
+    <string name="battery_low_switched_to_dark_mode">Battery low — switched to dark mode</string>
+    <string name="reset_email_sent_check_your_inbox">Reset email sent. Check your inbox!</string>
+    <string name="failed_to_send_reset_email">Failed to send reset email.</string>
 
 </resources>
