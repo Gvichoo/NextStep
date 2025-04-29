@@ -15,7 +15,7 @@
         android:background="@null"
         app:layout_constraintTop_toTopOf="@id/ivProfile"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/btn_vertical_padding" />
+        android:layout_marginStart="@dimen/pd_screen_horizontal" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfile"
@@ -105,6 +105,18 @@
         tools:listitem="@layout/item_profile_goal"
         android:layout_height="0dp"
         />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNoGoals"
+        android:text="@string/no_goals_yet"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/rvGoals"
+        app:layout_constraintEnd_toEndOf="@id/rvGoals"
+        app:layout_constraintTop_toTopOf="@id/rvGoals"
+        app:layout_constraintBottom_toBottomOf="@id/rvGoals"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/pbGoals"

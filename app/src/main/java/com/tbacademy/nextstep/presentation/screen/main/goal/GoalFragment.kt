@@ -34,13 +34,14 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
     override fun start() {
         getPosts(goalId = args.goalId)
-        goalViewModel.onEvent(event = GoalEvent.CheckGoalAuthor(isOwnGoal = args.isOwnGoal))
+        goalViewModel.onEvent(event = GoalEvent.CheckGoalAuthor(isOwnGoal = args.isOwnGoal, hasMilestones = args.hasMilestones))
 
         setAdapter()
     }
 
     override fun listeners() {
         setCompleteBtnListener()
+        setBackBtnListener()
     }
 
     override fun observers() {
@@ -54,6 +55,7 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
 
             binding.apply {
                 pbPosts.isVisible = state.isLoading
+                btnMilestones.isVisible = state.hasMilestones && !state.posts.isNullOrEmpty()
                 btnComplete.isVisible = state.isOwnGoal && args.goalActive
                 tvGoalTitle.text = state.goalTitle
                 if (state.isGoalCompleteBottomSheetVisible) {
@@ -68,6 +70,7 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
             when (effect) {
                 is GoalEffect.OpenComments -> openCommentsBottomSheet(postId = effect.postId)
                 is GoalEffect.NavigateToCompleteGoal -> navigateToCompleteGoal(goalTitle = effect.goalTitle)
+                is GoalEffect.NavigateBack -> findNavController().navigateUp()
             }
         }
     }
@@ -75,7 +78,6 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
     private fun navigateToCompleteGoal(goalTitle: String) {
         val action = GoalFragmentDirections.actionGoalFragmentToCompleteGoalFragment(
             goalId = args.goalId,
-            // ☣️☢️ To be looked AGAIN
             goalTitle = goalTitle
         )
         findNavController().navigate(action)
@@ -93,6 +95,12 @@ class GoalFragment : BaseFragment<FragmentGoalBinding>(FragmentGoalBinding::infl
     private fun setCompleteBtnListener() {
         binding.btnComplete.setOnClickListener {
             goalViewModel.onEvent(event = GoalEvent.OpenCompleteGoalSheet)
+        }
+    }
+
+    private fun setBackBtnListener() {
+        binding.btnBack.setOnClickListener {
+            goalViewModel.onEvent(event = GoalEvent.Return)
         }
     }
 
