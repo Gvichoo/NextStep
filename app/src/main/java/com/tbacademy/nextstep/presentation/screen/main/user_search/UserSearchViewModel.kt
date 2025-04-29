@@ -19,9 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class UserSearchViewModel @Inject constructor(
     private val searchUsersUseCase: SearchUsersUseCase
-) : BaseViewModel<UserSearchState, UserSearchEvent, UserSearchEffect, Unit>(
-    initialState = UserSearchState(),
-    initialUiState = Unit
+) : BaseViewModel<UserSearchState, UserSearchEvent, UserSearchEffect>(
+    initialState = UserSearchState()
 ) {
     override fun onEvent(event: UserSearchEvent) {
         when (event) {

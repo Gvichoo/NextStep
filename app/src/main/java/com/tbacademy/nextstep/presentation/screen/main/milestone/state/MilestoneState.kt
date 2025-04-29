@@ -8,5 +8,6 @@ data class MilestoneState(
     val errorMessage: Int? = null,
     val isSuccess : Boolean = false,
     val authorId: String? = null,
-    val targetDate: Long? = null
+    val targetDate: Long? = null,
+    val isListVisible: Boolean = true,
 )

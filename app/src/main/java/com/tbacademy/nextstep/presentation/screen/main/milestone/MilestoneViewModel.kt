@@ -14,7 +14,6 @@ import com.tbacademy.nextstep.presentation.model.toPresentation
 import com.tbacademy.nextstep.presentation.screen.main.milestone.effect.MilestoneEffect
 import com.tbacademy.nextstep.presentation.screen.main.milestone.event.MilestoneEvent
 import com.tbacademy.nextstep.presentation.screen.main.milestone.state.MilestoneState
-import com.tbacademy.nextstep.presentation.screen.main.milestone.state.MilestoneUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,9 +25,8 @@ class MilestoneViewModel @Inject constructor(
     private val getGoalMilestones: GetMilestoneUseCase,
     private val updateGoalUseCase: UpdateGoalUseCase,
     private val getAuthUserIdUseCase: GetAuthUserIdUseCase
-) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect, MilestoneUiState>(
-    initialState = MilestoneState(),
-    initialUiState = MilestoneUiState()
+) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect>(
+    initialState = MilestoneState()
 ) {
 
     override fun onEvent(event: MilestoneEvent) {

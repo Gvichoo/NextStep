@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:text="Forgot Password?"
+        android:text="@string/forgot_password"
         android:textSize="@dimen/title_regular"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +38,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/distance_md"
         android:paddingVertical="@dimen/btn_vertical_padding"
-        android:text="Reset"
+        android:text="@string/send_the_request"
         android:textAllCaps="false"
         android:textSize="@dimen/body_regular"
         app:layout_constraintEnd_toEndOf="@id/tlEmail"
         app:layout_constraintStart_toStartOf="@id/tlEmail"
         app:layout_constraintTop_toBottomOf="@id/tlEmail" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="60dp"
+        android:alpha="0.1"
+        android:background="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnReset" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

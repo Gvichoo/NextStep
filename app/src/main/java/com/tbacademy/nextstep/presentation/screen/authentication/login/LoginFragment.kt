@@ -33,7 +33,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     override fun observers() {
         observeState()
-        observeUiState()
         observeEffect()
 
         setForgotPasswordListener()
@@ -58,7 +57,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 sendPasswordResetEmail(email)
                 dialog.dismiss()
             } else {
-                dialogBinding.tlEmail.error = "Email cannot be empty"
+                dialogBinding.tlEmail.error = getString(R.string.email_cannot_be_empty)
             }
         }
 
@@ -90,17 +89,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 tlPassword.error = state.passwordErrorMessage?.let { getString(it) }
 
                 btnLogin.isEnabled = state.isLogInEnabled
+                binding.apply {
+                    cbRememberMe.isChecked = state.rememberMe
+                }
             }
         }
     }
 
-    private fun observeUiState() {
-        collect(flow = loginViewModel.uiState) { state ->
-            binding.apply {
-                cbRememberMe.isChecked = state.rememberMe
-            }
-        }
-    }
 
     private fun setLogInBtnListener() {
         binding.btnLogin.setOnClickListener {

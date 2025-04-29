@@ -28,15 +28,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getAuthUserIdUseCase: GetAuthUserIdUseCase,
     private val authManager: AuthManager,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
     private val updateUserImageUseCase: UpdateUserImageUseCase,
     private val getUserGoalsUseCase: GetUserGoalsUseCase
-) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
-    initialState = ProfileState(),
-    initialUiState = Unit
+) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect>(
+    initialState = ProfileState()
 ) {
     override fun onEvent(event: ProfileEvent) {
         when (event) {

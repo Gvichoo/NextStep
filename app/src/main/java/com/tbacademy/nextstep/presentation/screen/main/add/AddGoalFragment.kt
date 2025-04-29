@@ -27,7 +27,6 @@ import com.tbacademy.nextstep.presentation.screen.main.add.adapter.MilestoneAdap
 import com.tbacademy.nextstep.presentation.screen.main.add.effect.AddGoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.add.event.AddGoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalState
-import com.tbacademy.nextstep.presentation.screen.main.add.state.AddGoalUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
@@ -77,7 +76,6 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
 
         observeState()
         observeEffects()
-        observeUiState()
         bindWorkerResultObserver()
 
     }
@@ -95,29 +93,21 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
 
 
                 btnCreateGoal.isEnabled = state.isCreateGoalEnabled
+                recycler.isVisible = state.isMileStoneEnabled
+                btnForAddAndMinusMileStoneEts.isVisible = state.isMileStoneEnabled
+                myAdapter.submitList(state.milestones)
 
-            }
-        }
-    }
-
-    private fun observeUiState() {
-        collect(flow = addGoalViewModel.uiState) { uiState ->
-            binding.apply {
-
-                recycler.isVisible = uiState.isMileStoneEnabled
-                btnForAddAndMinusMileStoneEts.isVisible = uiState.isMileStoneEnabled
-                myAdapter.submitList(uiState.milestones)
-
-                uiState.imageUri?.let { uri ->
+                state.imageUri?.let { uri ->
                     Glide.with(requireContext())
                         .load(uri)
                         .into(image)
                 }
 
-                tlImage.error = if (uiState.imageUri != null) null else uiState.goalImageErrorMessage?.let { getString(it) }
+                tlImage.error = if (state.imageUri != null) null else state.goalImageErrorMessage?.let { getString(it) }
             }
         }
     }
+
 
     private fun observeEffects() {
         collectLatest(flow = addGoalViewModel.effects) { effects ->
@@ -133,14 +123,14 @@ class AddGoalFragment : BaseFragment<FragmentAddGoalBinding>(FragmentAddGoalBind
     private fun bindWorkerResultObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                addGoalViewModel.uiState.collect {
+                addGoalViewModel.state.collect {
                     handleWorkerStatusState(it)
                 }
             }
         }
     }
 
-    private fun handleWorkerStatusState(state: AddGoalUiState) {
+    private fun handleWorkerStatusState(state: AddGoalState) {
 
         state.failedMessage?.let {
             addGoalViewModel.onEvent(AddGoalEvent.ResetFailToNull)

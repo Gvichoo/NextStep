@@ -13,7 +13,6 @@ import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
 import com.tbacademy.nextstep.presentation.screen.authentication.login.effect.LoginEffect
 import com.tbacademy.nextstep.presentation.screen.authentication.login.event.LoginEvent
 import com.tbacademy.nextstep.presentation.screen.authentication.login.state.LoginState
-import com.tbacademy.nextstep.presentation.screen.authentication.login.state.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,9 +23,8 @@ class LoginViewModel @Inject constructor(
     private val validateEmailUseCase: ValidateEmailUseCaseImpl,
     private val validateNecessaryFieldUseCase: ValidateNecessaryFieldUseCase,
 
-    ) : BaseViewModel<LoginState, LoginEvent, LoginEffect, LoginUiState>(
+    ) : BaseViewModel<LoginState, LoginEvent, LoginEffect>(
     initialState = LoginState(),
-    initialUiState = LoginUiState()
 ) {
 
     override fun onEvent(event: LoginEvent) {
@@ -43,7 +41,7 @@ class LoginViewModel @Inject constructor(
 
     // On Email Update
     private fun onEmailChanged(email: String) {
-        updateUiState { this.copy(email = email) }
+        updateState { this.copy(email = email) }
 
         val emailValidationResult = validateInputOnChange { validateEmailUseCase(email = email) }
         val emailErrorMessage: Int? = emailValidationResult?.getErrorMessageResId()
@@ -53,7 +51,7 @@ class LoginViewModel @Inject constructor(
 
     // On Password Update
     private fun onPasswordChanged(password: String) {
-        updateUiState { this.copy(password = password) }
+        updateState { this.copy(password = password) }
 
         val passwordValidationResult =
             validateInputOnChange { validateNecessaryFieldUseCase(input = password) }
@@ -64,22 +62,22 @@ class LoginViewModel @Inject constructor(
 
     // On Remember Me Update
     private fun onRememberMeChanged(rememberMe: Boolean) {
-        updateUiState { this.copy(rememberMe = rememberMe) }
+        updateState { this.copy(rememberMe = rememberMe) }
     }
 
     // On Submit
     private fun submitLogInForm() {
 
         val formIsValid = validateForm(
-            email = uiState.value.email,
-            password = uiState.value.password
+            email = state.value.email,
+            password = state.value.password
         )
 
         if (formIsValid) {
             loginUser(
-                email = uiState.value.email,
-                password = uiState.value.password,
-                rememberMe = uiState.value.rememberMe
+                email = state.value.email,
+                password = state.value.password,
+                rememberMe = state.value.rememberMe
             )
         } else {
             updateState { this.copy(formBeenSubmitted = true) }

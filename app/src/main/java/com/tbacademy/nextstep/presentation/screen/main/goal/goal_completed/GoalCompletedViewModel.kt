@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoalCompletedViewModel @Inject constructor() :
-    BaseViewModel<GoalCompletedState, GoalCompletedEvent, GoalCompletedEffect, Unit>
-        (initialState = GoalCompletedState(), initialUiState = Unit) {
+    BaseViewModel<GoalCompletedState, GoalCompletedEvent, GoalCompletedEffect>
+        (initialState = GoalCompletedState()) {
     override fun onEvent(event: GoalCompletedEvent) {
         when (event) {
             is GoalCompletedEvent.StartAnimation -> {

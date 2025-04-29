@@ -24,9 +24,8 @@ class PostMilestoneViewModel @Inject constructor(
     private val validateImageUseCase: ValidateImageUseCase,
     private val createPostUseCase: CreatePostUseCase
 
-) : BaseViewModel<PostMilestoneState, PostMilestoneEvent, PostMilestoneEffect, Unit>(
-    initialState = PostMilestoneState(),
-    initialUiState = Unit
+) : BaseViewModel<PostMilestoneState, PostMilestoneEvent, PostMilestoneEffect>(
+    initialState = PostMilestoneState()
 ) {
     override fun onEvent(event: PostMilestoneEvent) {
         when (event) {

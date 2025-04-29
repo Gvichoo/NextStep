@@ -10,7 +10,6 @@
     android:padding="16dp">
 
 
-
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/ivProfile"
         android:layout_width="50dp"
@@ -32,19 +31,20 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSeeMilestones"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:text="M"
-        android:textSize="22sp"
         android:textColor="@color/md_theme_error_mediumContrast"
-        android:backgroundTint="@android:color/transparent"
-        app:strokeWidth="0dp"
+        android:textSize="22sp"
         app:cornerRadius="20dp"
-        style="@style/Widget.Material3.Button.TextButton"
+        app:layout_constraintBottom_toTopOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="@id/btn_follow"
         app:layout_constraintTop_toBottomOf="@id/btn_follow"
-        app:layout_constraintEnd_toEndOf="@id/btn_follow" />
+        app:strokeWidth="0dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAuthor"
@@ -68,7 +68,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_md"
+        android:layout_marginTop="30dp"
         android:text="Write new misery novel"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -92,11 +92,21 @@
         android:id="@+id/tvPostType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_background"
+        android:gravity="center"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:text="Your Post Type"
         android:textColor="@color/black"
+        android:textSize="11sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivPostImage" />
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDescription"
@@ -180,7 +190,6 @@
         android:background="@color/md_theme_primary"
         app:layout_constraintTop_toBottomOf="@id/ivReaction1" />
 
-    <!--    React Btn   -->
     <LinearLayout
         android:id="@+id/btnReaction"
         android:layout_width="0dp"
@@ -197,8 +206,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivReactionIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_reaction_fire_24px" />
 
@@ -247,8 +256,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCommentIcon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_comment_24px" />
 
