@@ -17,9 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostViewModel @Inject constructor(
     private val getPostUseCase: GetPostUseCase
-) : BaseViewModel<PostState, PostEvent, PostEffect, Unit>(
-    initialState = PostState(),
-    initialUiState = Unit
+) : BaseViewModel<PostState, PostEvent, PostEffect>(
+    initialState = PostState()
 ) {
 
     override fun onEvent(event: PostEvent) {

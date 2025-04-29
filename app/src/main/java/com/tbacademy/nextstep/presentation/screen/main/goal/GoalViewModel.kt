@@ -21,9 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GoalViewModel @Inject constructor(
     private val getGoalPostsUseCase: GetGoalPostsUseCase
-) : BaseViewModel<GoalState, GoalEvent, GoalEffect, Unit>(
+) : BaseViewModel<GoalState, GoalEvent, GoalEffect,>(
     initialState = GoalState(),
-    initialUiState = Unit
 ) {
     override fun onEvent(event: GoalEvent) {
         when (event) {

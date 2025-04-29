@@ -37,9 +37,8 @@ class HomeViewModel @Inject constructor(
     private val deleteReactionUseCase: DeleteReactionUseCase,
     private val createFollowUseCase: CreateGoalFollowUseCase,
     private val deleteFollowUseCase: DeleteGoalFollowUseCase
-) : BaseViewModel<HomeState, HomeEvent, HomeEffect, Unit>(
+) : BaseViewModel<HomeState, HomeEvent, HomeEffect>(
     initialState = HomeState(),
-    initialUiState = Unit
 ) {
     private val debounceJobs = mutableMapOf<String, Job>()
 

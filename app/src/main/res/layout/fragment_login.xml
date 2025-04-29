@@ -132,20 +132,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text="do you forgot the password?"
+        android:text="@string/did_you_forgot_the_password"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="120dp"
+        android:textSize="@dimen/body_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnGoogleSignIn" />
 
-    <com.google.android.material.button.MaterialButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnResetPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="reset password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvForgot" />
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/reset_here"
+        android:layout_marginStart="@dimen/distance_sm"
+        android:textColor="@color/md_theme_primary"
+        android:textSize="@dimen/body_regular"
+        app:layout_constraintStart_toEndOf="@id/tvForgot"
+        app:layout_constraintTop_toTopOf="@id/tvForgot"
+         />
 
 
     <View

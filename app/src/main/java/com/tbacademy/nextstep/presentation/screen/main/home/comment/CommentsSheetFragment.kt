@@ -110,16 +110,10 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
 
     private fun observers() {
         observeState()
-        observeUiState()
         observeEffects()
     }
 
 
-    private fun observeUiState() {
-        collectLatest(flow = commentsViewModel.uiState) { state ->
-            binding.btnSend.isVisible = state.isSendEnabled
-        }
-    }
 
     private fun observeState() {
         collectLatest(flow = commentsViewModel.state) { state ->
@@ -130,7 +124,7 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
                 pgComments.isVisible = state.fetchLoading
                 btnSend.isVisible = !state.uploadLoading
                 pbSend.isVisible = state.uploadLoading
-
+                binding.btnSend.isVisible = state.isSendEnabled
                 if (state.comments != null) {
                     commentsAdapter.submitList(state.comments) {
                         binding.rvComments.scrollToPosition(0)

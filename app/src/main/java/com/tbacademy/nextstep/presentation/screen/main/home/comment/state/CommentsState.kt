@@ -8,5 +8,9 @@ data class CommentsState(
     val comments: List<CommentPresentation>? = null,
     val error: ApiError? = null,
     val fetchLoading: Boolean = false,
-    val uploadLoading: Boolean = false
-)
+    val uploadLoading: Boolean = false,
+    val comment: String = ""
+){
+    val isSendEnabled: Boolean
+        get() = comment.isNotEmpty()
+}

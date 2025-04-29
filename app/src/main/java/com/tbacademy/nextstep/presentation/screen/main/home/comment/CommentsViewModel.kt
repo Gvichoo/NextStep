@@ -12,7 +12,6 @@ import com.tbacademy.nextstep.presentation.screen.main.home.comment.event.Commen
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.mapper.toPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.model.CommentPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.comment.state.CommentsState
-import com.tbacademy.nextstep.presentation.screen.main.home.comment.state.CommentsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -23,9 +22,8 @@ class CommentsViewModel @Inject constructor(
     private val createCommentUseCase: CreateCommentUseCase,
     private val getCommentsUseCase: GetCommentsUseCase
 ) :
-    BaseViewModel<CommentsState, CommentsEvent, CommentsEffect, CommentsUiState>(
-        initialState = CommentsState(),
-        initialUiState = CommentsUiState()
+    BaseViewModel<CommentsState, CommentsEvent, CommentsEffect>(
+        initialState = CommentsState()
     ) {
     override fun onEvent(event: CommentsEvent) {
         when (event) {
@@ -51,7 +49,7 @@ class CommentsViewModel @Inject constructor(
     }
 
     private fun onCommentChanged(comment: String) {
-        updateUiState { this.copy(comment = comment) }
+        updateState { this.copy(comment = comment) }
     }
 
     private fun handleErrorReceived(error: ApiError) {
@@ -93,7 +91,7 @@ class CommentsViewModel @Inject constructor(
         viewModelScope.launch {
             createCommentUseCase(
                 postId = state.value.postId,
-                text = uiState.value.comment
+                text = state.value.comment
             ).collectLatest { resource ->
                 when (resource) {
                     is Resource.Error -> handleErrorReceived(error = resource.error)

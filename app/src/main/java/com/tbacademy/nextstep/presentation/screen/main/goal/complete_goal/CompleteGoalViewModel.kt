@@ -25,9 +25,8 @@ class CompleteGoalViewModel @Inject constructor(
     private val validateDescriptionUseCase: ValidateAddGoalDescriptionUseCase,
     private val completeGoalUseCase: CompleteGoalUseCase,
     private val validateImage: ValidateImageUseCase,
-) : BaseViewModel<CompleteGoalState, CompleteGoalEvent, CompleteGoalEffect, Unit>(
-    initialState = CompleteGoalState(),
-    initialUiState = Unit
+) : BaseViewModel<CompleteGoalState, CompleteGoalEvent, CompleteGoalEffect>(
+    initialState = CompleteGoalState()
 ) {
     override fun onEvent(event: CompleteGoalEvent) {
         when (event) {

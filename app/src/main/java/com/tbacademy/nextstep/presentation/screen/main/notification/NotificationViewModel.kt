@@ -19,8 +19,9 @@ import javax.inject.Inject
 class NotificationViewModel @Inject constructor(
     private val getUserNotificationsUseCase: GetUserNotificationsUseCase,
     private val markAllNotificationsAsReadUseCase: MarkAllNotificationsAsReadUseCase
-) : BaseViewModel<NotificationState, NotificationEvent, NotificationEffect, Unit>
-    (initialState = NotificationState(), initialUiState = Unit) {
+) : BaseViewModel<NotificationState, NotificationEvent, NotificationEffect>(
+    initialState = NotificationState()
+) {
     override fun onEvent(event: NotificationEvent) {
         when (event) {
             is NotificationEvent.GetNotifications -> getUserNotifications(isRefresh = event.refresh)

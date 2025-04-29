@@ -22,7 +22,7 @@
     <string name="register">რეგისტრაცია</string>
     <string name="i_already_have_an_account_underline"><u>მე უკვე მაქვს ეს ექაუნთი</u></string>
     <string name="username">ზედმეტსახელი</string>
-    <string name="field_is_empty">ველი ცარეიელია!</string>
+    <string name="field_is_empty">ველი ცარ იელია!</string>
     <string name="nickname_must_be_no_longer_than_20_characters">ზედმეტსახელი არ უნდა აღემატებოდეს 20 სიმბოლოს</string>
     <string name="nickname_can_only_contain_letters_numbers_and_underscores">ზედმეტსახელი უნდა შეიცავდეს მხოლოდ ასოებს,ციფრებსა და ქვედა ხაზებს</string>
     <string name="password_should_be_at_least_8_characters">პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან!</string>
@@ -95,8 +95,8 @@
     <string name="description">აღწერა</string>
     <string name="image">ფოტო</string>
     <string name="cancel">გაუქმება</string>
-    <string name="created_new_goal">ახალი მიზანი</string>
-    <string name="achieved_new_milestone">შევასრულე ახალი ეტაპები</string>
+    <string name="created_new_goal">მიზანი</string>
+    <string name="achieved_new_milestone">შევასრულე ახალი ეტაპი</string>
     <string name="completed_goal">მიზანი შესრულებულია!</string>
     <string name="sure">დათანხმება! 🎯</string>
     <string name="nope_still_grinding">არა, კვლავ ვმუშაობ 💪</string>
@@ -161,4 +161,17 @@
     <string name="settings_title">პარამეტრები</string>
     <string name="switch_to_english">გადასვლა ინგლისურზე</string>
     <string name="switch_to_georgian">გადასვლა ქართულზე</string>
+
+    <string name="battery_low_switched_to_dark_mode">ბატარეა დაბალია — გადავიდა ღამის რეჟიმზე</string>
+    <string name="reset_email_sent_check_your_inbox">პაროლის აღდგენი მოთხოვნა გაიგზავნა. შეამოწმე მეილი!</string>
+    <string name="failed_to_send_reset_email">იმეილზე მოთხოვნის გაგზავნა წარუმატებელია.</string>
+    <string name="no_goals_yet">მიზნები ცარიელია...</string>
+    <string name="email_cannot_be_empty">იმეილი არ უნდა იყოს ცარიელი</string>
+    <string name="forgot_password">დაგავიწყდა პაროლი?</string>
+    <string name="send_the_request">გააგზავნე მოთხოვნა</string>
+    <string name="did_you_forgot_the_password">დაგავიწყდა პაროლი?</string>
+    <string name="reset_here">აღადგინე აქ</string>
+
+    <string name="faileddd">წარუმატებელია</string>
+    <string name="not_achieved_yet">ჯერ არ არის შესრულებული</string>
 </resources>

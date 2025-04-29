@@ -9,6 +9,10 @@ data class RegisterState(
     val emailErrorMessage: Int? = null,
     val passwordErrorMessage: Int? = null,
     val repeatedPasswordErrorMessage: Int? = null,
+    val username: String = "",
+    val email: String = "",
+    val password: String = "",
+    val repeatedPassword: String = "",
 ) {
     val isSignUpEnabled: Boolean
         get() = emailErrorMessage == null && passwordErrorMessage == null && repeatedPasswordErrorMessage == null

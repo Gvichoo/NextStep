@@ -23,9 +23,8 @@ class SettingsViewModel @Inject constructor(
     private val logoutUserUseCase: LogoutUserUseCase,
     private val saveValueUseCase: SaveValueToPreferencesStorageUseCase,
     private val readValueUseCase: ReadValueFromPreferencesStorageUseCase
-) : BaseViewModel<SettingsState, SettingsEvent, SettingsEffect, Unit>(
+) : BaseViewModel<SettingsState, SettingsEvent, SettingsEffect>(
     initialState = SettingsState(),
-    initialUiState = Unit
 ) {
 
     init {

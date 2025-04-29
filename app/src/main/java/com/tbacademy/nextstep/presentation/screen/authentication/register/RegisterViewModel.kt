@@ -14,7 +14,6 @@ import com.tbacademy.nextstep.presentation.extension.getErrorMessageResId
 import com.tbacademy.nextstep.presentation.screen.authentication.register.effect.RegisterEffect
 import com.tbacademy.nextstep.presentation.screen.authentication.register.event.RegisterEvent
 import com.tbacademy.nextstep.presentation.screen.authentication.register.state.RegisterState
-import com.tbacademy.nextstep.presentation.screen.authentication.register.state.RegisterUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,9 +25,8 @@ class RegisterViewModel @Inject constructor(
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val validateRepeatedPasswordUseCase: ValidateRepeatedPasswordUseCase,
     private val registerUseCase: RegisterUseCase,
-) : BaseViewModel<RegisterState, RegisterEvent, RegisterEffect, RegisterUiState>(
+) : BaseViewModel<RegisterState, RegisterEvent, RegisterEffect>(
     initialState = RegisterState(),
-    initialUiState = RegisterUiState()
 ) {
     override fun onEvent(event: RegisterEvent) {
         when (event) {
@@ -45,7 +43,7 @@ class RegisterViewModel @Inject constructor(
 
     // On Username Update
     private fun onUsernameChanged(username: String) {
-        updateUiState { this.copy(username = username) }
+        updateState { this.copy(username = username) }
 
         val usernameValidationResult =
             validateInputOnChange { validateUsernameUseCase(username = username) }
@@ -55,7 +53,7 @@ class RegisterViewModel @Inject constructor(
 
     // On Email Update
     private fun onEmailChanged(email: String) {
-        updateUiState { this.copy(email = email) }
+        updateState { this.copy(email = email) }
 
         val emailValidationResult = validateInputOnChange { validateEmailUseCase(email = email) }
         val emailErrorMessage: Int? = emailValidationResult?.getErrorMessageResId()
@@ -64,13 +62,13 @@ class RegisterViewModel @Inject constructor(
 
     // On Password Update
     private fun onPasswordChanged(password: String) {
-        updateUiState { this.copy(password = password) }
+        updateState { this.copy(password = password) }
 
         val passwordValidationResult =
             validateInputOnChange { validatePasswordUseCase(password = password) }
         val repeatedPasswordValidationResult = validateInputOnChange {
             validateRepeatedPasswordUseCase(
-                repeatedPassword = uiState.value.repeatedPassword,
+                repeatedPassword = state.value.repeatedPassword,
                 password = password
             )
         }
@@ -89,16 +87,16 @@ class RegisterViewModel @Inject constructor(
 
     // On Repeated Password Update
     private fun onRepeatedPasswordChanged(repeatedPassword: String) {
-        updateUiState { this.copy(repeatedPassword = repeatedPassword) }
+        updateState { this.copy(repeatedPassword = repeatedPassword) }
 
         val repeatedPasswordValidationResult = validateInputOnChange {
             validateRepeatedPasswordUseCase(
                 repeatedPassword = repeatedPassword,
-                password = uiState.value.password
+                password = state.value.password
             )
         }
         val passwordValidationResult =
-            validateInputOnChange { validatePasswordUseCase(password = uiState.value.password) }
+            validateInputOnChange { validatePasswordUseCase(password = state.value.password) }
 
         val passwordErrorMessage: Int? = passwordValidationResult?.getErrorMessageResId()
         val repeatedPasswordErrorMessage: Int? =
@@ -116,17 +114,17 @@ class RegisterViewModel @Inject constructor(
     private fun submitRegisterForm() {
 
         val formIsValid = validateForm(
-            username = uiState.value.username,
-            email = uiState.value.email,
-            password = uiState.value.password,
-            repeatedPassword = uiState.value.repeatedPassword
+            username = state.value.username,
+            email = state.value.email,
+            password = state.value.password,
+            repeatedPassword = state.value.repeatedPassword
         )
 
         if (formIsValid) {
             registerUser(
-                username = uiState.value.username,
-                email = uiState.value.email,
-                password = uiState.value.password,
+                username = state.value.username,
+                email = state.value.email,
+                password = state.value.password,
             )
         } else {
             updateState { this.copy(formBeenSubmitted = true) }

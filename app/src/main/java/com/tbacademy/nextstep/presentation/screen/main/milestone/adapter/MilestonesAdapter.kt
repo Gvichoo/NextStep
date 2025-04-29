@@ -53,28 +53,31 @@ class MilestonesAdapter(
                 val now = Calendar.getInstance(TimeZone.getTimeZone("GMT+4")).timeInMillis
 
                 // If current time is greater than target date, mark as "failed"
-                if (targetMillis != null && now >= targetMillis) {
-                    chipStatus.text = itemView.context.getString(R.string.failed)
-                    chipStatus.isVisible = true
-                    chipStatus.setChipBackgroundColorResource(R.color.md_theme_errorContainer)
-                    chipStatus.setTextColor(itemView.context.getColor(R.color.md_theme_onErrorContainer))
-
-                    btnMarkAsDone.isVisible = false
-                    btnPost.isVisible = false
-                }
-                // If milestone is achieved, show "done"
-                else if (milestone.achieved) {
+                if (milestone.achieved) {
                     chipStatus.text = itemView.context.getString(R.string.done)
                     chipStatus.isVisible = true
                     chipStatus.setChipBackgroundColorResource(R.color.md_theme_tertiaryContainer)
                     chipStatus.setTextColor(itemView.context.getColor(R.color.md_theme_onTertiaryContainer))
 
+                    tvAchievedAt.text = milestone.achievedAt?.let { timestamp ->
+                        val date = timestamp.toDate()
+                        SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
+                    } ?: "Not Achieved Yet"
+
                     btnMarkAsDone.isVisible = false
                     btnPost.isVisible = milestone.isAuthor
-                }
-                // If milestone is still not achieved and time has not passed
-                else {
+                } else if (targetMillis != null && now >= targetMillis) {
+                    chipStatus.text = itemView.context.getString(R.string.failed)
+                    chipStatus.isVisible = true
+                    chipStatus.setChipBackgroundColorResource(R.color.md_theme_errorContainer)
+                    chipStatus.setTextColor(itemView.context.getColor(R.color.md_theme_onErrorContainer))
+                    tvAchievedAt.text = itemView.context.getString(R.string.faileddd)
+
+                    btnMarkAsDone.isVisible = false
+                    btnPost.isVisible = false
+                } else {
                     chipStatus.isVisible = false
+                    tvAchievedAt.text = itemView.context.getString(R.string.not_achieved_yet)
                     btnMarkAsDone.isVisible = milestone.isAuthor
                     btnPost.isVisible = false
                 }

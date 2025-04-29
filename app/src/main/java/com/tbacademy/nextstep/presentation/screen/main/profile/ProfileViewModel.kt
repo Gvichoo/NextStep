@@ -38,9 +38,8 @@ class ProfileViewModel @Inject constructor(
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
     private val updateUserImageUseCase: UpdateUserImageUseCase,
     private val getUserGoalsUseCase: GetUserGoalsUseCase
-) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect, Unit>(
-    initialState = ProfileState(),
-    initialUiState = Unit
+) : BaseViewModel<ProfileState, ProfileEvent, ProfileEffect>(
+    initialState = ProfileState()
 ) {
     override fun onEvent(event: ProfileEvent) {
         when (event) {

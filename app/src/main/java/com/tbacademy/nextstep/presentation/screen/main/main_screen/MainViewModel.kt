@@ -12,8 +12,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val listenForUnreadNotificationsUseCase: ListenForUnreadNotificationsUseCase
-) : BaseViewModel<MainState, MainEvent, Unit, Unit>
-    (initialState = MainState(), initialUiState = Unit) {
+) : BaseViewModel<MainState, MainEvent, Unit>(
+    initialState = MainState()
+) {
     override fun onEvent(event: MainEvent) {
         when (event) {
             is MainEvent.StartListeningForUnreadNotifications -> startListeningForUnreadNotifications()
