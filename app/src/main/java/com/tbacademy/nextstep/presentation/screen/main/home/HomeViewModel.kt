@@ -45,7 +45,11 @@ class HomeViewModel @Inject constructor(
 
     override fun onEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.FetchPosts -> fetchPosts(feedState = state.value.feedState)
+            is HomeEvent.FetchPosts -> fetchPosts(
+                feedState = state.value.feedState,
+                isRefresh = event.isRefresh
+            )
+
             is HomeEvent.HandleReactToPost -> reactToPost(
                 id = event.postId,
                 newReaction = event.reactionType
@@ -63,11 +67,16 @@ class HomeViewModel @Inject constructor(
                 typeActive = event.typeActive
             )
 
+            is HomeEvent.ToggleShouldScrollToTop -> updateState { copy(shouldScrollToTop = event.shouldScroll) }
+
             is HomeEvent.UserSelected -> onUserSelected(userId = event.userId)
             is HomeEvent.FeedStateSelected -> handleFeedStateChanged(event.feedState)
             is HomeEvent.StartSearch -> onStartSearch()
             is HomeEvent.OpenMilestone -> onMilestoneSelected(goalId = event.goalId)
-            is HomeEvent.OpenGoalFragment -> onPostTypeSelected(goalId = event.goalId, isOwnGoal = event.isOwnGoal)
+            is HomeEvent.OpenGoalFragment -> onPostTypeSelected(
+                goalId = event.goalId,
+                isOwnGoal = event.isOwnGoal
+            )
         }
     }
 
@@ -78,16 +87,17 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleFeedStateChanged(feedState: FeedState) {
+        updateState { copy(shouldScrollToTop = true) }
         if (state.value.feedState != feedState) {
-            updateState { this.copy(feedState = feedState) }
+            updateState { copy(feedState = feedState) }
             fetchPosts(feedState = feedState)
         }
     }
 
-    private fun fetchPosts(feedState: FeedState) {
+    private fun fetchPosts(feedState: FeedState, isRefresh: Boolean = false) {
         when (feedState) {
-            FeedState.GLOBAL -> getGlobalPosts()
-            FeedState.FOLLOWED -> getFollowedPosts()
+            FeedState.GLOBAL -> getGlobalPosts(isRefresh = isRefresh)
+            FeedState.FOLLOWED -> getFollowedPosts(isRefresh = isRefresh)
         }
     }
 
@@ -241,28 +251,59 @@ class HomeViewModel @Inject constructor(
 
 //    Api Calls
 
-    private fun getGlobalPosts() {
+    private fun getGlobalPosts(isRefresh: Boolean = false) {
         viewModelScope.launch {
+            if (isRefresh) {
+                updateState { copy(isRefreshing = true) }
+            }
             getPostsUseCase().collectLatest { resource ->
                 when (resource) {
-                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
-                    is Resource.Success -> updateState {
-                        this.copy(posts = resource.data.map { it.toPresentation() }) }
-                    is Resource.Error -> updateState { this.copy(error = resource.error) }
+                    is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
+
+                    is Resource.Success -> {
+                        updateState {
+                            copy(
+                                posts = resource.data.map { it.toPresentation() },
+                                isRefreshing = false
+                            )
+                        }
+                        emitEffect(effect = HomeEffect.ScrollToTop)
+                    }
+
+                    is Resource.Error -> updateState {
+                        copy(
+                            error = resource.error, isRefreshing = false
+                        )
+                    }
                 }
             }
         }
     }
 
-    private fun getFollowedPosts() {
+    private fun getFollowedPosts(isRefresh: Boolean = false) {
         viewModelScope.launch {
+            if (isRefresh) {
+                updateState { copy(isRefreshing = true) }
+            }
             getFollowedPostsUseCase().collectLatest { resource ->
                 when (resource) {
-                    is Resource.Loading -> updateState { this.copy(isLoading = resource.loading) }
-                    is Resource.Success -> updateState {
-                        this.copy(posts = resource.data.map { it.toPresentation() })
+                    is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
+
+                    is Resource.Success -> {
+                        updateState {
+                            copy(
+                                posts = resource.data.map { it.toPresentation() },
+                                isRefreshing = false
+                            )
+                        }
+                        emitEffect(effect = HomeEffect.ScrollToTop)
                     }
-                    is Resource.Error -> updateState { this.copy(error = resource.error) }
+
+                    is Resource.Error -> updateState {
+                        copy(
+                            error = resource.error, isRefreshing = false
+                        )
+                    }
                 }
             }
         }

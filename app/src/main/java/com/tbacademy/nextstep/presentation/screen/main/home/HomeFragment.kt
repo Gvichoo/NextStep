@@ -2,6 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.home
 
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -83,13 +84,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun start() {
-        homeViewModel.onEvent(HomeEvent.FetchPosts)
+        homeViewModel.onEvent(HomeEvent.FetchPosts())
         setPostsAdapter()
     }
 
     override fun listeners() {
         feedTypeToggleListener()
         searchBtnListener()
+        setReactionsSwipeListener()
     }
 
     override fun observers() {
@@ -100,7 +102,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun observeState() {
         collectLatest(flow = homeViewModel.state) { state ->
             postsAdapter.submitList(state.posts)
-            binding.pbPosts.isVisible = state.isLoading && state.posts.isNullOrEmpty()
+
+            if (state.shouldScrollToTop) {
+                binding.rvPosts.doOnNextLayout {
+                    binding.rvPosts.scrollToPosition(0)
+                    homeViewModel.onEvent(HomeEvent.ToggleShouldScrollToTop(false))
+                }
+
+            }
+            binding.apply {
+                pbPosts.isVisible = state.isLoading && state.posts.isNullOrEmpty()
+                swipeRefreshLayout.isRefreshing = state.isRefreshing
+                state.posts?.let {
+                    pbHeader.isVisible =
+                        state.isLoading && state.posts.isNotEmpty() && !state.isRefreshing
+                }
+            }
 
             Log.d("HOME_STATE", "$state")
         }
@@ -122,6 +139,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     goalId = effect.goalId,
                     isOwnGoal = effect.isOwnGoal
                 )
+
+                is HomeEffect.ScrollToTop -> {
+                    binding.rvPosts.scrollToPosition(0)
+                }
             }
         }
     }
@@ -146,6 +167,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun searchBtnListener() {
         binding.btnSearch.setOnClickListener {
             homeViewModel.onEvent(HomeEvent.StartSearch)
+        }
+    }
+
+    private fun setReactionsSwipeListener() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            homeViewModel.onEvent(event = HomeEvent.FetchPosts(isRefresh = true))
         }
     }
 

@@ -5,9 +5,11 @@ import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentati
 
 data class HomeState(
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
     val posts: List<PostPresentation>? = null,
     val error: ApiError? = null,
-    val feedState: FeedState = FeedState.GLOBAL
+    val feedState: FeedState = FeedState.GLOBAL,
+    val shouldScrollToTop: Boolean = false
 )
 
 enum class FeedState {

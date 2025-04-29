@@ -4,7 +4,7 @@ import com.tbacademy.nextstep.presentation.screen.main.home.model.ReactionTypePr
 import com.tbacademy.nextstep.presentation.screen.main.home.state.FeedState
 
 sealed interface HomeEvent {
-    data object FetchPosts : HomeEvent
+    data class FetchPosts(val isRefresh: Boolean = false) : HomeEvent
     data class HandleReactToPost(val postId: String, val reactionType: ReactionTypePresentation?) :
         HomeEvent
 
@@ -16,4 +16,5 @@ sealed interface HomeEvent {
     data class FeedStateSelected(val feedState: FeedState) : HomeEvent
     data class OpenMilestone(val goalId: String) : HomeEvent
     data class OpenGoalFragment(val goalId: String, val isOwnGoal: Boolean) : HomeEvent
+    data class ToggleShouldScrollToTop(val shouldScroll: Boolean): HomeEvent
 }

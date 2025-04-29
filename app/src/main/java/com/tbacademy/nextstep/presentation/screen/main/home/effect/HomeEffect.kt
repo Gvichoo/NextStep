@@ -7,5 +7,5 @@ sealed interface HomeEffect {
     data object NavigateToUserSearch : HomeEffect
     data class NavigateToMilestone(val goalId: String) : HomeEffect
     data class NavigateToGoal(val goalId: String, val isOwnGoal: Boolean) : HomeEffect
-
+    data object ScrollToTop: HomeEffect
 }
