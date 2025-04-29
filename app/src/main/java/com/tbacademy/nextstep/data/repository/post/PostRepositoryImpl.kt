@@ -5,10 +5,10 @@ import android.net.Uri
 import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.data.common.mapper.toDomain
 import com.tbacademy.nextstep.data.httpHelper.HandleResponse
@@ -25,7 +25,6 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val firebaseStorage: FirebaseStorage,
-    private val firebaseAuth: FirebaseAuth,
     private val handleResponse: HandleResponse
 
 ) : PostRepository {
@@ -38,16 +37,16 @@ class PostRepositoryImpl @Inject constructor(
                 .get()
                 .await()
 
-            val postDtos = postSnapshot.documents.mapNotNull {
+            val postDtoList: List<PostDto> = postSnapshot.documents.mapNotNull {
                 it.toObject(PostDto::class.java)?.copy(id = it.id)
             }
 
-            val postIds = postDtos.map { it.id }
+            val postIds: List<String> = postDtoList.map { it.id }
 
             val followedGoals = getFollowedGoals(userId)
             val reactions = getUserReactions(userId, postIds)
 
-            mapPostDtos(postDtos, reactions, followedGoals, userId)
+            mapPostDtos(postDtoList, reactions, followedGoals, userId)
         }
     }
 
@@ -99,7 +98,7 @@ class PostRepositoryImpl @Inject constructor(
             val username = userSnapshot.getString("username")
                 ?: throw UserNotAuthenticatedException("User Not Found")
 
-            val storageRef = firebaseStorage.reference
+            val storageRef: StorageReference = firebaseStorage.reference
                 .child("milestone_post_images/${userId}/${System.currentTimeMillis()}")
                 storageRef.putFile(imageUri).await()
             val imageUrl = storageRef.downloadUrl.await().toString()
