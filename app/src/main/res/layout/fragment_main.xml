@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".presentation.screen.main.main_screen.MainFragment">
 
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
