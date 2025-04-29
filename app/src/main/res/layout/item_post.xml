@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:shapeAppearanceOverlay="@style/RoundedImageShape" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPostType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,10 +98,10 @@
         android:gravity="center"
         android:paddingStart="12dp"
         android:paddingTop="8dp"
+        android:textColor="@color/md_theme_surface"
         android:paddingEnd="12dp"
         android:paddingBottom="8dp"
         android:text="Your Post Type"
-        android:textColor="@color/black"
         android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
