@@ -75,7 +75,7 @@ class MilestoneFragment :
             binding.apply {
                 targetDate = state.targetDate
                 adapter.submitList(state.milestoneList)
-                milestoneLoader.loaderContainer.isVisible = state.isLoading
+                pbMilestones.isVisible = state.isLoading
             }
         }
     }

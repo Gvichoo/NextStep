@@ -2,6 +2,7 @@ package com.tbacademy.nextstep.presentation.screen.main.home
 
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -103,10 +104,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             postsAdapter.submitList(state.posts)
 
             if (state.shouldScrollToTop) {
-//                binding.rvPosts.doOnNextLayout {
-//                    binding.rvPosts.scrollToPosition(0)
-//                    homeViewModel.onEvent(HomeEvent.ToggleShouldScrollToTop(shouldScroll = false))
-//                }
+                binding.rvPosts.doOnNextLayout {
+                    binding.rvPosts.scrollToPosition(0)
+                    homeViewModel.onEvent(HomeEvent.ToggleShouldScrollToTop(shouldScroll = false))
+                }
             }
 
             Log.d("SHOULD_SCROLL?", "${state.shouldScrollToTop.toString()}")

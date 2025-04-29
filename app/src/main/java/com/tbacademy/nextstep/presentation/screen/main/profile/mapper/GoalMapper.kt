@@ -23,6 +23,19 @@ fun Goal.toPresentation(): GoalPresentation {
     )
 }
 
+fun List<GoalPresentation>.sortByGoalStatus(): List<GoalPresentation> {
+    return sortedWith(
+        compareBy<GoalPresentation> (
+            { when (it.goalStatus) {
+                GoalStatusPresentation.ACTIVE -> 0
+                GoalStatusPresentation.COMPLETED -> 1
+                GoalStatusPresentation.FAILED -> 2
+            }},
+            { it.title }
+        )
+    )
+}
+
 fun GoalStatus.toPresentation(): GoalStatusPresentation = when (this) {
     GoalStatus.ACTIVE    -> GoalStatusPresentation.ACTIVE
     GoalStatus.COMPLETED -> GoalStatusPresentation.COMPLETED

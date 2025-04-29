@@ -4,32 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".presentation.screen.main.milestone.MilestoneFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="@dimen/icon_btn_dimen"
+            android:layout_height="@dimen/icon_btn_dimen"
+            android:background="@null"
+            android:layout_marginStart="@dimen/pd_screen_horizontal"
+            android:layout_marginTop="@dimen/distance_md"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMilestones"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/distance_sm"
+            android:layout_marginTop="@dimen/distance_xs"
             android:text="@string/milestones"
             android:textSize="@dimen/title_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tvMilestones" />
+            app:layout_constraintTop_toBottomOf="@id/tvMilestones"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-        <include
-            android:id="@+id/milestoneLoader"
-            layout="@layout/loader" />
+        <ProgressBar
+            android:id="@+id/pbMilestones"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/recycler"
+            app:layout_constraintBottom_toBottomOf="@id/recycler"
+            app:layout_constraintStart_toStartOf="@id/recycler"
+            app:layout_constraintEnd_toEndOf="@id/recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,6 +11,7 @@ fun Post.toPresentation(): PostPresentation {
         id = id,
         authorId = authorId,
         authorUsername = authorUsername,
+        authorProfilePictureUrl = authorProfilePictureUrl,
         title = title,
         description = description,
         goalId = goalId,

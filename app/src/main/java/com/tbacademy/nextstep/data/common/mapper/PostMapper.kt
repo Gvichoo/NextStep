@@ -9,6 +9,7 @@ fun PostDto.toDomain(): Post {
         title = title,
         description = description,
         authorUsername = authorUsername,
+        authorProfilePictureUrl = authorProfilePictureUrl,
         authorId = authorId,
         goalId = goalId,
         commentCount = commentCount,

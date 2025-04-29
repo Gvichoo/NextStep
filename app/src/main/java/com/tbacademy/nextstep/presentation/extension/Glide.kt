@@ -33,7 +33,7 @@ fun ImageView.loadProfilePictureGlide(url: String?) {
 
     val request = Glide.with(this)
         .load(imageUrl)
-        .error(R.drawable.ic_launcher_foreground)
-        .placeholder(R.drawable.img_placeholder)
+        .error(R.drawable.df_profile_picture)
+        .placeholder(R.drawable.df_profile_picture)
     request.into(this)
 }

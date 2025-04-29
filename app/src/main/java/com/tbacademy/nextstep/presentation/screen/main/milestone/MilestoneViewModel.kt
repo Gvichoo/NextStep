@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.tbacademy.core.model.Resource
 import com.tbacademy.nextstep.domain.usecase.goal.UpdateGoalUseCase
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
+import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetMilestoneUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.common.mapper.toMessageRes
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class MilestoneViewModel @Inject constructor(
     private val getGoalMilestones: GetMilestoneUseCase,
     private val updateGoalUseCase: UpdateGoalUseCase,
-    private val getAuthUserIdUseCase: GetAuthUserIdUseCase
+    private val getAuthUserIdUseCase: GetAuthUserIdFlowUseCase
 ) : BaseViewModel<MilestoneState, MilestoneEvent, MilestoneEffect, MilestoneUiState>(
     initialState = MilestoneState(),
     initialUiState = MilestoneUiState()

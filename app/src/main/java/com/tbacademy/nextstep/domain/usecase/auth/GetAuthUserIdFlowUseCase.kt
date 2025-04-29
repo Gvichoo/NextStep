@@ -5,13 +5,13 @@ import com.tbacademy.nextstep.domain.repository.auth.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-interface GetAuthUserIdUseCase {
+interface GetAuthUserIdFlowUseCase {
     suspend operator fun invoke(): Flow<Resource<String>>
 }
 
-class GetAuthUserIdUseCaseImpl @Inject constructor(
+class GetAuthUserIdFlowUseCaseImpl @Inject constructor(
     private val authRepository: AuthRepository
-): GetAuthUserIdUseCase {
+): GetAuthUserIdFlowUseCase {
     override suspend fun invoke(): Flow<Resource<String>> {
         return authRepository.getCurrentUserId()
     }

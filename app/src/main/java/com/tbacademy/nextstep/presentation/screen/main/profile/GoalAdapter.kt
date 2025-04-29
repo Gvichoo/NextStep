@@ -30,7 +30,7 @@ class GoalAdapter(
         fun onBind(goal: GoalPresentation) {
             binding.apply {
                 tvGoalTitle.text = goal.title
-                tvGoalStatus.text = goal.goalStatus.toString()
+                tvGoalStatus.text = itemView.context.getString(goal.goalStatus.titleRes)
                 tvGoalStatus.setTextColor(ContextCompat.getColor(itemView.context, goal.goalStatus.statusColorRes))
                 ivGoal.loadProfilePictureGlide(url = goal.imageUrl)
 

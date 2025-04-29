@@ -3,6 +3,7 @@ package com.tbacademy.nextstep.presentation.screen.main.goal
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.core.model.Resource
+import com.tbacademy.nextstep.domain.extension.sortedByOldest
 import com.tbacademy.nextstep.domain.usecase.post.GetGoalPostsUseCase
 import com.tbacademy.nextstep.presentation.base.BaseViewModel
 import com.tbacademy.nextstep.presentation.base.launchEffect
@@ -10,6 +11,7 @@ import com.tbacademy.nextstep.presentation.screen.main.goal.effect.GoalEffect
 import com.tbacademy.nextstep.presentation.screen.main.goal.event.GoalEvent
 import com.tbacademy.nextstep.presentation.screen.main.goal.state.GoalState
 import com.tbacademy.nextstep.presentation.screen.main.home.mapper.toPresentation
+import com.tbacademy.nextstep.presentation.screen.main.home.model.PostPresentation
 import com.tbacademy.nextstep.presentation.screen.main.home.model.PostTypePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +43,7 @@ class GoalViewModel @Inject constructor(
             }
 
             is GoalEvent.ProceedWithGoalCompletion -> onProceedWithGoalCompletion()
+            is GoalEvent.MilestonesSelected -> launchEffect(effect = GoalEffect.NavigateToMilestones(goalId = event.goalId))
             is GoalEvent.Return -> launchEffect(effect = GoalEffect.NavigateBack)
         }
     }
@@ -63,7 +66,7 @@ class GoalViewModel @Inject constructor(
 
                     is Resource.Loading -> updateState { copy(isLoading = resource.loading) }
                     is Resource.Success -> {
-                        val posts = resource.data.map { it.toPresentation() }
+                        val posts: List<PostPresentation> = resource.data.sortedByOldest().map { it.toPresentation() }
 
                         updateState {
                             copy(posts = posts, goalTitle = posts.firstOrNull { it.type == PostTypePresentation.GOAL }?.title)

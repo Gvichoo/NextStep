@@ -19,8 +19,8 @@ data class GoalPresentation(
     val milestone : List<MilestoneItem>? = emptyList()
 )
 
-enum class GoalStatusPresentation(val statusColorRes: Int){
-    ACTIVE(statusColorRes = R.color.active),
-    COMPLETED(statusColorRes = R.color.completed),
-    FAILED(statusColorRes = R.color.failed)
+enum class GoalStatusPresentation(val statusColorRes: Int, val titleRes: Int){
+    ACTIVE(statusColorRes = R.color.active, titleRes = R.string.active),
+    COMPLETED(statusColorRes = R.color.completed, titleRes = R.string.Complete),
+    FAILED(statusColorRes = R.color.failed, titleRes = R.string.Failed)
 }
