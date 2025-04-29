@@ -23,7 +23,7 @@ class GoalDiffUtil : DiffUtil.ItemCallback<GoalPresentation>() {
 }
 
 class GoalAdapter(
-    private val goalClicked: (goalId: String, goalTitle: String, isActive: Boolean) -> Unit
+    private val goalClicked: (goalId: String, goalTitle: String, isActive: Boolean, hasMilestones: Boolean) -> Unit
 ) : ListAdapter<GoalPresentation, GoalAdapter.GoalViewHolder>(GoalDiffUtil()) {
     inner class GoalViewHolder(private val binding: ItemProfileGoalBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -35,7 +35,7 @@ class GoalAdapter(
                 ivGoal.loadProfilePictureGlide(url = goal.imageUrl)
 
                 root.setOnClickListener {
-                    goalClicked(goal.id, goal.title, goal.goalStatus == GoalStatusPresentation.ACTIVE)
+                    goalClicked(goal.id, goal.title, goal.goalStatus == GoalStatusPresentation.ACTIVE, !goal.milestone.isNullOrEmpty())
                 }
             }
         }

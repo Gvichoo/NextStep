@@ -87,8 +87,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun handleFeedStateChanged(feedState: FeedState) {
-        updateState { copy(shouldScrollToTop = true) }
         if (state.value.feedState != feedState) {
+            updateState { copy(shouldScrollToTop = true) }
             updateState { copy(feedState = feedState) }
             fetchPosts(feedState = feedState)
         }
@@ -254,7 +254,7 @@ class HomeViewModel @Inject constructor(
     private fun getGlobalPosts(isRefresh: Boolean = false) {
         viewModelScope.launch {
             if (isRefresh) {
-                updateState { copy(isRefreshing = true) }
+                updateState { copy(isRefreshing = true, shouldScrollToTop = true) }
             }
             getPostsUseCase().collectLatest { resource ->
                 when (resource) {
@@ -267,7 +267,6 @@ class HomeViewModel @Inject constructor(
                                 isRefreshing = false
                             )
                         }
-                        emitEffect(effect = HomeEffect.ScrollToTop)
                     }
 
                     is Resource.Error -> updateState {
@@ -283,7 +282,7 @@ class HomeViewModel @Inject constructor(
     private fun getFollowedPosts(isRefresh: Boolean = false) {
         viewModelScope.launch {
             if (isRefresh) {
-                updateState { copy(isRefreshing = true) }
+                updateState { copy(isRefreshing = true, shouldScrollToTop = true) }
             }
             getFollowedPostsUseCase().collectLatest { resource ->
                 when (resource) {
@@ -296,7 +295,6 @@ class HomeViewModel @Inject constructor(
                                 isRefreshing = false
                             )
                         }
-                        emitEffect(effect = HomeEffect.ScrollToTop)
                     }
 
                     is Resource.Error -> updateState {

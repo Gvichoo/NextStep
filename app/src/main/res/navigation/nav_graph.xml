@@ -122,6 +122,10 @@
             android:name="goalActive"
             app:argType="boolean"
             android:defaultValue="false" />
+        <argument
+            android:name="hasMilestones"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment

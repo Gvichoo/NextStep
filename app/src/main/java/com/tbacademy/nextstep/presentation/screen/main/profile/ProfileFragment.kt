@@ -32,14 +32,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private val goalAdapter by lazy {
         GoalAdapter(
-            goalClicked = { goalId, goalTitle, isActive ->
+            goalClicked = { goalId, goalTitle, isActive, hasMilestones ->
                 profileViewModel.onEvent(
                     ProfileEvent.GoalSelected(
                         goalId = goalId,
                         goalTitle = goalTitle,
-                        isActive = isActive
+                        isActive = isActive,
+                        hasMilestones = hasMilestones
                     )
                 )
+                Log.d("HAS_MILESTONES", hasMilestones.toString())
             }
         )
     }
@@ -81,7 +83,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     goalId = effect.goalId,
                     goalTitle = effect.goalTitle,
                     ownGoal = effect.ownGoal,
-                    isActive = effect.isActive
+                    isActive = effect.isActive,
+                    hasMilestones = effect.hasMilestones
                 )
             }
         }
@@ -98,6 +101,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
                 if (state.user != null) {
                     goalAdapter.submitList(state.userGoals)
+                    state.userGoals?.let {
+                        binding.tvNoGoals.isVisible = it.isEmpty()
+                    }
 
                     state.user.profilePictureUrl?.let {
                         ivProfile.loadImagesGlide(url = it)
@@ -133,13 +139,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
-    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean, isActive: Boolean) {
+    private fun navigateToGoalScreen(goalId: String, goalTitle: String, ownGoal: Boolean, isActive: Boolean, hasMilestones: Boolean) {
         if (ownGoal) {
             val action = MainFragmentDirections.actionMainFragmentToGoalFragment2(
                 goalId = goalId,
                 goalTitle = goalTitle,
                 isOwnGoal = true,
-                goalActive = isActive
+                goalActive = isActive,
+                hasMilestones = hasMilestones
             )
             requireActivity().findNavController(R.id.fragmentContainerView).navigate(action)
         } else {

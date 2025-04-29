@@ -27,7 +27,7 @@ class GoalViewModel @Inject constructor(
         when (event) {
             is GoalEvent.FetchGoalPosts -> getPosts(goalId = event.goalId)
             is GoalEvent.CommentSelected -> launchEffect(effect = GoalEffect.OpenComments(postId = event.postId))
-            is GoalEvent.CheckGoalAuthor -> onCheckAuthor(isOwnGoal = event.isOwnGoal)
+            is GoalEvent.CheckGoalAuthor -> updateState { copy(isOwnGoal = event.isOwnGoal, hasMilestones = event.hasMilestones) }
             is GoalEvent.OpenCompleteGoalSheet -> updateState {
                 copy(
                     isGoalCompleteBottomSheetVisible = true
@@ -41,14 +41,10 @@ class GoalViewModel @Inject constructor(
             }
 
             is GoalEvent.ProceedWithGoalCompletion -> onProceedWithGoalCompletion()
+            is GoalEvent.Return -> launchEffect(effect = GoalEffect.NavigateBack)
         }
     }
 
-    private fun onCheckAuthor(isOwnGoal: Boolean) {
-        viewModelScope.launch {
-            updateState { copy(isOwnGoal = isOwnGoal) }
-        }
-    }
 
     private fun onProceedWithGoalCompletion() {
         state.value.goalTitle?.let {

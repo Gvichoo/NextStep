@@ -159,5 +159,6 @@
     <string name="battery_low_switched_to_dark_mode">Battery low — switched to dark mode</string>
     <string name="reset_email_sent_check_your_inbox">Reset email sent. Check your inbox!</string>
     <string name="failed_to_send_reset_email">Failed to send reset email.</string>
+    <string name="no_goals_yet">No Goals Yet...</string>
 
 </resources>

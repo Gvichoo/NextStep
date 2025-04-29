@@ -3,8 +3,8 @@ package com.tbacademy.nextstep.presentation.screen.main.profile
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.core.model.Resource
+import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.core.model.onSuccess
 import com.tbacademy.nextstep.domain.manager.auth.AuthManager
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdUseCase
@@ -50,7 +50,8 @@ class ProfileViewModel @Inject constructor(
             is ProfileEvent.GoalSelected -> onGoalSelected(
                 goalId = event.goalId,
                 goalTitle = event.goalTitle,
-                isActive = event.isActive
+                isActive = event.isActive,
+                hasMilestones = event.hasMilestones
             )
         }
     }
@@ -87,13 +88,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    private fun onGoalSelected(goalId: String, goalTitle: String, isActive: Boolean) {
+    private fun onGoalSelected(goalId: String, goalTitle: String, isActive: Boolean, hasMilestones: Boolean) {
         launchEffect(
             effect = ProfileEffect.NavigateToGoalScreen(
                 goalId = goalId,
                 goalTitle = goalTitle,
                 ownGoal = state.value.withBottomNav,
-                isActive = isActive
+                isActive = isActive,
+                hasMilestones = hasMilestones
             )
         )
     }
