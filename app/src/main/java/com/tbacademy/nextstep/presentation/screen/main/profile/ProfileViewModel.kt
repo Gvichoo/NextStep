@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.tbacademy.core.model.Resource
 import com.tbacademy.core.model.error.ApiError
 import com.tbacademy.core.model.onSuccess
-import com.tbacademy.nextstep.domain.manager.auth.AuthManager
-import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdFlowUseCase
 import com.tbacademy.nextstep.domain.usecase.auth.GetAuthUserIdStringUseCase
 import com.tbacademy.nextstep.domain.usecase.goal.GetUserGoalsUseCase
 import com.tbacademy.nextstep.domain.usecase.user.GetUserInfoUseCase
@@ -31,9 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getAuthUserIdUseCase: GetAuthUserIdFlowUseCase,
     private val getAuthUserIdStringUseCase: GetAuthUserIdStringUseCase,
-    private val authManager: AuthManager,
     private val createUserFollowUseCase: CreateUserFollowUseCase,
     private val deleteUserFollowUseCase: DeleteUserFollowUseCase,
     private val updateUserImageUseCase: UpdateUserImageUseCase,
