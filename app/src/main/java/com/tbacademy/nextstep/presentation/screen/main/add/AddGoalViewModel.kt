@@ -75,20 +75,20 @@ class AddGoalViewModel @Inject constructor(
             is AddGoalEvent.GoalMetricTargetChanged -> onMetricTargetChanged(metricTarget = event.metricTarget)
             is AddGoalEvent.GoalMetricUnitChanged -> onMetricUnitChanged(metricUnit = event.metricUnit)
 
-            is AddGoalEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
+            is AddGoalEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri, goalImageErrorMessage = null) }
             is AddGoalEvent.PickImageClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.LaunchMediaPicker) }
             is AddGoalEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
 
 
             is AddGoalEvent.MileStoneToggle -> updateState { this.copy(isMileStoneEnabled = event.enabled) }
-            AddGoalEvent.OnAddMilestoneButtonClicked -> onAddMilestone()
-            AddGoalEvent.OnMinusMileStoneButtonClicked -> onRemoveMilestone()
+            is AddGoalEvent.OnAddMilestoneButtonClicked -> onAddMilestone()
+            is AddGoalEvent.OnMinusMileStoneButtonClicked -> onRemoveMilestone()
 
             is AddGoalEvent.OnMilestoneTextChanged -> onMilestoneTextChanged(event.id, event.text)
-            AddGoalEvent.ResetBlockToNull -> resetBlocked()
-            AddGoalEvent.ResetCancelToNull -> resetCancelled()
-            AddGoalEvent.ResetFailToNull -> resetFailed()
-            AddGoalEvent.ResetSuccessToNull -> resetUploadedSuccessfully()
+            is AddGoalEvent.ResetBlockToNull -> resetBlocked()
+            is AddGoalEvent.ResetCancelToNull -> resetCancelled()
+            is AddGoalEvent.ResetFailToNull -> resetFailed()
+            is AddGoalEvent.ResetSuccessToNull -> resetUploadedSuccessfully()
         }
     }
 
