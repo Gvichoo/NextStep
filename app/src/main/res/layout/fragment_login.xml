@@ -76,26 +76,6 @@
         app:layout_constraintStart_toStartOf="@id/tlEmail"
         app:layout_constraintTop_toBottomOf="@id/cbRememberMe" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnGoogleSignIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/distance_md"
-        android:backgroundTint="@android:color/transparent"
-        android:paddingVertical="@dimen/btn_vertical_padding"
-        android:text="@string/continue_with_google"
-        android:textAllCaps="false"
-        android:textColor="@color/md_theme_primary"
-        android:textSize="@dimen/body_regular"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="textStart"
-        app:iconTint="@null"
-        app:layout_constraintEnd_toEndOf="@id/tlEmail"
-        app:layout_constraintStart_toStartOf="@id/tlEmail"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
-        app:strokeColor="@color/md_theme_primary"
-        app:strokeWidth="2dp" />
-
     <LinearLayout
         android:id="@+id/LayoutSignUp"
         android:layout_width="wrap_content"
@@ -105,7 +85,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogleSignIn">
+        app:layout_constraintTop_toBottomOf="@id/btnLogin">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvHaveAccount"
@@ -137,7 +117,7 @@
         android:layout_marginEnd="120dp"
         android:textSize="@dimen/body_regular"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnGoogleSignIn" />
+        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btnResetPassword"
@@ -152,7 +132,6 @@
         app:layout_constraintStart_toEndOf="@id/tvForgot"
         app:layout_constraintTop_toTopOf="@id/tvForgot"
          />
-
 
     <View
         android:id="@+id/overlayBlocker"

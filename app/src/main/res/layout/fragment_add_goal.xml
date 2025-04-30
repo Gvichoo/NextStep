@@ -5,6 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingVertical="@dimen/distance_lg"
     android:fillViewport="true"
     tools:context=".presentation.screen.main.add.AddGoalFragment">
 
@@ -17,7 +18,6 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/distance_md"
             android:text="@string/create_goal"
             android:textSize="@dimen/title_regular"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,45 +73,47 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPreview"
+            android:layout_width="300dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/distance_sm"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/place_holder"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tlTargetDate" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tlImage"
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
-            android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
-            android:layout_marginTop="@dimen/distance_md"
-            android:hint="@string/imagee"
-            app:layout_constraintTop_toBottomOf="@+id/tlTargetDate">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="@dimen/distance_sm"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/place_holder"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvImageError"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/ivPreview"
+            app:layout_constraintStart_toStartOf="@id/ivPreview"
+            android:text="Error"
+            android:textColor="@color/md_theme_error"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSelectImage"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/distance_sm"
+            android:layout_marginStart="@dimen/pd_screen_horizontal"
             android:layout_marginTop="@dimen/distance_sm"
             android:text="@string/add_image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tlImage" />
+            app:layout_constraintTop_toBottomOf="@id/tvImageError" />
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelImage"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/distance_sm"
+            android:layout_marginEnd="@dimen/pd_screen_horizontal"
             android:enabled="false"
             android:text="@string/cancel"
             app:layout_constraintEnd_toEndOf="parent"
@@ -135,30 +137,39 @@
             app:layout_constraintBottom_toTopOf="@+id/btnForAddAndMinusMileStoneEts"
             app:layout_constraintTop_toBottomOf="@+id/switchMileStones" />
 
-
         <LinearLayout
             android:id="@+id/btnForAddAndMinusMileStoneEts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="@dimen/pd_screen_horizontal"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/recycler">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addMileStoneEditText"
                 android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/distance_sm"
                 android:layout_height="wrap_content"
                 android:text="@string/add" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/minusMileStoneEditText"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/minus" />
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/viewSpace"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/btnForAddAndMinusMileStoneEts"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
 
         <com.google.android.material.button.MaterialButton
@@ -172,7 +183,7 @@
             android:textSize="@dimen/body_regular"
             app:layout_constraintEnd_toEndOf="@id/tlGoalTitle"
             app:layout_constraintStart_toStartOf="@id/tlGoalTitle"
-            app:layout_constraintTop_toBottomOf="@id/btnForAddAndMinusMileStoneEts" />
+            app:layout_constraintTop_toBottomOf="@id/viewSpace" />
 
 
         <include

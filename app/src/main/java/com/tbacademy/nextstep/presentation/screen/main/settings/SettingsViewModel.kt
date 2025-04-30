@@ -1,6 +1,5 @@
 package com.tbacademy.nextstep.presentation.screen.main.settings
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tbacademy.core.model.onError
 import com.tbacademy.core.model.onSuccess
@@ -50,7 +49,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectTheme(theme: AppThemePresentation) {
         viewModelScope.launch {
-            saveValueUseCase(AppPreferenceKeys.KEY_THEME_MODE, theme.name) // Save enum name
+            saveValueUseCase(AppPreferenceKeys.KEY_THEME_MODE, theme.name)
             updateState {
                 copy(selectedTheme = theme, isThemeDropdownExpanded = false)
             }
@@ -59,7 +58,7 @@ class SettingsViewModel @Inject constructor(
 
     private fun selectLanguage(language: AppLanguagePresentation) {
         viewModelScope.launch {
-            saveValueUseCase(AppPreferenceKeys.LANGUAGE_KEY, language.name) // Save enum name
+            saveValueUseCase(AppPreferenceKeys.LANGUAGE_KEY, language.name)
             updateState {
                 copy(selectedLanguage = language, isLanguageDropdownExpanded = false)
             }
@@ -77,7 +76,6 @@ class SettingsViewModel @Inject constructor(
                 }
 
                 resource.onError {
-                    Log.d("LOG_OUT_ERROR", "Error")
                     emitEffect(effect = SettingsEffect.NavigateToLogin)
                 }
             }

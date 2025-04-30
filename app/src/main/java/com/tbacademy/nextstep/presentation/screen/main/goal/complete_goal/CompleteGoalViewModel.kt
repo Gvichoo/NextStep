@@ -3,8 +3,8 @@ package com.tbacademy.nextstep.presentation.screen.main.goal.complete_goal
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.tbacademy.core.model.error.InputValidationResult
 import com.tbacademy.core.model.Resource
+import com.tbacademy.core.model.error.InputValidationResult
 import com.tbacademy.nextstep.domain.usecase.goal.CompleteGoalUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateAddGoalDescriptionUseCase
 import com.tbacademy.nextstep.domain.usecase.validation.addGoal.ValidateImageUseCase
@@ -39,7 +39,7 @@ class CompleteGoalViewModel @Inject constructor(
 
             is CompleteGoalEvent.DescriptionChanged -> onDescriptionChanged(description = event.description)
             is CompleteGoalEvent.PickImage -> launchEffect(effect = CompleteGoalEffect.ShowUpdateImageDialog)
-            is CompleteGoalEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
+            is CompleteGoalEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri, imageErrorMessage = null) }
             is CompleteGoalEvent.CameraSelected -> launchEffect(effect = CompleteGoalEffect.LaunchCameraPicker)
             is CompleteGoalEvent.GallerySelected -> launchEffect(effect = CompleteGoalEffect.LaunchMediaPicker)
             is CompleteGoalEvent.Submit -> submitPost()

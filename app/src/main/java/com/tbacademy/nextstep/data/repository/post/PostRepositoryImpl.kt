@@ -98,6 +98,8 @@ class PostRepositoryImpl @Inject constructor(
             val username = userSnapshot.getString("username")
                 ?: throw UserNotAuthenticatedException("User Not Found")
 
+            val authorProfile = userSnapshot.getString("profilePictureUrl")
+
             val storageRef: StorageReference = firebaseStorage.reference
                 .child("milestone_post_images/${userId}/${System.currentTimeMillis()}")
                 storageRef.putFile(imageUri).await()
@@ -110,6 +112,7 @@ class PostRepositoryImpl @Inject constructor(
                 id = postId,
                 authorId = userId,
                 authorUsername = username,
+                authorProfilePictureUrl = authorProfile ?: "",
                 goalId = goalId,
                 title = title,
                 description = description,

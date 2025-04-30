@@ -24,6 +24,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun start() {
         setBottomNavigation()
+        refreshBottomNavMenu()
         mainViewModel.onEvent(MainEvent.StartListeningForUnreadNotifications)
     }
 
@@ -37,6 +38,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             val badge = binding.bottomNavigationView.getOrCreateBadge(R.id.nav_Notification)
             badge.isVisible = state.hasUnreadNotifications
         }
+    }
+
+    private fun refreshBottomNavMenu() {
+        if (!::navController.isInitialized) return // 👈 prevent crash
+
+        binding.bottomNavigationView.menu.clear()
+        binding.bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu)
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
     private fun setBottomNavigation() {

@@ -63,9 +63,12 @@ class CompleteGoalFragment :
                 tvGoalTitle.text = state.goalTitle
 
                 tlDescription.error = state.descriptionErrorMessage?.let { getString(it) }
-                tlImage.error = if (state.imageUri != null) null else state.imageErrorMessage?.let {
-                    getString(it)
+
+                tvImageError.isVisible = state.imageErrorMessage != null
+                state.imageErrorMessage?.let {
+                    tvImageError.text = getString(it)
                 }
+
                 state.imageUri?.let { uri ->
                     ivImagePreview.loadImagesGlide(uri = uri)
                 }

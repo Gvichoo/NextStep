@@ -73,8 +73,9 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:scaleType="fitCenter"
         android:layout_marginTop="@dimen/distance_xs"
         android:layout_marginEnd="@dimen/distance_md"
         android:background="@null"
