@@ -5,7 +5,6 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="@dimen/distance_lg"
     android:fillViewport="true"
     tools:context=".presentation.screen.main.add.AddGoalFragment">
 
@@ -19,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_goal"
+            android:layout_marginTop="@dimen/distance_md"
             android:textSize="@dimen/title_regular"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -184,6 +184,12 @@
             app:layout_constraintEnd_toEndOf="@id/tlGoalTitle"
             app:layout_constraintStart_toStartOf="@id/tlGoalTitle"
             app:layout_constraintTop_toBottomOf="@id/viewSpace" />
+
+        <View
+            android:id="@+id/viewSpace2"
+            app:layout_constraintTop_toBottomOf="@id/btnCreateGoal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
 
 
         <include
