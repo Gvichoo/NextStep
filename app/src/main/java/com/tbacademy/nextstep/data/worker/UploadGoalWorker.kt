@@ -34,8 +34,6 @@ class UploadGoalWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
-        // Log to confirm worker has started
-        Log.d("UploadGoalWorker", "Worker started with input data: ${inputData}")
 
 
         val imageUriString = inputData.getString("imageUri")
@@ -44,11 +42,8 @@ class UploadGoalWorker @AssistedInject constructor(
         val targetDateString = inputData.getString("targetDate")
         val createdAtString = inputData.getString("createdAt")
 
-        Log.d("UploadGoalWorker", "Extracted values: targetDate=$targetDateString, createdAt=$createdAtString")
 
-        // If any critical value is missing, log the error
         if (targetDateString == null || createdAtString == null) {
-            Log.e("UploadGoalWorker", "Missing required input data (targetDate or createdAt).")
             return Result.failure()
         }
 
@@ -58,10 +53,9 @@ class UploadGoalWorker @AssistedInject constructor(
                 val type = object : TypeToken<List<MilestoneItem>>() {}.type
                 Gson().fromJson(it, type)
             } catch (e: Exception) {
-                Log.e("UploadGoalWorker", "Error deserializing milestone: ${e.message}")
-                emptyList() // Return an empty list if deserialization fails
+                emptyList()
             }
-        } ?: emptyList() // Default to an empty list if milestone is null
+        } ?: emptyList()
 
 
         val goal = Goal(
@@ -79,25 +73,21 @@ class UploadGoalWorker @AssistedInject constructor(
             milestone = milestone
         )
 
-        Log.d("UploadGoalWorker", "Goal object created: $goal")
 
         return writeUserData(goal)
     }
 
     private suspend fun writeUserData(goal: Goal): Result {
-        Log.d("UploadGoalWorker", "Attempting to upload goal...")
 
         var workResult = Result.failure()
 
         try {
             createGoalUseCase(goal)
                 .onStart {
-                    Log.d("UploadGoalWorker", "Start goal upload...")
                 }
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
-                            Log.e("UploadGoalWorker", "Error uploading goal: ${result.error}")
                             showNotification(
                                 "There was error uploading your goal."
                             )
@@ -105,7 +95,6 @@ class UploadGoalWorker @AssistedInject constructor(
                             workResult = Result.failure(outputData)
                         }
                         is Resource.Success -> {
-                            Log.d("UploadGoalWorker", "Goal uploaded successfully!")
                             showNotification("Your goal was uploaded successfully.")
                             workResult = Result.success()
                         }
@@ -125,7 +114,6 @@ class UploadGoalWorker @AssistedInject constructor(
 
     private fun showNotification(message: String) {
         if (isAppInForeground(applicationContext)) {
-            Log.d("UploadGoalWorker", "App is in foreground, no notification shown")
             return
         }
 
