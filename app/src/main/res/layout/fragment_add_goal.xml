@@ -5,12 +5,12 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingVertical="@dimen/distance_lg"
     android:fillViewport="true"
     tools:context=".presentation.screen.main.add.AddGoalFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingVertical="@dimen/pd_screen_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
