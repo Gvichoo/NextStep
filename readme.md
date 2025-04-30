@@ -1,6 +1,6 @@
 # Next Step 🎯 - Native Android Goal Oriented Social Media App
 
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.x-blue.svg)](https://kotlinlang.org)
+[![Kotlin Version](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg)](https://kotlinlang.org)
 [![Platform](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://developer.android.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20SOLID-_3?logo=android)](https://developer.android.com/topic/architecture)
 
@@ -19,11 +19,9 @@
 
 ## 📸 Screenshots
 
-*(Add your screenshots here! Replace the placeholder links and alt text.)*
-
-| ![Screenshot 1](docs/images/01.png)
-| ![Screenshot 2](docs/images/02.png) |
-| ![Screenshot 3](docs/images/03.png)
+<img src="docs/images/01.png" alt="Screenshot 1" width="300"/>
+<img src="docs/images/02.png" alt="Screenshot 2" width="300"/>
+<img src="docs/images/03.png" alt="Screenshot 3" width="300"/>
 
 ## 🛠️ Tech Stack & Architecture
 
