@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/clPost"
-    android:layout_marginVertical="8dp"
+    android:layout_marginVertical="@dimen/distance_md"
     android:background="@drawable/bg_post_item"
     android:elevation="4dp"
     android:padding="16dp">
-
-
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDate"
