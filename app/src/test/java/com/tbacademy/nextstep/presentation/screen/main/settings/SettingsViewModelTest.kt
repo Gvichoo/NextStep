@@ -41,7 +41,6 @@ class SettingsViewModelTest {
 
     @Before
     fun setUp() {
-        // default DataStore returns null for both settings
         every { readValueUseCase(AppPreferenceKeys.LANGUAGE_KEY) } returns flowOf(null)
         every { readValueUseCase(AppPreferenceKeys.KEY_THEME_MODE) } returns flowOf(null)
 
@@ -93,11 +92,10 @@ class SettingsViewModelTest {
         viewModel.onEvent(SettingsEvent.LanguageSelected(AppLanguagePresentation.KA))
         advanceUntilIdle()
 
-        // Assert state
+        // Assert
         assertEquals(AppLanguagePresentation.KA, viewModel.state.value.selectedLanguage)
         assertFalse(viewModel.state.value.isLanguageDropdownExpanded)
 
-        // Assert effect from buffered Channel
         val effect = viewModel.effects.first()
         assertEquals(SettingsEffect.ApplyLanguage(AppLanguagePresentation.KA), effect)
     }
@@ -128,7 +126,6 @@ class SettingsViewModelTest {
 
     @Test
     fun `restoreLocalSettings sets default SYSTEM values when datastore returns null`() {
-        // Arrange done in setUp
         // Act & Assert
         assertEquals(AppLanguagePresentation.SYSTEM, viewModel.state.value.selectedLanguage)
         assertEquals(AppThemePresentation.SYSTEM, viewModel.state.value.selectedTheme)
