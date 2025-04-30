@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:paddingBottom="@dimen/distance_md"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

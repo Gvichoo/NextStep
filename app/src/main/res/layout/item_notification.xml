@@ -31,7 +31,8 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvAction"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/tvAuthor"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/distance_xs"
         android:text="@string/reacted_to_your_post"

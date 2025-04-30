@@ -10,8 +10,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -122,9 +120,8 @@ class CommentsSheetFragment : BottomSheetDialogFragment() {
                 ivNoComments.isVisible = state.comments != null && state.comments.isEmpty()
                 tvNoComments.isVisible = state.comments != null && state.comments.isEmpty()
                 pgComments.isVisible = state.fetchLoading
-                btnSend.isVisible = !state.uploadLoading
+                btnSend.isVisible = !state.uploadLoading && state.isSendEnabled
                 pbSend.isVisible = state.uploadLoading
-                binding.btnSend.isVisible = state.isSendEnabled
                 if (state.comments != null) {
                     commentsAdapter.submitList(state.comments) {
                         binding.rvComments.scrollToPosition(0)

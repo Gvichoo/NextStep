@@ -68,16 +68,16 @@ class AddGoalViewModel @Inject constructor(
             is AddGoalEvent.GoalDescriptionChanged -> onDescriptionChanged(description = event.description)
             is AddGoalEvent.GoalTitleChanged -> onTitleChanged(title = event.title)
 
-            AddGoalEvent.OnCreateGoalBtnClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.NavToHomeFragment) }
-            AddGoalEvent.Submit -> submitAddGoalForm()
+            is AddGoalEvent.OnCreateGoalBtnClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.NavToHomeFragment) }
+            is AddGoalEvent.Submit -> submitAddGoalForm()
             is AddGoalEvent.GoalDateChanged -> onDateChanged(date = event.date)
             is AddGoalEvent.MetricToggle -> updateState { this.copy(isMetricEnabled = event.enabled) }
             is AddGoalEvent.GoalMetricTargetChanged -> onMetricTargetChanged(metricTarget = event.metricTarget)
             is AddGoalEvent.GoalMetricUnitChanged -> onMetricUnitChanged(metricUnit = event.metricUnit)
 
             is AddGoalEvent.ImageSelected -> updateState { this.copy(imageUri = event.imageUri) }
-            AddGoalEvent.PickImageClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.LaunchMediaPicker) }
-            AddGoalEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
+            is AddGoalEvent.PickImageClicked -> viewModelScope.launch { emitEffect(AddGoalEffect.LaunchMediaPicker) }
+            is AddGoalEvent.ImageCleared -> updateState { this.copy(imageUri = null) }
 
 
             is AddGoalEvent.MileStoneToggle -> updateState { this.copy(isMileStoneEnabled = event.enabled) }
