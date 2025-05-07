@@ -19,9 +19,8 @@
 
 ## 📸 Screenshots
 
-<img src="docs/images/01.png" alt="Screenshot 1" width="300"/>
-<img src="docs/images/02.png" alt="Screenshot 2" width="300"/>
-<img src="docs/images/03.png" alt="Screenshot 3" width="300"/>
+| ![Screenshot 1](docs/images/01.png) | ![Screenshot 2](docs/images/02.png) | ![Screenshot 3](docs/images/03.png) |
+|-------------------------------------|-------------------------------------|-------------------------------------|
 
 ## 🛠️ Tech Stack & Architecture
 
@@ -40,14 +39,14 @@ This project follows the principles of **Clean Architecture** and **SOLID** to c
 *   **Backend:**
     *   [Firebase](https://firebase.google.com/): Provides backend services including:
         *   Authentication
-        *   Realtime Database / Firestore (Specify which one you used)
-        *   Cloud Storage (Likely for post images/media)
+        *   Firestore
+        *   Cloud Storage 
     *   [Firebase Cloud Functions](https://firebase.google.com/docs/functions): For backend logic like triggering notifications.
 *   **Background Processing:** [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) for guaranteed background task execution (post uploads).
-*   **Dependency Injection:** (Mention if you used Hilt/Dagger/Koin - *Add this if applicable*)
+*   **Dependency Injection:** Dagger Hilt
 *   **Testing:**
-    *   JUnit4 / JUnit5
-    *   Mockito / MockK
+    *   JUnit5
+    *   MockK
     *   **100% Unit Test Coverage** for `SettingsViewModel`.
 
 ## 🚀 Key Highlights
